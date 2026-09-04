@@ -41,6 +41,24 @@ const monsters = entries
 	.sort((a, b) =>
 		a.name.localeCompare(b.name)
 	);
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const makeUrl = (path) => {
+	if (!path) {
+		return '#';
+	}
+
+	if (
+		path.startsWith('http://') ||
+		path.startsWith('https://') ||
+		path.startsWith('#')
+	) {
+		return path;
+	}
+
+	return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+};
 ---
 
 <div class="monsters-table">
@@ -91,7 +109,6 @@ const monsters = entries
 		</select>
 
 	</div>
-
 
 	<div class="table-wrapper">
 
@@ -153,7 +170,6 @@ const monsters = entries
 
 			</thead>
 
-
 			<tbody id="monsters-body">
 
 				{
@@ -168,19 +184,24 @@ const monsters = entries
 							<td class="monster-name">
 
 								<a
-									href={`/monsters/${monster.slug}/`}
+									href={makeUrl(
+										`/monsters/${monster.slug}/`
+									)}
 								>
 									{monster.name}
 								</a>
 
 							</td>
 
-
 							<td class="monster-type">
 
 								{
 									monster.type === 'Task' ? (
-										<a href="/systems/tasks/">
+										<a
+											href={makeUrl(
+												'/systems/tasks/'
+											)}
+										>
 											Task
 										</a>
 									) : (
@@ -190,16 +211,13 @@ const monsters = entries
 
 							</td>
 
-
 							<td class="monster-stat">
 								{monster.health || '—'}
 							</td>
 
-
 							<td class="monster-stat">
 								{monster.experience || '—'}
 							</td>
-
 
 							<td class="monster-loot">
 
@@ -210,7 +228,7 @@ const monsters = entries
 											(item) => (
 												<a
 													class="monster-loot-item"
-													href={item.link || '#'}
+													href={makeUrl(item.link)}
 													title={item.name || ''}
 												>
 
@@ -249,7 +267,6 @@ const monsters = entries
 
 	</div>
 
-
 	<p
 		id="monster-no-results"
 		class="no-results"
@@ -259,7 +276,6 @@ const monsters = entries
 	</p>
 
 </div>
-
 
 <script>
 
@@ -283,10 +299,8 @@ const monsters = entries
 		const sortButtons =
 			table.querySelectorAll(".sort-button");
 
-
 		let sortKey = "name";
 		let sortDirection = "asc";
-
 
 		const getSortValue = (row, key) => {
 
@@ -315,7 +329,6 @@ const monsters = entries
 
 		};
 
-
 		const updateTable = () => {
 
 			const search =
@@ -326,11 +339,9 @@ const monsters = entries
 			const type =
 				typeSelect?.value || "all";
 
-
 			const rows = Array.from(
 				tbody.querySelectorAll("tr")
 			);
-
 
 			rows.forEach((row) => {
 
@@ -340,7 +351,6 @@ const monsters = entries
 				const rowType =
 					row.dataset.type || "";
 
-
 				const matchesSearch =
 					name.includes(search);
 
@@ -348,18 +358,15 @@ const monsters = entries
 					type === "all" ||
 					rowType === type;
 
-
 				row.hidden =
 					!(matchesSearch && matchesType);
 
 			});
 
-
 			const visibleRows =
 				rows.filter(
 					(row) => !row.hidden
 				);
-
 
 			visibleRows.sort((a, b) => {
 
@@ -368,7 +375,6 @@ const monsters = entries
 
 				const bValue =
 					getSortValue(b, sortKey);
-
 
 				if (
 					typeof aValue === "string" &&
@@ -389,24 +395,20 @@ const monsters = entries
 						: -result;
 				}
 
-
 				return sortDirection === "asc"
 					? aValue - bValue
 					: bValue - aValue;
 
 			});
 
-
 			visibleRows.forEach((row) => {
 				tbody.appendChild(row);
 			});
-
 
 			noResults.hidden =
 				visibleRows.length !== 0;
 
 		};
-
 
 		sortButtons.forEach((button) => {
 
@@ -420,7 +422,6 @@ const monsters = entries
 					if (!newKey) {
 						return;
 					}
-
 
 					if (sortKey === newKey) {
 
@@ -436,7 +437,6 @@ const monsters = entries
 
 					}
 
-
 					sortButtons.forEach(
 						(otherButton) => {
 
@@ -444,7 +444,6 @@ const monsters = entries
 								otherButton.querySelector(
 									".sort-arrow"
 								);
-
 
 							if (
 								otherButton === button
@@ -465,7 +464,6 @@ const monsters = entries
 						}
 					);
 
-
 					updateTable();
 
 				}
@@ -473,18 +471,15 @@ const monsters = entries
 
 		});
 
-
 		searchInput?.addEventListener(
 			"input",
 			updateTable
 		);
 
-
 		typeSelect?.addEventListener(
 			"change",
 			updateTable
 		);
-
 
 		updateTable();
 
@@ -492,13 +487,11 @@ const monsters = entries
 
 </script>
 
-
 <style>
 
 	.monsters-table {
 		width: 100%;
 	}
-
 
 	.controls {
 		display: flex;
@@ -506,7 +499,6 @@ const monsters = entries
 		gap: 0.65rem;
 		margin-bottom: 0.8rem;
 	}
-
 
 	.controls input,
 	.controls select {
@@ -532,23 +524,19 @@ const monsters = entries
 		font-size: 0.8rem;
 	}
 
-
 	.controls input {
 		flex: 1;
 		min-width: 0;
 	}
 
-
 	.controls select {
 		width: 10rem;
 	}
-
 
 	.table-wrapper {
 		width: 100%;
 		overflow-x: auto;
 	}
-
 
 	.monster-table {
 		width: 100%;
@@ -557,26 +545,21 @@ const monsters = entries
 		font-size: 0.72rem;
 	}
 
-
 	.monster-table .name-column {
 		width: 18%;
 	}
-
 
 	.monster-table .type-column {
 		width: 9%;
 	}
 
-
 	.monster-table .stat-column {
 		width: 9%;
 	}
 
-
 	.monster-table .loot-column {
 		width: 55%;
 	}
-
 
 	.monster-table th,
 	.monster-table td {
@@ -591,12 +574,10 @@ const monsters = entries
 		box-sizing: border-box;
 	}
 
-
 	.monster-table th {
 		padding: 0;
 		font-weight: 700;
 	}
-
 
 	.sort-button {
 		display: flex;
@@ -618,23 +599,19 @@ const monsters = entries
 		cursor: pointer;
 	}
 
-
 	.sort-button:hover {
 		color:
 			var(--sl-color-text-accent);
 	}
-
 
 	.sort-arrow {
 		opacity: 0.65;
 		font-size: 0.7em;
 	}
 
-
 	.monster-name {
 		overflow: hidden;
 	}
-
 
 	.monster-name a {
 		color: inherit;
@@ -642,18 +619,15 @@ const monsters = entries
 		text-decoration: none;
 	}
 
-
 	.monster-name a:hover {
 		text-decoration: underline;
 	}
-
 
 	.monster-type {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-
 
 	.monster-stat {
 		font-family:
@@ -662,11 +636,9 @@ const monsters = entries
 		text-align: center !important;
 	}
 
-
 	.monster-loot {
 		overflow: hidden;
 	}
-
 
 	.monster-loot-list {
 		display: flex;
@@ -681,7 +653,6 @@ const monsters = entries
 		scrollbar-width: thin;
 	}
 
-
 	.monster-loot-item {
 		display: inline-flex;
 		align-items: center;
@@ -693,11 +664,9 @@ const monsters = entries
 		text-decoration: none;
 	}
 
-
 	.monster-loot-item:hover {
 		text-decoration: underline;
 	}
-
 
 	.monster-loot-image {
 		display: block;
@@ -717,7 +686,6 @@ const monsters = entries
 		image-rendering: crisp-edges;
 	}
 
-
 	.monster-loot-item strong {
 		font-family:
 			var(--bi-mono);
@@ -725,13 +693,11 @@ const monsters = entries
 		font-size: 0.65rem;
 	}
 
-
 	.no-results {
 		margin-top: 1rem;
 		color:
 			var(--sl-color-gray-3);
 	}
-
 
 	@media (max-width: 700px) {
 
@@ -740,11 +706,9 @@ const monsters = entries
 			align-items: stretch;
 		}
 
-
 		.controls select {
 			width: 100%;
 		}
-
 
 		.monster-table {
 			min-width: 760px;

@@ -1,3 +1,4 @@
+ChatGPT powiedział:
 ---
 import { getCollection } from 'astro:content';
 
@@ -9,7 +10,6 @@ const items = entries
 	.map((entry) => {
 		const rawType = String(entry.data.type ?? '').trim();
 
-		// Display equipment types consistently with a capital first letter.
 		const type = rawType
 			? rawType.charAt(0).toUpperCase() + rawType.slice(1).toLowerCase()
 			: '';
@@ -23,7 +23,6 @@ const items = entries
 
 			weight: entry.data.weight ?? '',
 
-			// Keep armor and attack as separate fields.
 			armor: entry.data.armor,
 			attack: entry.data.attack,
 			defense: entry.data.defense,
@@ -38,10 +37,6 @@ const items = entries
 ---
 
 <div class="items-table">
-
-	<!-- =====================================================
-	     CONTROLS
-	     ===================================================== -->
 
 	<div class="controls">
 
@@ -87,11 +82,6 @@ const items = entries
 		</select>
 
 	</div>
-
-
-	<!-- =====================================================
-	     TABLE
-	     ===================================================== -->
 
 	<div class="table-wrapper">
 
@@ -204,7 +194,6 @@ const items = entries
 
 			</thead>
 
-
 			<tbody id="items-body">
 
 				{
@@ -218,15 +207,13 @@ const items = entries
 							data-defense={item.defense ?? ""}
 							data-speed={item.speed ?? ""}
 							data-range={item.range ?? ""}
-							data-requirement={item.requirement.toLowerCase()}
+							data-requirement={String(item.requirement).toLowerCase()}
 						>
-
-							<!-- NAME -->
 
 							<td class="item-name">
 
 								<a
-									href={`/equipment/${item.slug}/`}
+									href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/equipment/${item.slug}/`}
 								>
 
 									{item.image ? (
@@ -247,57 +234,33 @@ const items = entries
 
 							</td>
 
-
-							<!-- TYPE -->
-
 							<td class="item-type">
 								{item.type || "—"}
 							</td>
-
-
-							<!-- WEIGHT -->
 
 							<td class="item-weight">
 								{item.weight || "—"}
 							</td>
 
-
-							<!-- ARMOR -->
-
 							<td class="item-stat">
 								{item.armor ?? "—"}
 							</td>
-
-
-							<!-- ATTACK -->
 
 							<td class="item-stat">
 								{item.attack ?? "—"}
 							</td>
 
-
-							<!-- DEFENSE -->
-
 							<td class="item-stat">
 								{item.defense ?? "—"}
 							</td>
-
-
-							<!-- SPEED -->
 
 							<td class="item-stat">
 								{item.speed ?? "—"}
 							</td>
 
-
-							<!-- RANGE -->
-
 							<td class="item-stat">
 								{item.range ?? "—"}
 							</td>
-
-
-							<!-- REQUIREMENT -->
 
 							<td class="item-requirement">
 								{item.requirement || "—"}
@@ -313,7 +276,6 @@ const items = entries
 
 	</div>
 
-
 	<p
 		id="no-results"
 		class="no-results"
@@ -323,7 +285,6 @@ const items = entries
 	</p>
 
 </div>
-
 
 <script>
 	const table =
@@ -346,14 +307,8 @@ const items = entries
 		const sortButtons =
 			table.querySelectorAll(".sort-button");
 
-
 		let sortKey = "name";
 		let sortDirection = "asc";
-
-
-		/* =====================================================
-		   SORT VALUE
-		   ===================================================== */
 
 		const getSortValue = (row, key) => {
 
@@ -396,20 +351,13 @@ const items = entries
 					);
 
 				case "requirement":
-					return (
-						row.dataset.requirement || ""
-					);
+					return row.dataset.requirement || "";
 
 				default:
 					return "";
 			}
 
 		};
-
-
-		/* =====================================================
-		   UPDATE TABLE
-		   ===================================================== */
 
 		const updateTable = () => {
 
@@ -421,15 +369,9 @@ const items = entries
 			const type =
 				typeSelect?.value || "all";
 
-
 			const rows = Array.from(
 				tbody.querySelectorAll("tr")
 			);
-
-
-			/* =================================================
-			   FILTER
-			   ================================================= */
 
 			rows.forEach((row) => {
 
@@ -439,31 +381,22 @@ const items = entries
 				const rowType =
 					row.dataset.type || "";
 
-
 				const matchesSearch =
 					name.includes(search);
-
 
 				const matchesType =
 					type === "all" ||
 					rowType === type;
-
 
 				row.hidden =
 					!(matchesSearch && matchesType);
 
 			});
 
-
 			const visibleRows =
 				rows.filter(
 					(row) => !row.hidden
 				);
-
-
-			/* =================================================
-			   SORT
-			   ================================================= */
 
 			visibleRows.sort((a, b) => {
 
@@ -479,7 +412,6 @@ const items = entries
 						sortKey
 					);
 
-
 				if (
 					typeof aValue === "string" &&
 					typeof bValue === "string"
@@ -494,12 +426,11 @@ const items = entries
 							}
 						);
 
-
 					return sortDirection === "asc"
 						? result
 						: -result;
-				}
 
+				}
 
 				return sortDirection === "asc"
 					? aValue - bValue
@@ -507,31 +438,16 @@ const items = entries
 
 			});
 
-
-			/* =================================================
-			   REORDER ROWS
-			   ================================================= */
-
 			visibleRows.forEach((row) => {
 
 				tbody.appendChild(row);
 
 			});
 
-
-			/* =================================================
-			   NO RESULTS
-			   ================================================= */
-
 			noResults.hidden =
 				visibleRows.length !== 0;
 
 		};
-
-
-		/* =====================================================
-		   SORT BUTTONS
-		   ===================================================== */
 
 		sortButtons.forEach((button) => {
 
@@ -542,11 +458,9 @@ const items = entries
 					const newKey =
 						button.dataset.sort;
 
-
 					if (!newKey) {
 						return;
 					}
-
 
 					if (sortKey === newKey) {
 
@@ -562,11 +476,6 @@ const items = entries
 
 					}
 
-
-					/* =============================================
-					   UPDATE ARROWS
-					   ============================================= */
-
 					sortButtons.forEach(
 						(otherButton) => {
 
@@ -574,7 +483,6 @@ const items = entries
 								otherButton.querySelector(
 									".sort-arrow"
 								);
-
 
 							if (
 								otherButton === button
@@ -595,7 +503,6 @@ const items = entries
 						}
 					);
 
-
 					updateTable();
 
 				}
@@ -603,51 +510,26 @@ const items = entries
 
 		});
 
-
-		/* =====================================================
-		   SEARCH
-		   ===================================================== */
-
 		searchInput?.addEventListener(
 			"input",
 			updateTable
 		);
-
-
-		/* =====================================================
-		   TYPE FILTER
-		   ===================================================== */
 
 		typeSelect?.addEventListener(
 			"change",
 			updateTable
 		);
 
-
-		/* =====================================================
-		   INITIAL TABLE
-		   ===================================================== */
-
 		updateTable();
 
 	}
 </script>
 
-
 <style>
-
-	/* =========================================================
-	   TABLE CONTAINER
-	   ========================================================= */
 
 	.items-table {
 		width: 100%;
 	}
-
-
-	/* =========================================================
-	   CONTROLS
-	   ========================================================= */
 
 	.controls {
 		display: flex;
@@ -656,76 +538,39 @@ const items = entries
 		margin-bottom: 0.8rem;
 	}
 
-
 	.controls input,
 	.controls select {
 		height: 2.25rem;
-
 		box-sizing: border-box;
-
-		border:
-			1px solid var(--sl-color-gray-5);
-
-		border-radius:
-			0.35rem;
-
-		background:
-			var(--sl-color-black);
-
-		color:
-			var(--sl-color-white);
-
-		padding:
-			0 0.6rem;
-
-		font:
-			inherit;
-
-		font-size:
-			0.8rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.35rem;
+		background: var(--sl-color-black);
+		color: var(--sl-color-white);
+		padding: 0 0.6rem;
+		font: inherit;
+		font-size: 0.8rem;
 	}
-
 
 	.controls input {
 		flex: 1;
 		min-width: 0;
 	}
 
-
 	.controls select {
 		width: 10rem;
 	}
-
-
-	/* =========================================================
-	   TABLE WRAPPER
-	   ========================================================= */
 
 	.table-wrapper {
 		width: 100%;
 		overflow-x: auto;
 	}
 
-
-	/* =========================================================
-	   TABLE
-	   ========================================================= */
-
 	.item-table {
 		width: 100%;
-
 		table-layout: fixed;
-
 		border-collapse: collapse;
-
-		font-size:
-			0.72rem;
+		font-size: 0.72rem;
 	}
-
-
-	/* =========================================================
-	   COLUMN WIDTHS
-	   ========================================================= */
 
 	.item-table .name-column {
 		width: 22%;
@@ -747,359 +592,152 @@ const items = entries
 		width: 16%;
 	}
 
-
-	/* =========================================================
-	   CELLS
-	   ========================================================= */
-
 	.item-table th,
 	.item-table td {
-
-		padding:
-			0.42rem 0.3rem;
-
-		border-bottom:
-			1px solid var(--sl-color-gray-5);
-
-		text-align:
-			left;
-
-		vertical-align:
-			middle;
-
-		white-space:
-			nowrap;
-
-		box-sizing:
-			border-box;
+		padding: 0.42rem 0.3rem;
+		border-bottom: 1px solid var(--sl-color-gray-5);
+		text-align: left;
+		vertical-align: middle;
+		white-space: nowrap;
+		box-sizing: border-box;
 	}
-
-
-	/* =========================================================
-	   HEADER
-	   ========================================================= */
 
 	.item-table th {
-		padding:
-			0;
-
-		font-weight:
-			700;
+		padding: 0;
+		font-weight: 700;
 	}
-
 
 	.sort-button {
-
-		display:
-			flex;
-
-		align-items:
-			center;
-
-		gap:
-			0.2rem;
-
-		width:
-			100%;
-
-		padding:
-			0.5rem 0.3rem;
-
-		border:
-			0;
-
-		background:
-			transparent;
-
-		color:
-			inherit;
-
-		font:
-			inherit;
-
-		font-size:
-			0.68rem;
-
-		font-weight:
-			700;
-
-		text-align:
-			left;
-
-		cursor:
-			pointer;
-
+		display: flex;
+		align-items: center;
+		gap: 0.2rem;
+		width: 100%;
+		padding: 0.5rem 0.3rem;
+		border: 0;
+		background: transparent;
+		color: inherit;
+		font: inherit;
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-align: left;
+		cursor: pointer;
 	}
-
 
 	.sort-button:hover {
-		color:
-			var(--sl-color-text-accent);
+		color: var(--sl-color-text-accent);
 	}
-
 
 	.sort-arrow {
-
-		opacity:
-			0.65;
-
-		font-size:
-			0.7em;
-
+		opacity: 0.65;
+		font-size: 0.7em;
 	}
-
-
-	/* =========================================================
-	   NAME
-	   ========================================================= */
 
 	.item-name {
-
-		overflow:
-			hidden;
-
+		overflow: hidden;
 	}
-
 
 	.item-name a {
-
-		display:
-			flex;
-
-		align-items:
-			center;
-
-		gap:
-			0.4rem;
-
-		min-width:
-			0;
-
-		color:
-			inherit;
-
-		font-weight:
-			700;
-
-		text-decoration:
-			none;
-
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		min-width: 0;
+		color: inherit;
+		font-weight: 700;
+		text-decoration: none;
 	}
-
 
 	.item-name a:hover {
-		text-decoration:
-			underline;
+		text-decoration: underline;
 	}
-
 
 	.item-name a span {
-
-		overflow:
-			hidden;
-
-		text-overflow:
-			ellipsis;
-
-		white-space:
-			nowrap;
-
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
-
-
-	/* =========================================================
-	   ITEM IMAGE
-	   ========================================================= */
 
 	.item-table-image {
-
-		display:
-			block;
-
-		flex:
-			0 0 26px;
-
-		width:
-			26px !important;
-
-		height:
-			26px !important;
-
-		max-width:
-			26px !important;
-
-		max-height:
-			26px !important;
-
-		margin:
-			0 !important;
-
-		padding:
-			0 !important;
-
-		object-fit:
-			contain;
-
-		image-rendering:
-			pixelated;
-
-		image-rendering:
-			crisp-edges;
-
+		display: block;
+		flex: 0 0 26px;
+		width: 26px !important;
+		height: 26px !important;
+		max-width: 26px !important;
+		max-height: 26px !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		object-fit: contain;
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
 	}
-
-
-	/* =========================================================
-	   TYPE
-	   ========================================================= */
 
 	.item-type {
-
-		overflow:
-			hidden;
-
-		text-overflow:
-			ellipsis;
-
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
-
-
-	/* =========================================================
-	   WEIGHT
-	   ========================================================= */
 
 	.item-weight {
-
-		font-family:
-			var(--bi-mono);
-
-		font-size:
-			0.68rem;
-
+		font-family: var(--bi-mono);
+		font-size: 0.68rem;
 	}
-
-
-	/* =========================================================
-	   STATS
-	   ========================================================= */
 
 	.item-stat {
-
-		font-family:
-			var(--bi-mono);
-
-		text-align:
-			center !important;
-
+		font-family: var(--bi-mono);
+		text-align: center !important;
 	}
-
-
-	/* =========================================================
-	   REQUIREMENT
-	   ========================================================= */
 
 	.item-requirement {
-
-		overflow:
-			hidden;
-
-		text-overflow:
-			ellipsis;
-
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
-
-
-	/* =========================================================
-	   NO RESULTS
-	   ========================================================= */
 
 	.no-results {
-
-		margin-top:
-			1rem;
-
-		color:
-			var(--sl-color-gray-3);
-
+		margin-top: 1rem;
+		color: var(--sl-color-gray-3);
 	}
-
-
-	/* =========================================================
-	   MEDIUM SCREENS
-	   ========================================================= */
 
 	@media (max-width: 1000px) {
 
 		.item-table {
-			font-size:
-				0.68rem;
+			font-size: 0.68rem;
 		}
 
 		.item-table th,
 		.item-table td {
-			padding:
-				0.38rem 0.25rem;
+			padding: 0.38rem 0.25rem;
 		}
 
 		.item-table-image {
-			width:
-				23px !important;
-
-			height:
-				23px !important;
+			width: 23px !important;
+			height: 23px !important;
 		}
 
 		.item-table .name-column {
-			width:
-				21%;
+			width: 21%;
 		}
 
 		.item-table .requirement-column {
-			width:
-				14%;
+			width: 14%;
 		}
 
 	}
 
-
-	/* =========================================================
-	   MOBILE
-	   ========================================================= */
-
 	@media (max-width: 700px) {
 
 		.controls {
-
-			flex-direction:
-				column;
-
-			align-items:
-				stretch;
-
+			flex-direction: column;
+			align-items: stretch;
 		}
-
 
 		.controls select {
-
-			width:
-				100%;
-
+			width: 100%;
 		}
-
 
 		.table-wrapper {
-
-			overflow-x:
-				auto;
-
+			overflow-x: auto;
 		}
 
-
 		.item-table {
-
-			min-width:
-				720px;
-
+			min-width: 720px;
 		}
 
 	}
