@@ -1,0 +1,2503 @@
+/* =========================================================
+   STARLIGHT LAYOUT
+   ========================================================= */
+
+:root {
+	/* Szerokość lewego menu */
+	--sl-sidebar-width: 17rem;
+
+	/* Szerokość głównej zawartości */
+	--sl-content-width: 76rem;
+}
+
+
+/* =========================================================
+   SHARED THEME VARIABLES
+   ========================================================= */
+
+:root {
+	--bi-surface:
+		rgba(25, 28, 35, 0.72);
+
+	--bi-surface-strong:
+		rgba(20, 23, 29, 0.82);
+
+	--bi-surface-soft:
+		rgba(25, 28, 35, 0.42);
+
+	--bi-row-hover:
+		rgba(255, 255, 255, 0.025);
+
+	--bi-accent-soft:
+		rgba(214, 168, 95, 0.10);
+
+	--bi-accent-border:
+		rgba(214, 168, 95, 0.55);
+
+	--bi-shadow:
+		0 5px 18px rgba(0, 0, 0, 0.18);
+
+	/* Shared table dimensions */
+	--bi-table-header-bg:
+		rgba(20, 23, 29, 0.88);
+
+	--bi-table-cell-padding-y:
+		10px;
+
+	--bi-table-cell-padding-x:
+		14px;
+
+	--bi-table-header-padding-y:
+		12px;
+
+	--bi-table-header-padding-x:
+		14px;
+
+	--bi-table-font-size:
+		0.80rem;
+
+	--bi-table-header-size:
+		0.70rem;
+
+	--bi-table-radius:
+		8px;
+}
+
+
+/* =========================================================
+   ITEM PAGE
+   ========================================================= */
+
+.item-page {
+	position: relative;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 0 40px;
+}
+
+
+/* =========================================================
+   ITEM BACKGROUND
+   ========================================================= */
+
+.item-background {
+	position: absolute;
+
+	top: -60px;
+	left: -140px;
+
+	width: 280px;
+	height: 280px;
+
+	z-index: 0;
+	pointer-events: none;
+
+	opacity: 0.62;
+}
+
+.item-background img {
+	display: block;
+
+	width: 260px !important;
+	height: 260px !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	object-fit: contain;
+
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
+
+	filter:
+		drop-shadow(
+			0 10px 16px rgba(0, 0, 0, 0.42)
+		);
+}
+
+
+/* =========================================================
+   ITEM DESCRIPTION
+   ========================================================= */
+
+.item-description {
+	position: relative;
+	z-index: 2;
+
+	max-width: 900px;
+
+	margin: 35px 0 28px;
+
+	padding: 16px 20px;
+
+	border-left:
+		2px solid var(--bi-accent-border);
+
+	border-radius:
+		0 7px 7px 0;
+
+	background:
+		var(--bi-surface-soft);
+
+	color:
+		var(--bi-text-muted) !important;
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.88rem;
+
+	line-height:
+		1.7;
+
+	box-shadow:
+		0 5px 18px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   ITEM GRID
+   ========================================================= */
+
+.item-page .item-grid {
+	position: relative;
+	z-index: 2;
+
+	display: grid !important;
+
+	grid-template-columns:
+		minmax(0, 1fr)
+		minmax(0, 1fr);
+
+	grid-template-rows:
+		auto
+		auto
+		auto;
+
+	gap: 14px;
+
+	width: 100%;
+
+	align-items: start;
+}
+
+
+/* =========================================================
+   ITEM CARD POSITIONS
+   ========================================================= */
+
+.item-page .item-card-basic {
+	grid-column: 1 !important;
+	grid-row: 1 !important;
+}
+
+.item-page .item-card-combat {
+	grid-column: 2 !important;
+	grid-row: 1 !important;
+}
+
+.item-page .item-card-wide {
+	grid-column: 1 / -1 !important;
+}
+
+
+/* =========================================================
+   ITEM CARDS
+   ========================================================= */
+
+.item-page .item-card {
+	min-width: 0;
+
+	box-sizing: border-box;
+
+	margin: 0 !important;
+
+	padding: 17px 18px;
+
+	border:
+		1px solid var(--bi-border);
+
+	border-radius: 8px;
+
+	background:
+		var(--bi-surface);
+
+	box-shadow:
+		var(--bi-shadow);
+
+	backdrop-filter:
+		blur(5px);
+}
+
+.item-page .item-card h2 {
+	margin:
+		0 0 13px;
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.76rem;
+
+	font-weight:
+		650;
+
+	text-transform:
+		uppercase;
+
+	letter-spacing:
+		0.09em;
+}
+
+
+/* =========================================================
+   ITEM INFORMATION
+   ========================================================= */
+
+.item-page .item-info {
+	display:
+		flex;
+
+	flex-direction:
+		column;
+
+	gap:
+		0;
+}
+
+.item-page .item-info > div {
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	justify-content:
+		space-between;
+
+	min-height:
+		34px;
+
+	border-bottom:
+		1px solid var(--bi-border-soft);
+}
+
+.item-page .item-info > div:last-child {
+	border-bottom:
+		0;
+}
+
+.item-page .item-info span {
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.76rem;
+}
+
+.item-page .item-info strong {
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-mono);
+
+	font-size:
+		0.78rem;
+
+	font-weight:
+		500;
+
+	text-align:
+		right;
+}
+
+
+/* =========================================================
+   ITEM HORIZONTAL INFORMATION
+   ========================================================= */
+
+.item-page .item-info-horizontal {
+	display:
+		grid;
+
+	grid-template-columns:
+		repeat(3, minmax(0, 1fr));
+
+	gap:
+		20px;
+}
+
+.item-page .item-info-horizontal > div {
+	border-bottom:
+		0;
+}
+
+
+/* =========================================================
+   ITEM SOURCES
+   ========================================================= */
+
+.item-page .item-sources {
+	display:
+		flex;
+
+	flex-direction:
+		column;
+
+	gap:
+		0;
+
+	width:
+		100%;
+}
+
+.item-page .item-source {
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	min-height:
+		34px;
+
+	border-bottom:
+		1px solid var(--bi-border-soft);
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.78rem;
+}
+
+.item-page .item-source:last-child {
+	border-bottom:
+		0;
+}
+
+.item-page .item-source strong {
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-mono);
+
+	font-weight:
+		500;
+}
+
+.item-page .item-source a {
+	color:
+		var(--bi-accent);
+
+	text-decoration:
+		none;
+}
+
+.item-page .item-source a:hover {
+	text-decoration:
+		underline;
+}
+
+
+/* =========================================================
+   ITEM STATS
+   ========================================================= */
+
+.item-page .item-stats {
+	display:
+		grid;
+
+	grid-template-columns:
+		repeat(4, minmax(0, 1fr));
+
+	width:
+		100%;
+
+	margin:
+		0;
+
+	padding:
+		0;
+}
+
+.item-page .item-stat {
+	display:
+		flex;
+
+	flex-direction:
+		column;
+
+	align-items:
+		center;
+
+	justify-content:
+		center;
+
+	min-width:
+		0;
+
+	min-height:
+		48px;
+
+	padding:
+		0 12px;
+
+	box-sizing:
+		border-box;
+
+	border-right:
+		1px solid var(--bi-border-soft);
+}
+
+.item-page .item-stat:first-child {
+	padding-left:
+		0;
+}
+
+.item-page .item-stat:last-child {
+	padding-right:
+		0;
+
+	border-right:
+		0;
+}
+
+.item-page .item-stat span {
+	display:
+		block;
+
+	margin:
+		0 0 6px;
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.70rem;
+
+	font-weight:
+		400;
+
+	line-height:
+		1;
+
+	text-align:
+		center;
+
+	white-space:
+		nowrap;
+}
+
+.item-page .item-stat strong {
+	display:
+		block;
+
+	margin:
+		0;
+
+	padding:
+		0;
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-mono);
+
+	font-size:
+		0.82rem;
+
+	font-weight:
+		500;
+
+	line-height:
+		1;
+
+	text-align:
+		center;
+
+	white-space:
+		nowrap;
+}
+
+
+/* =========================================================
+   SINGLE ARMOR STAT
+   ========================================================= */
+
+.item-page .item-card-stats
+	.item-stats:has(.item-stat:only-child) {
+	grid-template-columns:
+		minmax(0, 1fr);
+}
+
+.item-page .item-card-stats
+	.item-stat:only-child {
+	padding-left:
+		0;
+
+	padding-right:
+		0;
+
+	border-right:
+		0;
+
+	min-height:
+		64px;
+}
+
+.item-page .item-card-stats
+	.item-stat-armor strong {
+	font-size:
+		1.55rem;
+
+	font-weight:
+		600;
+
+	line-height:
+		1;
+}
+
+
+/* =========================================================
+   MONSTER PAGE
+   ========================================================= */
+
+.monster-page {
+	position: relative;
+
+	width:
+	100%;
+
+	margin:
+	0 auto;
+
+	padding:
+	0 0 40px;
+}
+
+
+/* =========================================================
+   MONSTER BACKGROUND IMAGE
+   ========================================================= */
+
+.monster-background {
+	position:
+		absolute;
+
+	top:
+		-180px;
+
+	left:
+		-60px;
+
+	width:
+		340px;
+
+	height:
+		340px;
+
+	z-index:
+		0;
+
+	pointer-events:
+		none;
+
+	opacity:
+		0.62;
+}
+
+.monster-background img {
+	display:
+		block;
+
+	width:
+		340px !important;
+
+	height:
+		340px !important;
+
+	margin:
+		0 !important;
+
+	padding:
+		0 !important;
+
+	object-fit:
+		contain;
+
+	image-rendering:
+		pixelated;
+
+	image-rendering:
+		crisp-edges;
+
+	filter:
+		drop-shadow(
+			0 10px 16px rgba(0, 0, 0, 0.42)
+		);
+}
+
+
+/* =========================================================
+   MONSTER DESCRIPTION
+   ========================================================= */
+
+.monster-description {
+	position:
+		relative;
+
+	z-index:
+		2;
+
+	max-width:
+		900px;
+
+	margin:
+		35px 0 28px;
+
+	padding:
+		16px 20px;
+
+	border-left:
+		2px solid var(--bi-accent-border);
+
+	border-radius:
+		0 7px 7px 0;
+
+	background:
+		var(--bi-surface-soft);
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.88rem;
+
+	line-height:
+		1.7;
+
+	box-shadow:
+		0 5px 18px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   MONSTER GRID
+   ========================================================= */
+
+.monster-page .monster-grid {
+	position:
+		relative;
+
+	z-index:
+		2;
+
+	display:
+		grid !important;
+
+	grid-template-columns:
+		minmax(0, 1fr)
+		minmax(0, 1fr) !important;
+
+	gap:
+		14px !important;
+
+	width:
+		100%;
+
+	align-items:
+		start !important;
+}
+
+
+/* =========================================================
+   MONSTER CARDS
+   ========================================================= */
+
+.monster-page .monster-card {
+	min-width:
+		0;
+
+	margin:
+		0 !important;
+
+	padding:
+		17px 18px;
+
+	box-sizing:
+		border-box;
+
+	border:
+		1px solid var(--bi-border);
+
+	border-radius:
+		8px;
+
+	background:
+		var(--bi-surface);
+
+	box-shadow:
+		var(--bi-shadow);
+
+	backdrop-filter:
+		blur(5px);
+}
+
+.monster-page .monster-card-basic,
+.monster-page .monster-card-loot {
+	grid-column:
+		span 1;
+}
+
+.monster-page .monster-card-wide {
+	grid-column:
+		1 / -1 !important;
+}
+
+.monster-page .monster-card h2 {
+	margin:
+		0 0 13px;
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.76rem;
+
+	font-weight:
+		650;
+
+	text-transform:
+		uppercase;
+
+	letter-spacing:
+		0.09em;
+}
+
+
+/* =========================================================
+   MONSTER INFORMATION
+   ========================================================= */
+
+.monster-page .monster-info {
+	display:
+		flex;
+
+	flex-direction:
+		column;
+
+	gap:
+		0;
+}
+
+.monster-page .monster-info > div {
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	justify-content:
+		space-between;
+
+	min-height:
+		34px;
+
+	border-bottom:
+		1px solid var(--bi-border-soft);
+}
+
+.monster-page .monster-info > div:last-child {
+	border-bottom:
+		0;
+}
+
+.monster-page .monster-info span {
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.76rem;
+}
+
+.monster-page .monster-info strong {
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-mono);
+
+	font-size:
+		0.78rem;
+
+	font-weight:
+		500;
+
+	text-align:
+		right;
+}
+
+.monster-page .monster-info a {
+	color:
+		var(--bi-accent);
+
+	text-decoration:
+		none;
+}
+
+.monster-page .monster-info a:hover {
+	text-decoration:
+		underline;
+}
+
+
+/* =========================================================
+   MONSTER HORIZONTAL INFORMATION
+   ========================================================= */
+
+.monster-page .monster-info-horizontal {
+	display:
+		grid;
+
+	grid-template-columns:
+		repeat(2, minmax(0, 1fr));
+
+	gap:
+		20px;
+}
+
+.monster-page .monster-info-horizontal > div {
+	border-bottom:
+		0;
+}
+
+
+/* =========================================================
+   MONSTER LOOT
+   ========================================================= */
+
+.monster-page .monster-loot {
+	width:
+		100%;
+}
+
+.monster-page .monster-loot-row {
+	min-height:
+		40px;
+
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	justify-content:
+		space-between;
+
+	gap:
+		12px;
+
+	border-bottom:
+		1px solid var(--bi-border-soft);
+}
+
+.monster-page .monster-loot-row:last-child {
+	border-bottom:
+		0;
+}
+
+.monster-page .monster-loot-item {
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	min-width:
+		0;
+
+	gap:
+		9px;
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.78rem;
+
+	text-decoration:
+		none;
+}
+
+.monster-page .monster-loot-item:hover {
+	color:
+		var(--bi-accent);
+}
+
+.monster-page .monster-loot-item span {
+	overflow:
+		hidden;
+
+	text-overflow:
+		ellipsis;
+
+	white-space:
+		nowrap;
+}
+
+.monster-page .monster-loot-icon {
+	display:
+		block;
+
+	flex:
+		0 0 32px;
+
+	width:
+		32px !important;
+
+	height:
+		32px !important;
+
+	margin:
+		0 !important;
+
+	padding:
+		0 !important;
+
+	object-fit:
+		contain;
+
+	image-rendering:
+		pixelated;
+
+	image-rendering:
+		crisp-edges;
+}
+
+.monster-page .monster-loot-row > strong {
+	flex:
+		0 0 auto;
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-mono);
+
+	font-size:
+		0.78rem;
+
+	font-weight:
+		500;
+}
+
+
+/* =========================================================
+   MONSTER LIST
+   ========================================================= */
+
+.monster-list {
+	width:
+	100%;
+
+	margin:
+	0;
+
+	padding:
+	0;
+}
+
+
+/* =========================================================
+   SHARED TABLE WRAPPER
+   ========================================================= */
+
+.monster-table-scroll,
+.hiscores-wrapper,
+.item-table-scroll,
+.items-table-wrapper {
+	box-sizing:
+		border-box;
+
+	width:
+		100%;
+
+	border:
+		1px solid var(--bi-border);
+
+	border-radius:
+		var(--bi-table-radius);
+
+	background:
+		var(--bi-surface);
+
+	box-shadow:
+		var(--bi-shadow);
+
+	overflow:
+		hidden;
+}
+
+
+/* =========================================================
+   MONSTER TABLE SCROLL
+   ========================================================= */
+
+.monster-table-scroll {
+	overflow-x:
+		auto;
+
+	overflow-y:
+		visible;
+
+	-webkit-overflow-scrolling:
+		touch;
+}
+
+
+/* =========================================================
+   SHARED TABLE BASE
+   ========================================================= */
+
+.monster-table,
+.hiscores-table,
+.item-table,
+.items-table {
+	width:
+		100%;
+
+	border-collapse:
+		separate;
+
+	border-spacing:
+		0;
+
+	background:
+		transparent;
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		var(--bi-table-font-size);
+}
+
+
+/* =========================================================
+   MONSTER TABLE
+   ========================================================= */
+
+.monster-table {
+	table-layout:
+		auto;
+
+	min-width:
+		760px;
+
+	border:
+		0;
+
+	border-radius:
+		0;
+
+	box-shadow:
+		none;
+
+	overflow:
+		visible;
+}
+
+
+/* =========================================================
+   HISCORES TABLE
+   ========================================================= */
+
+.hiscores-table {
+	table-layout:
+		fixed;
+
+	max-width:
+		100%;
+
+	border:
+		0;
+
+	border-radius:
+		0;
+
+	box-shadow:
+		none;
+}
+
+
+/* =========================================================
+   ITEM TABLE
+   ========================================================= */
+
+.item-table,
+.items-table {
+	table-layout:
+		auto;
+
+	border:
+		0;
+
+	border-radius:
+		0;
+
+	box-shadow:
+		none;
+}
+
+
+/* =========================================================
+   SHARED TABLE HEADER
+   ========================================================= */
+
+/*
+ * IMPORTANT:
+ * The header is applied to TH cells, not to a limited-width
+ * inner element. This makes the monster header extend across
+ * the COMPLETE table, including the loot column.
+ */
+
+.monster-table thead th,
+.hiscores-table thead th,
+.item-table thead th,
+.items-table thead th {
+	padding:
+		var(--bi-table-header-padding-y)
+		var(--bi-table-header-padding-x);
+
+	border-bottom:
+		1px solid var(--bi-border);
+
+	background:
+		var(--bi-table-header-bg);
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		var(--bi-table-header-size);
+
+	font-weight:
+		650;
+
+	line-height:
+		1.2;
+
+	text-align:
+		left;
+
+	text-transform:
+		uppercase;
+
+	letter-spacing:
+		0.08em;
+
+	white-space:
+		nowrap;
+
+	user-select:
+		none;
+
+	box-sizing:
+		border-box;
+}
+
+
+/* =========================================================
+   STICKY TABLE HEADERS
+   ========================================================= */
+
+.monster-table thead th,
+.hiscores-table thead th,
+.item-table thead th,
+.items-table thead th {
+	position:
+		sticky;
+
+	top:
+		0;
+
+	z-index:
+		2;
+}
+
+
+/* =========================================================
+   TABLE HEADER FIRST CELL
+   ========================================================= */
+
+.monster-table thead th:first-child,
+.hiscores-table thead th:first-child,
+.item-table thead th:first-child,
+.items-table thead th:first-child {
+	border-top-left-radius:
+		0;
+}
+
+
+/* =========================================================
+   TABLE HEADER LAST CELL
+   ========================================================= */
+
+.monster-table thead th:last-child,
+.hiscores-table thead th:last-child,
+.item-table thead th:last-child,
+.items-table thead th:last-child {
+	border-top-right-radius:
+		0;
+}
+
+
+/* =========================================================
+   TABLE HEADER HOVER
+   ========================================================= */
+
+.monster-table thead th:hover,
+.hiscores-table thead th:hover,
+.item-table thead th:hover,
+.items-table thead th:hover {
+	background:
+		var(--bi-accent-soft);
+
+	color:
+		var(--bi-text);
+}
+
+
+/* =========================================================
+   SHARED TABLE BODY CELLS
+   ========================================================= */
+
+.monster-table tbody td,
+.hiscores-table tbody td,
+.item-table tbody td,
+.items-table tbody td {
+	padding:
+		var(--bi-table-cell-padding-y)
+		var(--bi-table-cell-padding-x);
+
+	border-bottom:
+		1px solid var(--bi-border-soft);
+
+	background:
+		transparent;
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		var(--bi-table-font-size);
+
+	line-height:
+		1.4;
+
+	vertical-align:
+		middle;
+
+	box-sizing:
+		border-box;
+}
+
+
+/* =========================================================
+   LAST TABLE ROW
+   ========================================================= */
+
+.monster-table tbody tr:last-child td,
+.hiscores-table tbody tr:last-child td,
+.item-table tbody tr:last-child td,
+.items-table tbody tr:last-child td {
+	border-bottom:
+		0;
+}
+
+
+/* =========================================================
+   SHARED TABLE ROWS
+   ========================================================= */
+
+.monster-table tbody tr,
+.hiscores-table tbody tr,
+.item-table tbody tr,
+.items-table tbody tr {
+	transition:
+		background-color 0.12s ease;
+}
+
+
+/* =========================================================
+   SHARED TABLE HOVER
+   ========================================================= */
+
+.monster-table tbody tr:hover td,
+.hiscores-table tbody tr:hover td,
+.item-table tbody tr:hover td,
+.items-table tbody tr:hover td {
+	background:
+		var(--bi-row-hover);
+}
+
+
+/* =========================================================
+   SHARED TABLE LINKS
+   ========================================================= */
+
+.monster-table a,
+.hiscores-table a,
+.item-table a,
+.items-table a {
+	color:
+		var(--bi-accent);
+
+	text-decoration:
+		none;
+}
+
+.monster-table a:hover,
+.hiscores-table a:hover,
+.item-table a:hover,
+.items-table a:hover {
+	color:
+		var(--bi-text);
+
+	text-decoration:
+		underline;
+}
+
+
+/* =========================================================
+   MONSTER TABLE TOOLBAR
+   ========================================================= */
+
+.monster-table-toolbar {
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	justify-content:
+		space-between;
+
+	gap:
+		14px;
+
+	margin:
+		0 0 12px;
+}
+
+.monster-table-search {
+	width:
+		100%;
+
+	max-width:
+		320px;
+
+	box-sizing:
+		border-box;
+
+	padding:
+		9px 12px;
+
+	border:
+		1px solid var(--bi-border);
+
+	border-radius:
+		6px;
+
+	background:
+		var(--bi-surface-strong);
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.82rem;
+
+	outline:
+		none;
+}
+
+.monster-table-search::placeholder {
+	color:
+		var(--bi-text-muted);
+}
+
+.monster-table-search:focus {
+	border-color:
+		var(--bi-accent-border);
+
+	box-shadow:
+		0 0 0 2px rgba(214, 168, 95, 0.08);
+}
+
+.monster-table-count {
+	flex-shrink:
+		0;
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.76rem;
+}
+
+
+/* =========================================================
+   MONSTER NAME
+   ========================================================= */
+
+.monster-table td:first-child {
+	white-space:
+		nowrap;
+}
+
+.monster-table td:first-child a {
+	color:
+		var(--bi-text);
+
+	text-decoration:
+		none;
+}
+
+.monster-table td:first-child a:hover {
+	color:
+		var(--bi-accent);
+
+	text-decoration:
+		none;
+}
+
+.monster-table td:first-child strong {
+	font-weight:
+		600;
+}
+
+
+/* =========================================================
+   MONSTER TYPE
+   ========================================================= */
+
+.monster-table td:nth-child(2) {
+	white-space:
+		nowrap;
+}
+
+.monster-table td:nth-child(2) a {
+	color:
+		var(--bi-accent);
+
+	text-decoration:
+		none;
+}
+
+.monster-table td:nth-child(2) a:hover {
+	text-decoration:
+		underline;
+}
+
+
+/* =========================================================
+   MONSTER NUMERIC COLUMNS
+   ========================================================= */
+
+.monster-table th:nth-child(3),
+.monster-table th:nth-child(4),
+.monster-table td:nth-child(3),
+.monster-table td:nth-child(4) {
+	white-space:
+		nowrap;
+
+	text-align:
+		center;
+}
+
+
+/* =========================================================
+   MONSTER LOOT COLUMN
+   ========================================================= */
+
+.monster-table td:last-child {
+	min-width:
+		220px;
+
+	vertical-align:
+		middle;
+}
+
+
+/* =========================================================
+   MONSTER LOOT
+   ========================================================= */
+
+.monster-table-loot {
+	display:
+		flex;
+
+	flex-direction:
+		row;
+
+	flex-wrap:
+		wrap;
+
+	align-items:
+		center;
+
+	justify-content:
+		flex-start;
+
+	gap:
+		6px;
+
+	width:
+		100%;
+
+	margin:
+		0;
+
+	padding:
+		0;
+}
+
+
+/* =========================================================
+   MONSTER LOOT ITEM
+   ========================================================= */
+
+.monster-table-loot-item {
+	display:
+		inline-flex;
+
+	flex:
+		0 0 32px;
+
+	align-items:
+		center;
+
+	justify-content:
+		center;
+
+	width:
+		32px;
+
+	height:
+		32px;
+
+	margin:
+		0;
+
+	padding:
+		0;
+
+	box-sizing:
+		border-box;
+
+	text-decoration:
+		none;
+
+	border-radius:
+		4px;
+
+	transition:
+		background-color 0.12s ease,
+		transform 0.12s ease;
+}
+
+.monster-table-loot-item img {
+	display:
+		block;
+
+	flex:
+		0 0 32px;
+
+	width:
+		32px !important;
+
+	height:
+		32px !important;
+
+	margin:
+		0 !important;
+
+	padding:
+		0 !important;
+
+	object-fit:
+		contain;
+
+	image-rendering:
+		pixelated;
+
+	image-rendering:
+		crisp-edges;
+}
+
+.monster-table-loot-item:hover {
+	background:
+		var(--bi-accent-soft);
+
+	transform:
+		translateY(-1px);
+}
+
+
+/* =========================================================
+   MONSTER NO RESULTS
+   ========================================================= */
+
+.monster-no-results {
+	margin:
+		14px 0 0;
+
+	padding:
+		14px 16px;
+
+	border:
+		1px solid var(--bi-border);
+
+	border-radius:
+		7px;
+
+	background:
+		var(--bi-surface);
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.80rem;
+
+	text-align:
+		center;
+}
+
+
+/* =========================================================
+   HISCORES WRAPPER
+   ========================================================= */
+
+.hiscores-wrapper {
+	width:
+		100%;
+
+	max-width:
+		none;
+
+	margin:
+		1.25rem 0 1.5rem;
+
+	overflow-x:
+		auto;
+
+	overflow-y:
+		visible;
+
+	-webkit-overflow-scrolling:
+		touch;
+}
+
+
+/* =========================================================
+   HISCORES CELLS
+   ========================================================= */
+
+.hiscores-table th,
+.hiscores-table td {
+	padding:
+		var(--bi-table-cell-padding-y)
+		var(--bi-table-cell-padding-x);
+
+	text-align:
+		center;
+
+	white-space:
+		nowrap;
+
+	overflow:
+		hidden;
+
+	text-overflow:
+		ellipsis;
+}
+
+
+/* =========================================================
+   HISCORES PLAYER COLUMN
+   ========================================================= */
+
+.hiscores-table .player-column {
+	width:
+		11%;
+
+	min-width:
+		0;
+}
+
+
+/* =========================================================
+   HISCORES RACE COLUMN
+   ========================================================= */
+
+.hiscores-table .race-column {
+	width:
+		7%;
+
+	min-width:
+		0;
+}
+
+.hiscores-table .player-name {
+	padding-left:
+		0.65rem;
+
+	text-align:
+		left;
+}
+
+.hiscores-table .race {
+	text-align:
+		left;
+}
+
+
+/* =========================================================
+   HISCORES NUMBERS
+   ========================================================= */
+
+.hiscores-table .number {
+	width:
+		auto;
+
+	min-width:
+		0;
+
+	font-family:
+		var(--bi-mono);
+}
+
+
+/* =========================================================
+   HISCORES HEADER
+   ========================================================= */
+
+.hiscores-table th {
+	cursor:
+		pointer;
+
+	user-select:
+		none;
+
+	transition:
+		background-color 0.15s ease,
+		color 0.15s ease;
+}
+
+
+/* =========================================================
+   SORT INDICATORS
+   ========================================================= */
+
+.hiscores-table th[data-direction='asc']::after {
+	content:
+		' ↑';
+
+	color:
+		var(--bi-accent);
+
+	font-weight:
+		800;
+}
+
+.hiscores-table th[data-direction='desc']::after {
+	content:
+		' ↓';
+
+	color:
+		var(--bi-accent);
+
+	font-weight:
+		800;
+}
+
+
+/* =========================================================
+   HISCORES LINKS
+   ========================================================= */
+
+.hiscores-table a {
+	color:
+		var(--bi-accent);
+
+	font-weight:
+		650;
+
+	text-decoration:
+		none;
+}
+
+.hiscores-table a:hover {
+	color:
+		var(--bi-text);
+
+	text-decoration:
+		underline;
+}
+
+
+/* =========================================================
+   RACE POPULARITY
+   ========================================================= */
+
+.race-popularity {
+	width:
+		100%;
+
+	max-width:
+		650px;
+
+	margin:
+		0.75rem 0 1rem;
+
+	padding:
+		0.8rem 0.9rem;
+
+	border:
+		1px solid var(--bi-border);
+
+	border-radius:
+		8px;
+
+	background:
+		var(--bi-surface);
+
+	box-shadow:
+		0 4px 14px rgba(0, 0, 0, 0.10);
+
+	box-sizing:
+		border-box;
+}
+
+.race-popularity-header {
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	justify-content:
+		space-between;
+
+	gap:
+		0.75rem;
+
+	margin-bottom:
+		0.65rem;
+}
+
+.race-popularity-header h2 {
+	margin:
+		0;
+
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.95rem;
+
+	line-height:
+		1.2;
+}
+
+.race-popularity-header span {
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.72rem;
+
+	white-space:
+		nowrap;
+}
+
+.race-bars {
+	display:
+		flex;
+
+	flex-direction:
+		column;
+
+	gap:
+		0.35rem;
+}
+
+.race-row {
+	display:
+		grid;
+
+	grid-template-columns:
+		85px
+		minmax(80px, 1fr)
+		40px;
+
+	align-items:
+		center;
+
+	gap:
+		0.45rem;
+}
+
+.race-label {
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	justify-content:
+		space-between;
+
+	min-width:
+		0;
+
+	gap:
+		0.35rem;
+
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.72rem;
+}
+
+.race-label span {
+	overflow:
+		hidden;
+
+	text-overflow:
+		ellipsis;
+
+	white-space:
+		nowrap;
+}
+
+.race-label strong {
+	color:
+		var(--bi-text);
+
+	font-family:
+		var(--bi-mono);
+
+	font-size:
+		0.70rem;
+}
+
+.race-bar-background {
+	height:
+		6px;
+
+	overflow:
+		hidden;
+
+	border-radius:
+		999px;
+
+	background:
+		var(--bi-border);
+}
+
+.race-bar {
+	height:
+		100%;
+
+	border-radius:
+		inherit;
+
+	background:
+		var(--bi-accent);
+
+	transition:
+		width 0.25s ease;
+}
+
+.race-percentage {
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-mono);
+
+	font-size:
+		0.70rem;
+
+	text-align:
+		right;
+}
+
+.no-races {
+	color:
+		var(--bi-text-muted);
+
+	font-family:
+		var(--bi-font);
+
+	font-size:
+		0.75rem;
+}
+
+
+/* =========================================================
+   MOBILE — ITEM + MONSTER PAGES
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+	.item-page .item-grid,
+	.monster-page .monster-grid {
+		grid-template-columns:
+			1fr !important;
+
+		grid-template-rows:
+			auto;
+	}
+
+	.item-page .item-card-basic,
+	.item-page .item-card-combat,
+	.item-page .item-card-wide,
+	.monster-page .monster-card-basic,
+	.monster-page .monster-card-loot,
+	.monster-page .monster-card-wide {
+		grid-column:
+			1 !important;
+
+		grid-row:
+			auto !important;
+	}
+
+
+	/* ================================================
+	   ITEM STATS
+	   ================================================ */
+
+	.item-page .item-stats {
+		grid-template-columns:
+			repeat(4, minmax(0, 1fr));
+	}
+
+	.item-page .item-stat {
+		padding:
+			0 6px;
+	}
+
+	.item-page .item-stat:first-child {
+		padding-left:
+			0;
+	}
+
+	.item-page .item-stat:last-child {
+		padding-right:
+			0;
+	}
+
+	.item-page .item-stat span {
+		font-size:
+			0.64rem;
+	}
+
+	.item-page .item-stat strong {
+		font-size:
+			0.78rem;
+	}
+
+	.item-page .item-card-stats
+		.item-stat-armor strong {
+		font-size:
+			1.45rem;
+	}
+
+
+	/* ================================================
+	   ITEM HORIZONTAL INFORMATION
+	   ================================================ */
+
+	.item-page .item-info-horizontal {
+		grid-template-columns:
+			1fr;
+
+		gap:
+			0;
+	}
+
+
+	/* ================================================
+	   MONSTER HORIZONTAL INFORMATION
+	   ================================================ */
+
+	.monster-page .monster-info-horizontal {
+		grid-template-columns:
+			1fr;
+
+		gap:
+			0;
+	}
+
+
+	/* ================================================
+	   ITEM BACKGROUND
+	   ================================================ */
+
+	.item-background {
+		left:
+			-60px;
+
+		top:
+			-180px;
+
+		opacity:
+			0.48;
+	}
+
+	.item-background img {
+		width:
+			220px !important;
+
+		height:
+			220px !important;
+	}
+
+
+	/* ================================================
+	   MONSTER BACKGROUND
+	   ================================================ */
+
+	.monster-background {
+		left:
+			-100px;
+
+		top:
+			-45px;
+
+		width:
+			260px;
+
+		height:
+			260px;
+
+		opacity:
+			0.48;
+	}
+
+	.monster-background img {
+		width:
+			260px !important;
+
+		height:
+			260px !important;
+	}
+
+
+	/* ================================================
+	   MONSTER TABLE TOOLBAR
+	   ================================================ */
+
+	.monster-table-toolbar {
+		align-items:
+			stretch;
+
+		flex-direction:
+			column;
+	}
+
+	.monster-table-search {
+		max-width:
+			none;
+	}
+
+	.monster-table-count {
+		align-self:
+			flex-start;
+	}
+
+
+	/* ================================================
+	   MONSTER TABLE MOBILE
+	   ================================================ */
+
+	.monster-table-scroll {
+		overflow-x:
+			auto;
+	}
+
+	.monster-table {
+		min-width:
+			720px;
+	}
+
+
+	/* ================================================
+	   MONSTER LOOT
+	   ================================================ */
+
+	.monster-table-loot {
+		display:
+			flex;
+
+		flex-direction:
+			row;
+
+		flex-wrap:
+			wrap;
+
+		align-items:
+			center;
+
+		justify-content:
+			flex-start;
+
+		gap:
+			6px;
+
+		width:
+			100%;
+	}
+
+
+	/* ================================================
+	   HISCORES MOBILE
+	   ================================================ */
+
+	.hiscores-wrapper {
+		margin-left:
+			-0.5rem;
+
+		margin-right:
+			-0.5rem;
+
+		width:
+			calc(100% + 1rem);
+
+		border-radius:
+			6px;
+
+		overflow-x:
+			auto;
+	}
+
+	.hiscores-table {
+		min-width:
+			1050px;
+
+		font-size:
+			0.75rem;
+	}
+
+	.hiscores-table th,
+	.hiscores-table td {
+		padding:
+			0.4rem;
+	}
+
+
+	/* ================================================
+	   RACE POPULARITY
+	   ================================================ */
+
+	.race-popularity {
+		max-width:
+			100%;
+
+		margin-top:
+			0.5rem;
+
+		padding:
+			0.65rem 0.75rem;
+	}
+
+	.race-row {
+		grid-template-columns:
+			75px
+			minmax(60px, 1fr)
+			35px;
+
+		gap:
+			0.35rem;
+	}
+
+
+	/* ================================================
+	   SHARED MOBILE TABLE CELLS
+	   ================================================ */
+
+	.monster-table tbody td,
+	.hiscores-table tbody td,
+	.item-table tbody td,
+	.items-table tbody td {
+		font-size:
+			0.76rem;
+	}
+
+	.monster-table thead th,
+	.hiscores-table thead th,
+	.item-table thead th,
+	.items-table thead th {
+		font-size:
+			0.66rem;
+	}
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+	.item-page .item-card,
+	.monster-page .monster-card {
+		padding-left:
+			14px;
+
+		padding-right:
+			14px;
+	}
+
+	.item-page .item-stat {
+		padding:
+			0 3px;
+	}
+
+	.item-page .item-stat span {
+		font-size:
+			0.58rem;
+
+		letter-spacing:
+			-0.01em;
+	}
+
+	.item-page .item-stat strong {
+		font-size:
+			0.72rem;
+	}
+
+	.item-page .item-card-stats
+		.item-stat-armor strong {
+		font-size:
+			1.35rem;
+	}
+
+
+	/* ================================================
+	   MONSTER BACKGROUND
+	   ================================================ */
+
+	.monster-background {
+		left:
+			-85px;
+
+		top:
+			-35px;
+
+		width:
+			220px;
+
+		height:
+			220px;
+	}
+
+	.monster-background img {
+		width:
+			220px !important;
+
+		height:
+			220px !important;
+	}
+
+
+	/* ================================================
+	   MONSTER TABLE
+	   ================================================ */
+
+	.monster-table {
+		min-width:
+			680px;
+	}
+
+	.monster-table tbody td {
+		padding:
+			9px 11px;
+	}
+
+	.monster-table thead th {
+		padding:
+			11px;
+	}
+
+
+	/* ================================================
+	   HISCORES
+	   ================================================ */
+
+	.hiscores-table {
+		min-width:
+			1000px;
+	}
+}

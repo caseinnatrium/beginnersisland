@@ -1,0 +1,23 @@
+---
+title: Light Belt
+type: belt
+weight: "42.00 oz"
+armor: 2
+requirement: "—"
+bonus: "Train to 70 train points."
+image: "http://dblots.org.pl/pictures/items/light%20belt.png"
+sources:
+  - Can be taken from tutorial island
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

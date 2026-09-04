@@ -1,0 +1,23 @@
+---
+title: Mistic Shirt
+type: armor
+weight: "62.00 oz"
+armor: 50
+requirement: "-"
+image: "http://dblots.org.pl/pictures/items/mistic%20shirt.png"
+sources:
+  - Random Mistic Item Box
+  - Shenron Wish
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

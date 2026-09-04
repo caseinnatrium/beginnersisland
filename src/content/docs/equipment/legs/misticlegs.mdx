@@ -1,0 +1,23 @@
+---
+title: Mistic Legs
+type: legs
+image: "http://dblots.org.pl/pictures/items/mistic%20legs.png"
+weight: "38.00 oz"
+armor: 42
+requirement: "—"
+sources:
+  - Random Mistic Item Box
+  - Shenron Wish
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

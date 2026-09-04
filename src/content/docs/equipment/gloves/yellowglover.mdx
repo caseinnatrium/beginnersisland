@@ -1,0 +1,29 @@
+---
+title: Yellow Glover
+type: Glove
+image: http://dblots.org.pl/pictures/items/yellow%20glover.png
+weight: 23.00 oz
+attack: 18
+defense: 12
+speed: 30
+range: 0
+requirement: "Level 25"
+sources:
+  - Bandit
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+  image="http://dblots.org.pl/pictures/items/yellow%20glover.png"
+  type="Glove"
+  weight="23.00 oz"
+  attack="18"
+  defense="12"
+  speed="30"
+  range="0"
+  requirement={frontmatter.requirement}
+  sources={[
+    "Bandit"
+  ]}
+/>

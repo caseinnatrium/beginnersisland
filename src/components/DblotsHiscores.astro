@@ -1,0 +1,663 @@
+---
+import { getDblotsPlayers } from '../lib/dblots';
+
+const players = await getDblotsPlayers();
+
+const raceCounts = players.reduce<Record<string, number>>(
+  (counts, player) => {
+    if (player.race) {
+      counts[player.race] = (counts[player.race] ?? 0) + 1;
+    }
+
+    return counts;
+  },
+  {}
+);
+
+const racePopularity = Object.entries(raceCounts).sort(
+  ([, a], [, b]) => b - a
+);
+
+const totalWithRace = racePopularity.reduce(
+  (total, [, count]) => total + count,
+  0
+);
+---
+
+<!-- =========================
+     HISCORES TABLE
+========================= -->
+
+<div class="hiscores-wrapper">
+  <table class="hiscores-table">
+    <thead>
+      <tr>
+        <th data-sort="name" class="player-column">
+          Player
+        </th>
+
+        <th data-sort="race" class="race-column">
+          Race
+        </th>
+
+        <th data-sort="level">
+          Level
+        </th>
+
+        <th data-sort="kiLevel">
+          Ki
+        </th>
+
+        <th data-sort="ageDays">
+          Age
+        </th>
+
+        <th data-sort="daysSinceLastLogin">
+          Last Login
+        </th>
+
+        <th data-sort="healthPoints">
+          HP
+        </th>
+
+        <th data-sort="kiPoints">
+          Ki
+        </th>
+
+        <th data-sort="strength">
+          STR
+        </th>
+
+        <th data-sort="trainPoints">
+          TP
+        </th>
+
+        <th data-sort="swordFighting">
+          SF
+        </th>
+
+        <th data-sort="attackSpeed">
+          AS
+        </th>
+
+        <th data-sort="kiBlasting">
+          Ki Blast
+        </th>
+
+        <th data-sort="defence">
+          Def
+        </th>
+
+        <th data-sort="energy">
+          Energy
+        </th>
+
+        <th data-sort="deaths">
+          Deaths
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {players.map((player) => (
+        <tr>
+          <td class="player-name">
+            <a
+              href={player.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {player.name}
+            </a>
+          </td>
+
+          <td class="race">
+            {player.race ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.level ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.kiLevel ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.ageDays ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.daysSinceLastLogin ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.healthPoints ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.kiPoints ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.strength ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.trainPoints ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.swordFighting ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.attackSpeed ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.kiBlasting ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.defence ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.energy ?? '—'}
+          </td>
+
+          <td class="number">
+            {player.deaths}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
+<!-- =========================
+     RACE POPULARITY
+========================= -->
+
+<div class="race-popularity">
+  <div class="race-popularity-header">
+    <h2>Race Popularity</h2>
+
+    <span>
+      {totalWithRace}
+      {totalWithRace === 1 ? ' character' : ' characters'}
+    </span>
+  </div>
+
+  {racePopularity.length > 0 ? (
+    <div class="race-bars">
+      {racePopularity.map(([race, count]) => {
+        const percentage =
+          totalWithRace > 0
+            ? (count / totalWithRace) * 100
+            : 0;
+
+        return (
+          <div class="race-row">
+            <div class="race-label">
+              <span>{race}</span>
+              <strong>{count}</strong>
+            </div>
+
+            <div class="race-bar-background">
+              <div
+                class="race-bar"
+                style={`width: ${percentage}%`}
+              />
+            </div>
+
+            <span class="race-percentage">
+              {percentage.toFixed(0)}%
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    <div class="no-races">
+      No race data available.
+    </div>
+  )}
+</div>
+
+
+<script>
+  const table = document.querySelector('.hiscores-table');
+
+  if (table) {
+    const headers = Array.from(
+      table.querySelectorAll('th[data-sort]')
+    );
+
+    headers.forEach((header) => {
+      header.addEventListener('click', () => {
+        const tbody = table.querySelector('tbody');
+
+        if (!tbody) {
+          return;
+        }
+
+        const rows = Array.from(
+          tbody.querySelectorAll('tr')
+        );
+
+        const currentDirection =
+          header.getAttribute('data-direction') === 'asc'
+            ? 'desc'
+            : 'asc';
+
+        headers.forEach((otherHeader) => {
+          if (otherHeader !== header) {
+            otherHeader.removeAttribute('data-direction');
+          }
+        });
+
+        header.setAttribute(
+          'data-direction',
+          currentDirection
+        );
+
+        const columnIndex = headers.indexOf(header);
+
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.children[columnIndex];
+          const cellB = rowB.children[columnIndex];
+
+          if (!cellA || !cellB) {
+            return 0;
+          }
+
+          const valueA =
+            cellA.textContent?.trim() ?? '';
+
+          const valueB =
+            cellB.textContent?.trim() ?? '';
+
+          if (
+            valueA === '—' &&
+            valueB !== '—'
+          ) {
+            return 1;
+          }
+
+          if (
+            valueA !== '—' &&
+            valueB === '—'
+          ) {
+            return -1;
+          }
+
+          if (
+            valueA === '—' &&
+            valueB === '—'
+          ) {
+            return 0;
+          }
+
+          const numberA = Number(
+            valueA.replace(/,/g, '')
+          );
+
+          const numberB = Number(
+            valueB.replace(/,/g, '')
+          );
+
+          const bothNumbers =
+            !Number.isNaN(numberA) &&
+            !Number.isNaN(numberB);
+
+          let comparison = 0;
+
+          if (bothNumbers) {
+            comparison = numberA - numberB;
+          } else {
+            comparison = valueA.localeCompare(
+              valueB,
+              undefined,
+              {
+                numeric: true,
+                sensitivity: 'base',
+              }
+            );
+          }
+
+          return currentDirection === 'asc'
+            ? comparison
+            : -comparison;
+        });
+
+        rows.forEach((row) => {
+          tbody.appendChild(row);
+        });
+      });
+    });
+  }
+</script>
+
+
+<style>
+  /* =========================================
+     HISCORES
+  ========================================= */
+
+  .hiscores-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    margin: 1.25rem 0 1.5rem;
+
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 10px;
+
+    box-sizing: border-box;
+  }
+
+  .hiscores-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    table-layout: auto;
+
+    font-size: 0.82rem;
+  }
+
+  .hiscores-table th,
+  .hiscores-table td {
+    padding: 0.45rem 0.5rem;
+
+    border-bottom: 1px solid var(--sl-color-gray-5);
+
+    text-align: center;
+
+    white-space: nowrap;
+  }
+
+  .hiscores-table .player-column {
+    min-width: 130px;
+  }
+
+  .hiscores-table .race-column {
+    min-width: 75px;
+  }
+
+  .hiscores-table .player-name {
+    padding-left: 0.75rem;
+    text-align: left;
+  }
+
+  .hiscores-table .race {
+    text-align: left;
+  }
+
+  .hiscores-table .number {
+    min-width: 45px;
+  }
+
+  .hiscores-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    background: var(--sl-color-gray-6);
+
+    color: var(--sl-color-white);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    user-select: none;
+
+    border-bottom: 2px solid var(--sl-color-gray-4);
+
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .hiscores-table th:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  .hiscores-table th[data-direction='asc']::after {
+    content: ' ↑';
+    color: var(--sl-color-accent);
+    font-weight: 800;
+  }
+
+  .hiscores-table th[data-direction='desc']::after {
+    content: ' ↓';
+    color: var(--sl-color-accent);
+    font-weight: 800;
+  }
+
+  .hiscores-table tbody tr:nth-child(even) {
+    background: color-mix(
+      in srgb,
+      var(--sl-color-gray-6) 35%,
+      transparent
+    );
+  }
+
+  .hiscores-table tbody tr {
+    transition: background-color 0.12s ease;
+  }
+
+  .hiscores-table tbody tr:hover {
+    background: color-mix(
+      in srgb,
+      var(--sl-color-accent-low) 35%,
+      transparent
+    );
+  }
+
+  .hiscores-table a {
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .hiscores-table a:hover {
+    text-decoration: underline;
+  }
+
+  .hiscores-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+
+  /* =========================================
+     RACE POPULARITY
+  ========================================= */
+
+  .race-popularity {
+    width: 100%;
+    max-width: 650px;
+
+    margin: 0.75rem 0 1rem;
+    padding: 0.7rem 0.85rem;
+
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+
+    background: color-mix(
+      in srgb,
+      var(--sl-color-gray-6) 18%,
+      transparent
+    );
+
+    box-sizing: border-box;
+  }
+
+  .race-popularity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 0.75rem;
+
+    margin-bottom: 0.65rem;
+  }
+
+  .race-popularity-header h2 {
+    margin: 0;
+
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .race-popularity-header span {
+    color: var(--sl-color-gray-3);
+
+    font-size: 0.72rem;
+
+    white-space: nowrap;
+  }
+
+  .race-bars {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.35rem;
+  }
+
+  .race-row {
+    display: grid;
+
+    grid-template-columns:
+      85px
+      minmax(80px, 1fr)
+      40px;
+
+    align-items: center;
+
+    gap: 0.45rem;
+  }
+
+  .race-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-width: 0;
+
+    gap: 0.35rem;
+
+    font-size: 0.72rem;
+  }
+
+  .race-label span {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .race-label strong {
+    font-size: 0.7rem;
+  }
+
+  .race-bar-background {
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: var(--sl-color-gray-5);
+  }
+
+  .race-bar {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--sl-color-accent);
+
+    transition: width 0.25s ease;
+  }
+
+  .race-percentage {
+    text-align: right;
+
+    color: var(--sl-color-gray-3);
+
+    font-size: 0.7rem;
+  }
+
+  .no-races {
+    color: var(--sl-color-gray-3);
+
+    font-size: 0.75rem;
+  }
+
+
+  /* =========================================
+     TABLET
+  ========================================= */
+
+  @media (max-width: 900px) {
+    .hiscores-table {
+      font-size: 0.78rem;
+    }
+
+    .hiscores-table th,
+    .hiscores-table td {
+      padding: 0.4rem;
+    }
+
+    .hiscores-table .player-column {
+      min-width: 115px;
+    }
+
+    .hiscores-table .race-column {
+      min-width: 65px;
+    }
+  }
+
+
+  /* =========================================
+     MOBILE
+  ========================================= */
+
+  @media (max-width: 600px) {
+    .hiscores-wrapper {
+      margin-left: -0.5rem;
+      margin-right: -0.5rem;
+
+      width: calc(100% + 1rem);
+
+      border-radius: 6px;
+    }
+
+    .hiscores-table {
+      font-size: 0.75rem;
+    }
+
+    .race-popularity {
+      max-width: 100%;
+
+      margin-top: 0.5rem;
+
+      padding: 0.65rem 0.75rem;
+    }
+
+    .race-row {
+      grid-template-columns:
+        75px
+        minmax(60px, 1fr)
+        35px;
+
+      gap: 0.35rem;
+    }
+  }
+</style>

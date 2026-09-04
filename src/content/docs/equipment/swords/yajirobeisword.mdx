@@ -1,0 +1,28 @@
+---
+title: Yajirobei Sword
+type: Sword
+image: "http://dblots.org.pl/pictures/items/yajirobei%20sword.png"
+weight: "35.00 oz"
+attack: 50
+defense: 23
+speed: 6
+range: 0
+requirement: "—"
+sources:
+  - Death Machine
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	attack={frontmatter.attack}
+	defense={frontmatter.defense}
+	speed={frontmatter.speed}
+	range={frontmatter.range}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

@@ -1,0 +1,28 @@
+---
+title: Great Sword
+type: sword
+image: "http://dblots.org.pl/pictures/items/great%20sword.png"
+weight: "35.00 oz"
+attack: 38
+defense: 17
+speed: 8
+range: 0
+requirement: "—"
+sources:
+  - Huge
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	attack={frontmatter.attack}
+	defense={frontmatter.defense}
+	speed={frontmatter.speed}
+	range={frontmatter.range}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

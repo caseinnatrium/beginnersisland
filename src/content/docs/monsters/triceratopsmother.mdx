@@ -1,0 +1,59 @@
+---
+title: Triceratops Mother
+
+type: Task
+
+health: 7800
+
+experience: 14000
+
+image: "http://dblots.org.pl/pictures/monsters/triceratops%20mother.png"
+
+description: "The Triceratops Mother is far more dangerous than the ordinary dinosaurs roaming Beginners Island. Driven by a fierce instinct to protect her territory, she charges with incredible force and can unleash powerful energy attacks against anyone who comes too close. Hunters who take on this enormous beast should be prepared for a battle that tests both endurance and determination."
+
+meleeDamage: "100–320"
+
+kiDamage: "180–345"
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Silver Key
+    image: "http://dblots.org.pl/pictures/items/silver%20key.png"
+    link: "/items/silver-key/"
+    drop: "+7"
+
+  - name: Bone
+    image: "http://dblots.org.pl/pictures/items/bone.png"
+    link: "/items/bone/"
+    drop: "+5"
+
+  - name: Dinosaur Ham
+    image: "http://dblots.org.pl/pictures/items/dinosaur%20ham.png"
+    link: "/items/dinosaur-ham/"
+    drop: "+4"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

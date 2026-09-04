@@ -1,0 +1,22 @@
+---
+title: Black Jacket
+type: armor
+weight: "24.00 oz"
+armor: 5
+requirement: "—"
+image: "http://dblots.org.pl/pictures/items/black%20jacket.png"
+sources:
+  - Tigerman
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

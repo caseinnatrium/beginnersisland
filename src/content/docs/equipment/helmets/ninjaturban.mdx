@@ -1,0 +1,19 @@
+---
+title: Ninja Turban
+type: helmet
+weight: "9.00 oz"
+armor: 10
+image: "http://dblots.org.pl/pictures/items/ninja%20turban.png"
+sources:
+  - Ninja
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

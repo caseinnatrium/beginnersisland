@@ -1,0 +1,23 @@
+---
+title: Pandorian Armor
+type: armor
+weight: "90.00 oz"
+armor: 8
+image: "http://dblots.org.pl/pictures/items/pandorian%20armor.png"
+requirement: "—"
+sources:
+  - Elder Pandorian
+  - Pandorian
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

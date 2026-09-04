@@ -1,0 +1,22 @@
+---
+title: Army Belt
+type: belt
+weight: "10.00 oz"
+armor: 6
+requirement: "-"
+image: "http://dblots.org.pl/pictures/items/army%20belt.png"
+sources:
+  - Bandit
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

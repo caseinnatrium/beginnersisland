@@ -1,0 +1,84 @@
+---
+title: Huge
+
+type: Normal
+
+health: 7500
+
+experience: 5200
+
+image: "http://dblots.org.pl/pictures/monsters/huge.png"
+
+description: "Huge is a towering and devastating opponent whose enormous strength makes every encounter feel like a battle against a living mountain. His attacks combine crushing physical power with tremendous energy, leaving little room for mistakes. Only fighters who have pushed their training beyond the basics should expect to withstand his relentless assault."
+
+meleeDamage: "300–600"
+
+kiDamage: "430–825"
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Blue Piece of Cloth
+    image: "http://dblots.org.pl/pictures/items/blue%20piece%20of%20cloth.png"
+    link: "/items/blue-piece-of-cloth/"
+    drop: "+2"
+
+  - name: Soldier Pants
+    image: "http://dblots.org.pl/pictures/items/soldier%20pants.png"
+    link: "/equipment/legs/soldierpants/"
+    drop: "+1"
+
+  - name: Thorns Band
+    image: "http://dblots.org.pl/pictures/items/thorns%20band.png"
+    link: "/equipment/bands/thornsband/"
+    drop: "+1"
+
+  - name: Great Sword
+    image: "http://dblots.org.pl/pictures/items/great%20sword.png"
+    link: "/equipment/swords/greatsword/"
+    drop: "0"
+
+  - name: Kastet
+    image: "http://dblots.org.pl/pictures/items/kastet.png"
+    link: "/equipment/gloves/kastet/"
+    drop: "0"
+
+  - name: Soldier Belt
+    image: "http://dblots.org.pl/pictures/items/soldier%20belt.png"
+    link: "/equipment/belts/soldierbelt/"
+    drop: "0"
+
+  - name: Soldier Boots
+    image: "http://dblots.org.pl/pictures/items/soldier%20boots.png"
+    link: "/equipment/boots/soldierboots/"
+    drop: "0"
+
+  - name: Crowbar
+    image: "http://dblots.org.pl/pictures/items/crowbar.png"
+    link: "/items/crowbar/"
+    drop: "-1"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

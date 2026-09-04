@@ -1,0 +1,22 @@
+---
+title: Red Pants
+type: legs
+weight: "12.00 oz"
+armor: 3
+requirement: "—"
+image: "http://dblots.org.pl/pictures/items/red%20pants.png"
+sources:
+  - Starting Equipment
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

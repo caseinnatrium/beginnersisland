@@ -1,0 +1,99 @@
+---
+title: Bandit
+
+type: Normal
+
+health: 660
+
+experience: 640
+
+image: "http://dblots.org.pl/pictures/monsters/bandit.png"
+
+description: "Bandits prey upon travelers and weaker fighters, using dirty tricks and ruthless attacks to get what they want. They may not possess the discipline of a trained martial artist, but their experience in battle makes them dangerous opponents. Facing a bandit is a reminder that strength alone is not enough when an enemy is willing to fight without honor."
+
+meleeDamage: "50–125"
+
+kiDamage: 0
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Meat
+    image: "http://dblots.org.pl/pictures/items/meat.png"
+    link: "/items/meat/"
+    drop: "+5"
+
+  - name: Army Belt
+    image: "http://dblots.org.pl/pictures/items/army%20belt.png"
+    link: "/equipment/belts/armybelt/"
+    drop: "+1"
+
+  - name: Army Boots
+    image: "http://dblots.org.pl/pictures/items/army%20boots.png"
+    link: "/equipment/boots/armyboots/"
+    drop: "+1"
+
+  - name: Army Mask
+    image: "http://dblots.org.pl/pictures/items/army%20mask.png"
+    link: "/equipment/helmets/armymask/"
+    drop: "+1"
+
+  - name: Army Pants
+    image: "http://dblots.org.pl/pictures/items/army%20pants.png"
+    link: "/equipment/legs/armypants/"
+    drop: "+1"
+
+  - name: Army Piece of Cloth
+    image: "http://dblots.org.pl/pictures/items/army%20piece%20of%20cloth.png"
+    link: "/items/army-piece-of-cloth/"
+    drop: "+1"
+
+  - name: Army Vest
+    image: "http://dblots.org.pl/pictures/items/army%20vest.png"
+    link: "/equipment/armor/armyvest/"
+    drop: "+1"
+
+  - name: Scimitar
+    image: "http://dblots.org.pl/pictures/items/scimitar.png"
+    link: "/equipment/swords/scimitar/"
+    drop: "+1"
+
+  - name: Worm
+    image: "http://dblots.org.pl/pictures/items/worm.png"
+    link: "/items/worm/"
+    drop: "+1"
+
+  - name: Yellow Glover
+    image: "http://dblots.org.pl/pictures/items/yellow%20glover.png"
+    link: "/equipment/gloves/yellowglover/"
+    drop: "+1"
+
+  - name: Light Band
+    image: "http://dblots.org.pl/pictures/items/light%20band.png"
+    link: "/equipment/bands/lightband/"
+    drop: "-1"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

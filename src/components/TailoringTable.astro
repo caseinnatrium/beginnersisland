@@ -1,0 +1,569 @@
+---
+const itemImageBase =
+  "http://dblots.pl/images/accmaker/pictures/items/";
+
+const monsterImageBase =
+  "http://dblots.org.pl/pictures/monsters/";
+
+const clothImages = {
+  "Black Piece of Cloth": "Black%20Piece%20Of%20Cloth.png",
+  "Green Piece of Cloth": "Green%20Piece%20Of%20Cloth.png",
+  "Purple Piece of Cloth": "Purple%20Piece%20Of%20Cloth.png",
+  "Red Piece of Cloth": "Red%20Piece%20Of%20Cloth.png",
+  "White Piece of Cloth": "White%20Piece%20Of%20Cloth.png",
+  "Yellow Piece of Cloth": "Yellow%20Piece%20Of%20Cloth.png",
+};
+
+const monsterImages: Record<string, string> = {
+  Huge: "huge.png",
+  Tigerman: "tigerman.png",
+  Pandorian: "pandorian.png",
+  Bandit: "bandit.png",
+  Ninja: "ninja.png",
+  Robber: "robber.png",
+};
+
+const monsterLinks: Record<string, string> = {
+  Huge: "/monsters/huge",
+  Tigerman: "/monsters/tigerman",
+  Pandorian: "/monsters/pandorian",
+  Bandit: "/monsters/bandit",
+  Ninja: "/monsters/ninja",
+  Robber: "/monsters/robber",
+};
+
+const questLinks: Record<string, string> = {
+  "Platform Quest": "/quests/platformexchange",
+};
+
+const items = [
+  {
+    name: "Thorns Band",
+    results: [{ amount: 2, material: "Black Piece of Cloth" }],
+    sources: ["Huge"],
+  },
+  {
+    name: "Hand Thorns",
+    results: [
+      { amount: 1, material: "Metal Swarf" },
+      { amount: 1, material: "Wood" },
+    ],
+    sources: ["Tigerman", "Platform Quest"],
+  },
+  {
+    name: "Sabre",
+    results: [{ amount: 3, material: "Metal Swarf" }],
+    sources: ["Pandorian"],
+  },
+  {
+    name: "Green Blast",
+    results: [
+      { amount: 1, material: "Green Piece of Cloth" },
+      { amount: 2, material: "Loose Energy" },
+    ],
+    sources: ["Green Blast source"],
+  },
+  {
+    name: "Yellow Glover",
+    results: [{ amount: 1, material: "Yellow Piece of Cloth" }],
+    sources: ["Bandit"],
+  },
+  {
+    name: "Violet Blast",
+    results: [
+      { amount: 1, material: "Purple Piece of Cloth" },
+      { amount: 3, material: "Loose Energy" },
+    ],
+    sources: ["Platform Quest"],
+  },
+  {
+    name: "Scimitar",
+    results: [{ amount: 5, material: "Metal Swarf" }],
+    sources: ["Bandit"],
+  },
+  {
+    name: "Violet Ball",
+    results: [
+      { amount: 2, material: "Purple Piece of Cloth" },
+      { amount: 4, material: "Loose Energy" },
+    ],
+    sources: ["Platform Quest"],
+  },
+  {
+    name: "Power Glover",
+    results: [
+      { amount: 5, material: "Black Piece of Cloth" },
+      { amount: 4, material: "Loose Energy" },
+    ],
+    sources: ["Platform Quest"],
+  },
+  {
+    name: "Katana",
+    results: [
+      { amount: 8, material: "Metal Swarf" },
+      { amount: 1, material: "Red Piece of Cloth" },
+    ],
+    sources: ["Platform Quest"],
+  },
+  {
+    name: "Steel Katana",
+    results: [
+      { amount: 12, material: "Metal Swarf" },
+      { amount: 2, material: "Purple Piece of Cloth" },
+    ],
+    sources: ["Platform Quest"],
+  },
+  {
+    name: "Kastet",
+    results: [{ amount: 10, material: "Metal Swarf" }],
+    sources: ["Huge", "Ninja"],
+  },
+  {
+    name: "Red Blast",
+    results: [
+      { amount: 3, material: "Red Piece of Cloth" },
+      { amount: 5, material: "Loose Energy" },
+    ],
+    sources: ["Platform Quest"],
+  },
+  {
+    name: "Fighting Glover",
+    results: [
+      { amount: 3, material: "Black Piece of Cloth" },
+      { amount: 3, material: "White Piece of Cloth" },
+    ],
+    sources: ["Platform Quest", "Robber"],
+  },
+  {
+    name: "Great Sword",
+    results: [
+      { amount: 15, material: "Metal Swarf" },
+      { amount: 2, material: "Yellow Piece of Cloth" },
+    ],
+    sources: ["Huge"],
+  },
+  {
+    name: "Red Glover",
+    results: [{ amount: 5, material: "Red Piece of Cloth" }],
+    sources: ["Platform Quest", "Robber"],
+  },
+  {
+    name: "Short Sword",
+    results: [
+      { amount: 30, material: "Metal Swarf" },
+      { amount: 5, material: "Green Piece of Cloth" },
+    ],
+    sources: ["Past seasonal event"],
+  },
+  {
+    name: "Saiyan Glover",
+    results: [{ amount: 10, material: "White Piece of Cloth" }],
+    sources: ["Past seasonal event"],
+  },
+];
+
+const imageName = (name: string) =>
+  `${itemImageBase}${encodeURIComponent(name)}.png`;
+
+const clothImage = (name: string) => {
+  const filename =
+    clothImages[name as keyof typeof clothImages];
+
+  return filename ? `${itemImageBase}${filename}` : null;
+};
+
+const monsterImage = (name: string) => {
+  const filename = monsterImages[name];
+
+  return filename
+    ? `${monsterImageBase}${encodeURIComponent(filename)}`
+    : null;
+};
+
+const sourceIsMonster = (source: string) =>
+  Boolean(monsterImages[source]);
+
+const sourceIsQuest = (source: string) =>
+  Boolean(questLinks[source]);
+
+const sourceHref = (source: string) => {
+  if (sourceIsMonster(source)) {
+    return monsterLinks[source];
+  }
+
+  if (sourceIsQuest(source)) {
+    return questLinks[source];
+  }
+
+  return null;
+};
+---
+
+<div class="tailoring-table">
+  <div class="table-search">
+    <input
+      type="search"
+      placeholder="Search items, cloths, or sources..."
+      aria-label="Search tailoring items"
+      data-search
+    />
+  </div>
+
+  <div class="table-wrapper">
+    <table data-table>
+      <thead>
+        <tr>
+          <th data-sort="name">
+            Item
+            <span class="sort-indicator">↕</span>
+          </th>
+
+          <th data-sort="result">
+            Result
+            <span class="sort-indicator">↕</span>
+          </th>
+
+          <th data-sort="source">
+            Source
+            <span class="sort-indicator">↕</span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {items.map((item) => (
+          <tr>
+            <td data-value={item.name}>
+              <div class="item">
+                <img
+                  src={imageName(item.name)}
+                  alt=""
+                  width="32"
+                  height="32"
+                  loading="lazy"
+                />
+                <span>{item.name}</span>
+              </div>
+            </td>
+
+            <td
+              data-value={item.results
+                .map(
+                  (result) =>
+                    `${result.amount} ${result.material}`
+                )
+                .join(" ")}
+            >
+              <div class="results">
+                {item.results.map((result) => {
+                  const image = clothImage(result.material);
+
+                  return (
+                    <span
+                      class="material"
+                      title={result.material}
+                    >
+                      <strong>{result.amount}×</strong>
+
+                      {image ? (
+                        <img
+                          src={image}
+                          alt={result.material}
+                          width="32"
+                          height="32"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="material-text">
+                          {result.material}
+                        </span>
+                      )}
+                    </span>
+                  );
+                })}
+              </div>
+            </td>
+
+            <td
+              data-value={item.sources.join(" ")}
+            >
+              <div class="sources">
+                {item.sources.map((source) => {
+                  const href = sourceHref(source);
+                  const image = monsterImage(source);
+
+                  if (sourceIsMonster(source) && href && image) {
+                    return (
+                      <a
+                        class="source source-monster"
+                        href={href}
+                        title={source}
+                        aria-label={source}
+                      >
+                        <img
+                          src={image}
+                          alt={source}
+                          width="32"
+                          height="32"
+                          loading="lazy"
+                        />
+                      </a>
+                    );
+                  }
+
+                  if (sourceIsQuest(source) && href) {
+                    return (
+                      <a
+                        class="source source-quest"
+                        href={href}
+                      >
+                        <span>{source}</span>
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <span class="source">
+                      {source}
+                    </span>
+                  );
+                })}
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <p class="no-results" data-no-results hidden>
+    No matching items found.
+  </p>
+</div>
+
+<script>
+  const containers =
+    document.querySelectorAll(".tailoring-table");
+
+  containers.forEach((container) => {
+    const search =
+      container.querySelector("[data-search]");
+
+    const table =
+      container.querySelector("[data-table]");
+
+    const tbody =
+      table?.querySelector("tbody");
+
+    const noResults =
+      container.querySelector("[data-no-results]");
+
+    if (!search || !table || !tbody) return;
+
+    const rows = Array.from(
+      tbody.querySelectorAll("tr")
+    );
+
+    const headers = Array.from(
+      table.querySelectorAll("th")
+    );
+
+    search.addEventListener("input", () => {
+      const query =
+        search.value.trim().toLowerCase();
+
+      let visibleRows = 0;
+
+      rows.forEach((row) => {
+        const item =
+          row.children[0]
+            ?.getAttribute("data-value")
+            ?.toLowerCase() ?? "";
+
+        const results =
+          row.children[1]
+            ?.getAttribute("data-value")
+            ?.toLowerCase() ?? "";
+
+        const sources =
+          row.children[2]
+            ?.getAttribute("data-value")
+            ?.toLowerCase() ?? "";
+
+        const matches =
+          !query ||
+          item.includes(query) ||
+          results.includes(query) ||
+          sources.includes(query);
+
+        row.style.display =
+          matches ? "" : "none";
+
+        if (matches) {
+          visibleRows++;
+        }
+      });
+
+      if (noResults) {
+        noResults.hidden = visibleRows !== 0;
+      }
+    });
+
+    headers.forEach((header, columnIndex) => {
+      header.addEventListener("click", () => {
+        const currentOrder =
+          header.dataset.order;
+
+        const ascending =
+          currentOrder !== "asc";
+
+        headers.forEach((other) => {
+          delete other.dataset.order;
+        });
+
+        header.dataset.order =
+          ascending ? "asc" : "desc";
+
+        const sorted = [...rows].sort(
+          (a, b) => {
+            const aValue =
+              a.children[columnIndex]
+                ?.getAttribute("data-value")
+                ?.toLowerCase() ?? "";
+
+            const bValue =
+              b.children[columnIndex]
+                ?.getAttribute("data-value")
+                ?.toLowerCase() ?? "";
+
+            return ascending
+              ? aValue.localeCompare(bValue)
+              : bValue.localeCompare(aValue);
+          }
+        );
+
+        sorted.forEach((row) =>
+          tbody.appendChild(row)
+        );
+      });
+    });
+  });
+</script>
+
+<style>
+  .table-search {
+    margin-bottom: 1rem;
+  }
+
+  .table-search input {
+    width: 100%;
+    max-width: 28rem;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-white);
+    font: inherit;
+  }
+
+  .table-search input:focus {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 1px;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  th {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  th:hover {
+    color: var(--sl-color-accent);
+  }
+
+  .sort-indicator {
+    margin-left: 0.25rem;
+    opacity: 0.5;
+  }
+
+  th[data-order="asc"] .sort-indicator,
+  th[data-order="desc"] .sort-indicator {
+    opacity: 1;
+  }
+
+  .item,
+  .results,
+  .material,
+  .sources,
+  .source {
+    display: flex;
+    align-items: center;
+  }
+
+  .item {
+    gap: 0.6rem;
+  }
+
+  .results {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .material {
+    gap: 0.3rem;
+  }
+
+  .sources {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .source {
+    gap: 0.4rem;
+    white-space: nowrap;
+  }
+
+  .source-monster {
+    text-decoration: none;
+  }
+
+  .source-monster:hover img {
+    outline: 2px solid var(--sl-color-accent);
+    border-radius: 0.2rem;
+  }
+
+  .source-quest {
+    text-decoration: none;
+  }
+
+  .source-quest:hover {
+    color: var(--sl-color-accent);
+  }
+
+  .item img,
+  .material img,
+  .source img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+  }
+
+  .material-text {
+    white-space: nowrap;
+  }
+
+  .no-results {
+    margin-top: 1rem;
+    opacity: 0.7;
+  }
+</style>

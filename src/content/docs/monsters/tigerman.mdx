@@ -1,0 +1,99 @@
+---
+title: Tigerman
+
+type: Normal
+
+health: 210
+
+experience: 150
+
+image: "http://dblots.org.pl/pictures/monsters/tigerman.png"
+
+description: "Tigermen are fierce humanoid predators found in the wild regions of Earth. Stronger and more dangerous than ordinary beasts, they rely on their physical strength and aggressive fighting style to overwhelm their opponents. For developing martial artists, a Tigerman can be a dangerous step up from the common creatures encountered in the wilderness."
+
+meleeDamage: "0–40"
+
+kiDamage: 0
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Meat
+    image: "http://dblots.org.pl/pictures/items/meat.png"
+    link: "/items/meat/"
+    drop: "+6"
+
+  - name: Meat
+    image: "http://dblots.org.pl/pictures/items/meat.png"
+    link: "/items/meat/"
+    drop: "+6"
+
+  - name: Ham
+    image: "http://dblots.org.pl/pictures/items/ham.png"
+    link: "/items/ham/"
+    drop: "+4"
+
+  - name: Animal Fur
+    image: "http://dblots.org.pl/pictures/items/animal%20fur.png"
+    link: "/items/animal-fur/"
+    drop: "+2"
+
+  - name: Black Boots
+    image: "http://dblots.org.pl/pictures/items/black%20boots.png"
+    link: "/equipment/boots/blackboots/"
+    drop: "+1"
+
+  - name: Black Jacket
+    image: "http://dblots.org.pl/pictures/items/black%20jacket.png"
+    link: "/equipment/armor/blackjacket/"
+    drop: "+1"
+
+  - name: Black Trousers
+    image: "http://dblots.org.pl/pictures/items/black%20trousers.png"
+    link: "/equipment/legs/blacktrousers/"
+    drop: "+1"
+
+  - name: Hand Thorns
+    image: "http://dblots.org.pl/pictures/items/hand%20thorns.png"
+    link: "/equipment/gloves/handthorns/"
+    drop: "+1"
+
+  - name: Worm
+    image: "http://dblots.org.pl/pictures/items/worm.png"
+    link: "/items/worm/"
+    drop: "+1"
+
+  - name: Black Bandana
+    image: "http://dblots.org.pl/pictures/items/black%20bandana.png"
+    link: "/equipment/helmets/blackbandana/"
+    drop: "0"
+
+  - name: Black Belt
+    image: "http://dblots.org.pl/pictures/items/black%20belt.png"
+    link: "/equipment/belts/blackbelt/"
+    drop: "0"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

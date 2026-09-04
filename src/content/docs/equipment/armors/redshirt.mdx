@@ -1,0 +1,19 @@
+---
+title: Red Shirt
+type: armor
+weight: "20.00 oz"
+armor: 3
+image: "http://dblots.org.pl/pictures/items/red%20shirt.png"
+sources:
+  - Starting Armor
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

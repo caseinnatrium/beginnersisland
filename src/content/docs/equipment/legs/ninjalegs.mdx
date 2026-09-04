@@ -1,0 +1,22 @@
+---
+title: Ninja Legs
+type: legs
+weight: "16.00 oz"
+armor: 12
+requirement: "Level 50"
+image: "http://dblots.org.pl/pictures/items/ninja%20legs.png"
+sources:
+  - Ninja
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

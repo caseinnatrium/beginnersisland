@@ -1,0 +1,2652 @@
+---
+import mapMinus1 from '../assets/mapminus1.png';
+import mapGround0 from '../assets/mapground0.png';
+import mapPlus1 from '../assets/mapplus1.png';
+import mapPlus2 from '../assets/mapplus2.png';
+import mapPlus3 from '../assets/mapplus3.png';
+import mapPlus4 from '../assets/mapplus4.png';
+
+import {
+  mapFloors,
+  mapLocations,
+} from '../lib/mapdata';
+
+
+/*
+ * =========================================================
+ * MAP CONSTANTS
+ * =========================================================
+ *
+ * Every Tibia SQM = 4x4 pixels.
+ *
+ * Map dimensions:
+ *
+ * 292 x 248 pixels
+ */
+
+const MAP_WIDTH = 292;
+const MAP_HEIGHT = 248;
+const SQM_SIZE = 4;
+
+const INITIAL_FLOOR = 0;
+
+
+/*
+ * =========================================================
+ * FLOOR IMAGE DATA
+ * =========================================================
+ */
+
+const floorImages = [
+  {
+    z: 4,
+    src: mapPlus4.src,
+  },
+
+  {
+    z: 3,
+    src: mapPlus3.src,
+  },
+
+  {
+    z: 2,
+    src: mapPlus2.src,
+  },
+
+  {
+    z: 1,
+    src: mapPlus1.src,
+  },
+
+  {
+    z: 0,
+    src: mapGround0.src,
+  },
+
+  {
+    z: -1,
+    src: mapMinus1.src,
+  },
+];
+---
+
+<div class="beginners-map">
+
+  <!-- =====================================================
+       MAP AREA
+  ====================================================== -->
+
+  <div class="map-layout">
+
+    <!-- ===================================================
+         LEFT FLOOR BAR
+    ==================================================== -->
+
+    <aside class="floor-sidebar">
+
+      <div class="floor-buttons">
+
+        {
+          mapFloors.map((floor) => (
+            <button
+              type="button"
+              class:list={[
+                'floor-button',
+                {
+                  active:
+                    floor.z === INITIAL_FLOOR,
+                  unavailable:
+                    !floor.available,
+                },
+              ]}
+              data-floor={floor.z}
+              disabled={!floor.available}
+              title={
+                floor.available
+                  ? floor.label
+                  : `${floor.label} map not available yet`
+              }
+              aria-label={floor.label}
+              aria-pressed={
+                floor.z === INITIAL_FLOOR
+                  ? 'true'
+                  : 'false'
+              }
+            >
+              {floor.shortLabel}
+            </button>
+          ))
+        }
+
+      </div>
+
+    </aside>
+
+
+    <!-- ===================================================
+         MAP VIEWPORT
+    ==================================================== -->
+
+    <div
+      class="map-viewport"
+      id="map-viewport"
+      tabindex="0"
+      aria-label="Interactive Beginners Island map"
+    >
+
+      <div
+        class="map-stage"
+        id="map-stage"
+      >
+
+        <svg
+          class="map-svg"
+          id="map-svg"
+          viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="Beginners Island map"
+        >
+
+          <!-- =================================================
+               FLOOR MAP IMAGES
+          ================================================== -->
+
+          {
+            floorImages.map((floor) => (
+
+              <image
+                href={floor.src}
+                x="0"
+                y="0"
+                width={MAP_WIDTH}
+                height={MAP_HEIGHT}
+                class:list={[
+                  'floor-map-image',
+                  {
+                    active:
+                      floor.z === INITIAL_FLOOR,
+                  },
+                ]}
+                data-floor-image={floor.z}
+              />
+
+            ))
+          }
+
+
+          <!-- =================================================
+               MARKERS
+          ================================================== -->
+
+          {
+            mapLocations.map((location) => {
+
+              const x =
+                location.x * SQM_SIZE +
+                SQM_SIZE / 2;
+
+              const y =
+                location.y * SQM_SIZE +
+                SQM_SIZE / 2;
+
+              const size =
+                location.size ?? 18;
+
+              return (
+                <g
+                  class:list={[
+                    'map-marker',
+                    `marker-${location.type}`,
+                  ]}
+                  data-id={location.id}
+                  data-name={location.name}
+                  data-type={location.type}
+                  data-description={
+                    location.description ?? ''
+                  }
+                  data-x={location.x}
+                  data-y={location.y}
+                  data-z={location.z}
+                  data-href={location.href ?? ''}
+                  data-image={location.image}
+                  data-image-alt={
+                    location.imageAlt ??
+                    location.name
+                  }
+                  data-size={size}
+                  transform={`translate(${x} ${y})`}
+                  role="button"
+                  tabindex="0"
+                  aria-label={location.name}
+                >
+
+                  <circle
+                    class="marker-hit-area"
+                    cx="0"
+                    cy="0"
+                    r={Math.max(size / 2, 8)}
+                  />
+
+                  <image
+                    href={location.image}
+                    x={-size / 2}
+                    y={-size / 2}
+                    width={size}
+                    height={size}
+                    class="marker-image"
+                    preserveAspectRatio="xMidYMid meet"
+                  />
+
+                </g>
+              );
+
+            })
+          }
+
+        </svg>
+
+      </div>
+
+
+      <!-- =================================================
+           ZOOM CONTROLS
+      ================================================== -->
+
+      <div class="zoom-controls">
+
+        <button
+          type="button"
+          class="control-button"
+          id="zoom-in"
+          title="Zoom in"
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+
+        <span
+          class="zoom-level"
+          id="zoom-level"
+        >
+          100%
+        </span>
+
+        <button
+          type="button"
+          class="control-button"
+          id="zoom-out"
+          title="Zoom out"
+          aria-label="Zoom out"
+        >
+          −
+        </button>
+
+        <button
+          type="button"
+          class="reset-button"
+          id="reset-map"
+        >
+          Reset
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           MAP HELP
+      ================================================== -->
+
+      <div class="map-help">
+
+        <span>Drag to move</span>
+
+        <span>•</span>
+
+        <span>Scroll to zoom</span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         LOCATION PANEL
+    ==================================================== -->
+
+    <aside
+      class="location-panel"
+      id="location-panel"
+    >
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          ⌖
+        </div>
+
+        <h2>
+          Select a location
+        </h2>
+
+        <p>
+          Click a marker on the map to view
+          information about that location.
+        </p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <!-- =====================================================
+       FILTERS
+  ====================================================== -->
+
+  <div
+    class="map-filters"
+    aria-label="Map filters"
+  >
+
+    <button
+      type="button"
+      class="filter-button active"
+      data-filter="all"
+      aria-pressed="true"
+    >
+      All
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="npc"
+      aria-pressed="false"
+    >
+      NPC
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="monster"
+      aria-pressed="false"
+    >
+      Monster
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="item"
+      aria-pressed="false"
+    >
+      Item
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="quest"
+      aria-pressed="false"
+    >
+      Quest
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="shop"
+      aria-pressed="false"
+    >
+      Shop
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="building"
+      aria-pressed="false"
+    >
+      Building
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="entrance"
+      aria-pressed="false"
+    >
+      Entrance
+    </button>
+
+    <button
+      type="button"
+      class="filter-button"
+      data-filter="other"
+      aria-pressed="false"
+    >
+      Other
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /*
+   * ========================================================
+   * ELEMENTS
+   * ========================================================
+   */
+
+  const viewport =
+    document.querySelector<HTMLElement>(
+      '#map-viewport'
+    );
+
+  const stage =
+    document.querySelector<HTMLElement>(
+      '#map-stage'
+    );
+
+  const zoomInButton =
+    document.querySelector<HTMLButtonElement>(
+      '#zoom-in'
+    );
+
+  const zoomOutButton =
+    document.querySelector<HTMLButtonElement>(
+      '#zoom-out'
+    );
+
+  const resetButton =
+    document.querySelector<HTMLButtonElement>(
+      '#reset-map'
+    );
+
+  const zoomLabel =
+    document.querySelector<HTMLElement>(
+      '#zoom-level'
+    );
+
+  const locationPanel =
+    document.querySelector<HTMLElement>(
+      '#location-panel'
+    );
+
+  const floorButtons =
+    document.querySelectorAll<HTMLButtonElement>(
+      '.floor-button'
+    );
+
+  const floorImages =
+    document.querySelectorAll<SVGImageElement>(
+      '.floor-map-image'
+    );
+
+  const markers =
+    document.querySelectorAll<SVGGElement>(
+      '.map-marker'
+    );
+
+  const filterButtons =
+    document.querySelectorAll<HTMLButtonElement>(
+      '.filter-button'
+    );
+
+
+  /*
+   * ========================================================
+   * INITIALIZE
+   * ========================================================
+   */
+
+  if (
+    viewport &&
+    stage &&
+    zoomInButton &&
+    zoomOutButton &&
+    resetButton &&
+    zoomLabel &&
+    locationPanel
+  ) {
+
+    let zoom = 1;
+
+    let panX = 0;
+
+    let panY = 0;
+
+    let currentFloor = 0;
+
+
+    /*
+     * Multiple filters can be selected.
+     */
+
+    const selectedFilters =
+      new Set<string>();
+
+    selectedFilters.add('all');
+
+
+    let dragging = false;
+
+    let dragStartX = 0;
+
+    let dragStartY = 0;
+
+    let startPanX = 0;
+
+    let startPanY = 0;
+
+
+    const MIN_ZOOM = 1;
+
+    const MAX_ZOOM = 8;
+
+    const ZOOM_STEP = 0.5;
+
+
+    /*
+     * ======================================================
+     * TRANSFORM
+     * ======================================================
+     */
+
+    function updateTransform() {
+
+      stage.style.transform =
+        `
+          translate(-50%, -50%)
+          translate(${panX}px, ${panY}px)
+          scale(${zoom})
+        `;
+
+      zoomLabel.textContent =
+        `${Math.round(zoom * 100)}%`;
+
+    }
+
+
+    /*
+     * ======================================================
+     * ZOOM
+     * ======================================================
+     */
+
+    function setZoom(
+      newZoom: number
+    ) {
+
+      zoom =
+        Math.max(
+          MIN_ZOOM,
+          Math.min(
+            MAX_ZOOM,
+            newZoom
+          )
+        );
+
+      updateTransform();
+
+    }
+
+
+    /*
+     * ======================================================
+     * RESET
+     * ======================================================
+     */
+
+    function resetMap() {
+
+      zoom = 1;
+
+      panX = 0;
+
+      panY = 0;
+
+      updateTransform();
+
+    }
+
+
+    /*
+     * ======================================================
+     * FLOOR IMAGE
+     * ======================================================
+     */
+
+    function updateFloorImage() {
+
+      floorImages.forEach(
+        (image) => {
+
+          const imageFloor =
+            Number(
+              image.dataset.floorImage
+            );
+
+          image.classList.toggle(
+            'active',
+            imageFloor === currentFloor
+          );
+
+        }
+      );
+
+
+      /*
+       * Ground floor uses the exact background
+       * color from mapground0.png.
+       *
+       * Every other floor uses black.
+       */
+
+      if (
+        currentFloor === 0
+      ) {
+
+        viewport.style.backgroundColor =
+          '#3300cc';
+
+      }
+
+      else {
+
+        viewport.style.backgroundColor =
+          '#000';
+
+      }
+
+    }
+
+
+    /*
+     * ======================================================
+     * FILTER BUTTON STATE
+     * ======================================================
+     */
+
+    function updateFilterButtons() {
+
+      filterButtons.forEach(
+        (button) => {
+
+          const filter =
+            button.dataset.filter ??
+            'all';
+
+          const selected =
+            selectedFilters.has(
+              filter
+            );
+
+          button.classList.toggle(
+            'active',
+            selected
+          );
+
+          button.setAttribute(
+            'aria-pressed',
+            selected
+              ? 'true'
+              : 'false'
+          );
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ======================================================
+     * MARKER VISIBILITY
+     * ======================================================
+     */
+
+    function updateMarkerVisibility() {
+
+      markers.forEach(
+        (marker) => {
+
+          const markerFloor =
+            Number(
+              marker.dataset.z
+            );
+
+          const markerType =
+            marker.dataset.type ??
+            'other';
+
+
+          const floorMatches =
+            markerFloor ===
+            currentFloor;
+
+
+          const filterMatches =
+            selectedFilters.has('all') ||
+            selectedFilters.has(
+              markerType
+            );
+
+
+          marker.style.display =
+            floorMatches &&
+            filterMatches
+              ? ''
+              : 'none';
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ======================================================
+     * FILTER EVENTS
+     * ======================================================
+     */
+
+    filterButtons.forEach(
+      (button) => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const filter =
+              button.dataset.filter ??
+              'all';
+
+
+            if (
+              filter === 'all'
+            ) {
+
+              selectedFilters.clear();
+
+              selectedFilters.add(
+                'all'
+              );
+
+            }
+
+            else {
+
+              selectedFilters.delete(
+                'all'
+              );
+
+
+              if (
+                selectedFilters.has(
+                  filter
+                )
+              ) {
+
+                selectedFilters.delete(
+                  filter
+                );
+
+              }
+
+              else {
+
+                selectedFilters.add(
+                  filter
+                );
+
+              }
+
+
+              if (
+                selectedFilters.size === 0
+              ) {
+
+                selectedFilters.add(
+                  'all'
+                );
+
+              }
+
+            }
+
+
+            updateFilterButtons();
+
+            updateMarkerVisibility();
+
+          }
+        );
+
+      }
+    );
+
+
+    /*
+     * ======================================================
+     * FLOOR
+     * ======================================================
+     */
+
+    function setFloor(
+      floor: number
+    ) {
+
+      currentFloor =
+        floor;
+
+
+      floorButtons.forEach(
+        (button) => {
+
+          const buttonFloor =
+            Number(
+              button.dataset.floor
+            );
+
+          const active =
+            buttonFloor ===
+            currentFloor;
+
+
+          button.classList.toggle(
+            'active',
+            active
+          );
+
+          button.setAttribute(
+            'aria-pressed',
+            active
+              ? 'true'
+              : 'false'
+          );
+
+        }
+      );
+
+
+      updateFloorImage();
+
+      updateMarkerVisibility();
+
+
+      markers.forEach(
+        (marker) => {
+
+          marker.classList.remove(
+            'selected'
+          );
+
+        }
+      );
+
+
+      const floorText =
+        currentFloor > 0
+          ? `+${currentFloor}`
+          : `${currentFloor}`;
+
+
+      locationPanel.innerHTML = `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ⌖
+          </div>
+
+          <h2>
+            Floor ${floorText}
+          </h2>
+
+          <p>
+            Select a location on this floor.
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
+
+    /*
+     * ======================================================
+     * FLOOR BUTTON EVENTS
+     * ======================================================
+     */
+
+    floorButtons.forEach(
+      (button) => {
+
+        button.addEventListener(
+          'click',
+          (event) => {
+
+            event.preventDefault();
+
+            const floor =
+              Number(
+                button.dataset.floor
+              );
+
+            setFloor(floor);
+
+            resetMap();
+
+          }
+        );
+
+      }
+    );
+
+
+    /*
+     * ======================================================
+     * ZOOM EVENTS
+     * ======================================================
+     */
+
+    zoomInButton.addEventListener(
+      'click',
+      (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        setZoom(
+          zoom + ZOOM_STEP
+        );
+
+      }
+    );
+
+
+    zoomOutButton.addEventListener(
+      'click',
+      (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        setZoom(
+          zoom - ZOOM_STEP
+        );
+
+      }
+    );
+
+
+    resetButton.addEventListener(
+      'click',
+      (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        resetMap();
+
+      }
+    );
+
+
+    /*
+     * ======================================================
+     * WHEEL ZOOM
+     * ======================================================
+     */
+
+    viewport.addEventListener(
+      'wheel',
+      (event) => {
+
+        event.preventDefault();
+
+
+        if (
+          event.deltaY < 0
+        ) {
+
+          setZoom(
+            zoom + ZOOM_STEP
+          );
+
+        }
+
+        else {
+
+          setZoom(
+            zoom - ZOOM_STEP
+          );
+
+        }
+
+      },
+      {
+        passive: false,
+      }
+    );
+
+
+    /*
+     * ======================================================
+     * DRAGGING
+     * ======================================================
+     */
+
+    viewport.addEventListener(
+      'pointerdown',
+      (event) => {
+
+        const target =
+          event.target as Element;
+
+
+        if (
+          target.closest(
+            '.map-marker'
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        dragging = true;
+
+
+        dragStartX =
+          event.clientX;
+
+        dragStartY =
+          event.clientY;
+
+
+        startPanX =
+          panX;
+
+        startPanY =
+          panY;
+
+
+        viewport.setPointerCapture(
+          event.pointerId
+        );
+
+
+        viewport.classList.add(
+          'dragging'
+        );
+
+      }
+    );
+
+
+    viewport.addEventListener(
+      'pointermove',
+      (event) => {
+
+        if (
+          !dragging
+        ) {
+
+          return;
+
+        }
+
+
+        const dx =
+          event.clientX -
+          dragStartX;
+
+        const dy =
+          event.clientY -
+          dragStartY;
+
+
+        panX =
+          startPanX +
+          dx;
+
+        panY =
+          startPanY +
+          dy;
+
+
+        updateTransform();
+
+      }
+    );
+
+
+    viewport.addEventListener(
+      'pointerup',
+      (event) => {
+
+        dragging = false;
+
+
+        if (
+          viewport.hasPointerCapture(
+            event.pointerId
+          )
+        ) {
+
+          viewport.releasePointerCapture(
+            event.pointerId
+          );
+
+        }
+
+
+        viewport.classList.remove(
+          'dragging'
+        );
+
+      }
+    );
+
+
+    viewport.addEventListener(
+      'pointercancel',
+      () => {
+
+        dragging = false;
+
+        viewport.classList.remove(
+          'dragging'
+        );
+
+      }
+    );
+
+
+    /*
+     * ======================================================
+     * LOCATION PANEL
+     * ======================================================
+     */
+
+    function showLocation(
+      marker: SVGGElement
+    ) {
+
+      const name =
+        marker.dataset.name ??
+        'Unknown location';
+
+      const type =
+        marker.dataset.type ??
+        'other';
+
+      const description =
+        marker.dataset.description ||
+        'No description available.';
+
+      const x =
+        marker.dataset.x ??
+        '?';
+
+      const y =
+        marker.dataset.y ??
+        '?';
+
+      const z =
+        marker.dataset.z ??
+        '?';
+
+      const href =
+        marker.dataset.href ??
+        '';
+
+      const image =
+        marker.dataset.image ??
+        '';
+
+      const imageAlt =
+        marker.dataset.imageAlt ??
+        name;
+
+
+      /*
+       * Escape values before inserting them
+       * into the location panel.
+       */
+
+      const escapeHtml =
+        (value: string) =>
+          value
+            .replaceAll(
+              '&',
+              '&amp;'
+            )
+            .replaceAll(
+              '<',
+              '&lt;'
+            )
+            .replaceAll(
+              '>',
+              '&gt;'
+            )
+            .replaceAll(
+              '"',
+              '&quot;'
+            )
+            .replaceAll(
+              "'",
+              '&#039;'
+            );
+
+
+      const safeName =
+        escapeHtml(name);
+
+      const safeDescription =
+        escapeHtml(
+          description
+        );
+
+      const safeImage =
+        escapeHtml(image);
+
+      const safeImageAlt =
+        escapeHtml(imageAlt);
+
+      const safeHref =
+        escapeHtml(href);
+
+
+      locationPanel.innerHTML = `
+
+        <div class="location-details">
+
+          <div class="location-header">
+
+            <span
+              class="location-type type-${type}"
+            >
+              ${type}
+            </span>
+
+          </div>
+
+
+          ${
+            image
+              ? `
+                ${
+                  href
+                    ? `
+                      <a
+                        class="location-image-link"
+                        href="${safeHref}"
+                      >
+                        <img
+                          class="location-image"
+                          src="${safeImage}"
+                          alt="${safeImageAlt}"
+                        />
+                      </a>
+                    `
+                    : `
+                      <div
+                        class="location-image-link"
+                      >
+                        <img
+                          class="location-image"
+                          src="${safeImage}"
+                          alt="${safeImageAlt}"
+                        />
+                      </div>
+                    `
+                }
+              `
+              : ''
+          }
+
+
+          <h2>
+
+            ${
+              href
+                ? `
+                  <a
+                    href="${safeHref}"
+                    class="location-title-link"
+                  >
+                    ${safeName}
+                  </a>
+                `
+                : safeName
+            }
+
+          </h2>
+
+
+          <p class="location-description">
+            ${safeDescription}
+          </p>
+
+
+          <div class="location-coordinates">
+
+            <span>
+              Coordinates
+            </span>
+
+            <strong>
+              ${x}, ${y}, ${z}
+            </strong>
+
+          </div>
+
+
+          ${
+            href
+              ? `
+                <a
+                  href="${safeHref}"
+                  class="location-page-link"
+                >
+                  View ${safeName} →
+                </a>
+              `
+              : ''
+          }
+
+        </div>
+
+      `;
+
+
+      markers.forEach(
+        (item) => {
+
+          item.classList.remove(
+            'selected'
+          );
+
+        }
+      );
+
+
+      marker.classList.add(
+        'selected'
+      );
+
+    }
+
+
+    /*
+     * ======================================================
+     * MARKER EVENTS
+     * ======================================================
+     */
+
+    markers.forEach(
+      (marker) => {
+
+        marker.addEventListener(
+          'click',
+          (event) => {
+
+            event.stopPropagation();
+
+            showLocation(marker);
+
+          }
+        );
+
+
+        marker.addEventListener(
+          'keydown',
+          (event) => {
+
+            if (
+              event.key === 'Enter' ||
+              event.key === ' '
+            ) {
+
+              event.preventDefault();
+
+              showLocation(marker);
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /*
+     * ======================================================
+     * KEYBOARD
+     * ======================================================
+     */
+
+    viewport.addEventListener(
+      'keydown',
+      (event) => {
+
+        if (
+          event.key === '+' ||
+          event.key === '='
+        ) {
+
+          event.preventDefault();
+
+          setZoom(
+            zoom + ZOOM_STEP
+          );
+
+        }
+
+
+        if (
+          event.key === '-'
+        ) {
+
+          event.preventDefault();
+
+          setZoom(
+            zoom - ZOOM_STEP
+          );
+
+        }
+
+
+        if (
+          event.key === '0'
+        ) {
+
+          event.preventDefault();
+
+          resetMap();
+
+        }
+
+      }
+    );
+
+
+    /*
+     * ======================================================
+     * INITIAL STATE
+     * ======================================================
+     */
+
+    setFloor(
+      INITIAL_FLOOR
+    );
+
+    updateFilterButtons();
+
+    updateMarkerVisibility();
+
+    updateTransform();
+
+  }
+
+</script>
+
+
+<style>
+
+/* =========================================================
+   MAIN MAP FRAME
+========================================================= */
+
+.beginners-map {
+
+  width: 100%;
+
+  margin: 1.5rem 0;
+
+  box-sizing: border-box;
+
+  border: 1px solid #3a3a3a;
+
+  border-radius: 8px;
+
+  overflow: hidden;
+
+  background: #111;
+
+}
+
+
+/* =========================================================
+   MAP LAYOUT
+========================================================= */
+
+.map-layout {
+
+  display: grid;
+
+  grid-template-columns:
+    54px
+    minmax(0, 1fr)
+    260px;
+
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  margin: 0;
+
+  padding: 0;
+
+  background: #000;
+
+  overflow: hidden;
+
+}
+
+
+/* =========================================================
+   FLOOR SIDEBAR
+========================================================= */
+
+.floor-sidebar {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  width: 54px;
+
+  min-width: 54px;
+
+  box-sizing: border-box;
+
+  padding: 10px 6px;
+
+  background: #191919;
+
+  border-right: 1px solid #3a3a3a;
+
+}
+
+
+/* =========================================================
+   FLOOR BUTTONS
+========================================================= */
+
+.floor-buttons {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 4px;
+
+  width: 100%;
+
+}
+
+
+.floor-button {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 38px;
+
+  height: 30px;
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+  border: 1px solid #444;
+
+  border-radius: 3px;
+
+  background: #242424;
+
+  color: #aaa;
+
+  cursor: pointer;
+
+  font-family: monospace;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+}
+
+
+.floor-button:hover:not(:disabled) {
+
+  background: #333;
+
+  border-color: #666;
+
+  color: #fff;
+
+}
+
+
+.floor-button.active {
+
+  background: #4d6fae;
+
+  border-color: #7296db;
+
+  color: #fff;
+
+}
+
+
+.floor-button.unavailable {
+
+  opacity: 0.35;
+
+  cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   MAP VIEWPORT
+========================================================= */
+
+.map-viewport {
+
+  position: relative;
+
+  width: 100%;
+
+  min-width: 0;
+
+  height: 600px;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  /*
+   * Ground floor is the initial floor,
+   * so start with its blue background.
+   */
+
+  background: #3300cc;
+
+  cursor: grab;
+
+  touch-action: none;
+
+  outline: none;
+
+  /*
+   * Prevent any inline whitespace / line box from
+   * creating a visible strip around the map.
+   */
+
+  line-height: 0;
+
+}
+
+
+.map-viewport:focus-visible {
+
+  box-shadow:
+    inset 0 0 0 2px #ffcc33;
+
+}
+
+
+.map-viewport.dragging {
+
+  cursor: grabbing;
+
+}
+
+
+/* =========================================================
+   MAP STAGE
+========================================================= */
+
+.map-stage {
+
+  position: absolute;
+
+  left: 50%;
+
+  top: 50%;
+
+  width: 292px;
+
+  height: 248px;
+
+  margin: 0;
+
+  padding: 0;
+
+  transform:
+    translate(-50%, -50%)
+    translate(0, 0)
+    scale(1);
+
+  transform-origin: center center;
+
+  transition:
+    transform 120ms ease-out;
+
+}
+
+
+.map-viewport.dragging
+.map-stage {
+
+  transition: none;
+
+}
+
+
+/* =========================================================
+   SVG
+========================================================= */
+
+.map-svg {
+
+  display: block;
+
+  width: 292px;
+
+  height: 248px;
+
+  margin: 0;
+
+  padding: 0;
+
+  overflow: visible;
+
+  vertical-align: top;
+
+}
+
+
+/* =========================================================
+   FLOOR IMAGES
+========================================================= */
+
+.floor-map-image {
+
+  display: none;
+
+  image-rendering: pixelated;
+
+  shape-rendering: crispEdges;
+
+  user-select: none;
+
+  pointer-events: none;
+
+}
+
+
+.floor-map-image.active {
+
+  display: block;
+
+}
+
+
+/* =========================================================
+   MAP MARKERS
+========================================================= */
+
+.map-marker {
+
+  cursor: pointer;
+
+  outline: none;
+
+}
+
+
+.marker-hit-area {
+
+  fill: transparent;
+
+  stroke: transparent;
+
+  pointer-events: all;
+
+}
+
+
+.marker-image {
+
+  image-rendering: pixelated;
+
+  shape-rendering: crispEdges;
+
+  pointer-events: none;
+
+  user-select: none;
+
+}
+
+
+.map-marker:hover .marker-image,
+.map-marker:focus .marker-image,
+.map-marker.selected .marker-image {
+
+  filter:
+    drop-shadow(0 0 2px #fff)
+    drop-shadow(
+      0 0 4px
+      rgba(255, 255, 255, 0.75)
+    );
+
+  transform: scale(1.15);
+
+}
+
+
+.map-marker.selected .marker-hit-area {
+
+  fill:
+    rgba(255, 255, 255, 0.12);
+
+  stroke:
+    rgba(255, 255, 255, 0.8);
+
+  stroke-width: 0.5;
+
+}
+
+
+/* =========================================================
+   ZOOM CONTROLS
+========================================================= */
+
+.zoom-controls {
+
+  position: absolute;
+
+  right: 12px;
+
+  bottom: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 5px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(0, 0, 0, 0.75);
+
+  border: 1px solid #333;
+
+  border-radius: 4px;
+
+  line-height: normal;
+
+}
+
+
+.control-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 30px;
+
+  height: 28px;
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+  border: 1px solid #444;
+
+  border-radius: 3px;
+
+  background: #242424;
+
+  color: #eee;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  line-height: 1;
+
+}
+
+
+.control-button:hover {
+
+  background: #333;
+
+  border-color: #666;
+
+}
+
+
+.zoom-level {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 48px;
+
+  height: 28px;
+
+  box-sizing: border-box;
+
+  color: #aaa;
+
+  font-family: monospace;
+
+  font-size: 11px;
+
+  line-height: normal;
+
+}
+
+
+.reset-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 28px;
+
+  margin: 0 0 0 2px;
+
+  padding: 0 9px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #444;
+
+  border-radius: 3px;
+
+  background: #242424;
+
+  color: #aaa;
+
+  cursor: pointer;
+
+  font-size: 11px;
+
+  line-height: normal;
+
+}
+
+
+.reset-button:hover {
+
+  background: #333;
+
+  border-color: #666;
+
+  color: #fff;
+
+}
+
+
+/* =========================================================
+   MAP HELP
+========================================================= */
+
+.map-help {
+
+  position: absolute;
+
+  left: 12px;
+
+  bottom: 12px;
+
+  display: flex;
+
+  gap: 6px;
+
+  padding: 5px 8px;
+
+  background:
+    rgba(0, 0, 0, 0.7);
+
+  border-radius: 4px;
+
+  color: #bbb;
+
+  font-size: 11px;
+
+  line-height: normal;
+
+  pointer-events: none;
+
+}
+
+
+/* =========================================================
+   LOCATION PANEL
+========================================================= */
+
+.location-panel {
+
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  margin: 0;
+
+  padding: 16px;
+
+  background: #191919;
+
+  border-left: 1px solid #3a3a3a;
+
+  color: #ddd;
+
+  overflow: hidden;
+
+  line-height: normal;
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  box-sizing: border-box;
+
+  padding: 32px 16px;
+
+  text-align: center;
+
+  color: #888;
+
+}
+
+
+.empty-icon {
+
+  margin-bottom: 12px;
+
+  color: #777;
+
+  font-size: 32px;
+
+}
+
+
+.empty-state h2 {
+
+  margin: 0 0 8px;
+
+  color: #ddd;
+
+  font-size: 16px;
+
+}
+
+
+.empty-state p {
+
+  margin: 0;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   LOCATION DETAILS
+========================================================= */
+
+.location-details {
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+}
+
+
+.location-details h2 {
+
+  margin: 6px 0 12px;
+
+  color: #f0f0f0;
+
+  font-size: 19px;
+
+}
+
+
+.location-header {
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+.location-type {
+
+  display: inline-block;
+
+  padding: 3px 6px;
+
+  border-radius: 3px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.05em;
+
+  text-transform: uppercase;
+
+}
+
+
+/* =========================================================
+   TYPE COLORS
+========================================================= */
+
+.type-npc {
+
+  background: #174d80;
+
+  color: #8ac8ff;
+
+}
+
+
+.type-monster {
+
+  background: #6d2020;
+
+  color: #ff9b9b;
+
+}
+
+
+.type-item {
+
+  background: #285c35;
+
+  color: #9dffb4;
+
+}
+
+
+.type-quest {
+
+  background: #66500c;
+
+  color: #ffe680;
+
+}
+
+
+.type-shop {
+
+  background: #552a70;
+
+  color: #dda8ff;
+
+}
+
+
+.type-building {
+
+  background: #444;
+
+  color: #ccc;
+
+}
+
+
+.type-entrance {
+
+  background: #145c32;
+
+  color: #91ffb5;
+
+}
+
+
+.type-other {
+
+  background: #66421c;
+
+  color: #ffbd70;
+
+}
+
+
+/* =========================================================
+   LOCATION IMAGE
+========================================================= */
+
+.location-image-link {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 64px;
+
+  height: 64px;
+
+  margin: 16px auto;
+
+  box-sizing: border-box;
+
+  border: 1px solid #3a3a3a;
+
+  border-radius: 6px;
+
+  background: #222;
+
+  text-decoration: none;
+
+}
+
+
+.location-image {
+
+  width: 48px;
+
+  height: 48px;
+
+  object-fit: contain;
+
+  image-rendering: pixelated;
+
+}
+
+
+/* =========================================================
+   LOCATION TITLE
+========================================================= */
+
+.location-title-link {
+
+  color: #f0f0f0;
+
+  text-decoration: none;
+
+}
+
+
+.location-title-link:hover {
+
+  color: #8db4ff;
+
+  text-decoration: underline;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.location-description {
+
+  margin: 0;
+
+  color: #aaa;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   COORDINATES
+========================================================= */
+
+.location-coordinates {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 16px;
+
+  padding-top: 12px;
+
+  border-top: 1px solid #333;
+
+  font-size: 12px;
+
+}
+
+
+.location-coordinates span {
+
+  color: #777;
+
+}
+
+
+.location-coordinates strong {
+
+  color: #ccc;
+
+  font-family: monospace;
+
+}
+
+
+/* =========================================================
+   PAGE LINK
+========================================================= */
+
+.location-page-link {
+
+  display: block;
+
+  box-sizing: border-box;
+
+  margin-top: 16px;
+
+  padding: 8px 10px;
+
+  border: 1px solid #444;
+
+  border-radius: 4px;
+
+  background: #242424;
+
+  color: #aaa;
+
+  text-align: center;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+}
+
+
+.location-page-link:hover {
+
+  background: #303030;
+
+  border-color: #666;
+
+  color: #fff;
+
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.map-filters {
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 4px;
+
+  width: 100%;
+
+  min-height: 42px;
+
+  box-sizing: border-box;
+
+  margin: 0;
+
+  padding: 6px 8px;
+
+  background: #191919;
+
+  border-top: 1px solid #3a3a3a;
+
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+.filter-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 28px;
+
+  margin: 0;
+
+  padding: 0 9px;
+
+  box-sizing: border-box;
+
+  border: 1px solid transparent;
+
+  border-radius: 3px;
+
+  background: transparent;
+
+  color: #aaa;
+
+  cursor: pointer;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+}
+
+
+.filter-button:hover {
+
+  background: #292929;
+
+  color: #eee;
+
+}
+
+
+.filter-button.active {
+
+  border-color: #555;
+
+  background: #292929;
+
+  color: #fff;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .map-layout {
+
+    grid-template-columns:
+      50px
+      minmax(0, 1fr);
+
+  }
+
+
+  .location-panel {
+
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    border-top: 1px solid #3a3a3a;
+
+    border-left: 0;
+
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .map-layout {
+
+    grid-template-columns:
+      46px
+      minmax(0, 1fr);
+
+  }
+
+
+  .floor-sidebar {
+
+    width: 46px;
+
+    min-width: 46px;
+
+    padding-left: 4px;
+
+    padding-right: 4px;
+
+  }
+
+
+  .floor-button {
+
+    width: 34px;
+
+    height: 28px;
+
+    font-size: 10px;
+
+  }
+
+
+  .map-viewport {
+
+    height: 70vw;
+
+    min-height: 350px;
+
+    max-height: 600px;
+
+  }
+
+
+  .map-help {
+
+    display: none;
+
+  }
+
+
+  .zoom-controls {
+
+    right: 8px;
+
+    bottom: 8px;
+
+  }
+
+}
+
+
+@media (max-width: 400px) {
+
+  .map-viewport {
+
+    min-height: 300px;
+
+  }
+
+
+  .location-panel {
+
+    padding: 12px;
+
+  }
+
+}
+
+</style>

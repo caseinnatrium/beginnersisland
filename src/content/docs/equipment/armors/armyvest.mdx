@@ -1,0 +1,22 @@
+---
+title: Army Vest
+type: armor
+weight: "80.00 oz"
+armor: 10
+requirement: "Level 25"
+image: "http://dblots.org.pl/pictures/items/army%20vest.png"
+sources:
+  - Bandit
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

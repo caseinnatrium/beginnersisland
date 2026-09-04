@@ -1,0 +1,19 @@
+---
+title: Red Cap
+type: helmet
+weight: "5.00 oz"
+armor: 2
+image: "http://dblots.org.pl/pictures/items/red%20cap.png"
+sources:
+  - Fishing
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

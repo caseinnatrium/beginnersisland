@@ -1,0 +1,22 @@
+---
+title: Black Belt
+type: belt
+weight: "10.00 oz"
+armor: 3
+requirement: "-"
+image: "http://dblots.org.pl/pictures/items/black%20belt.png"
+sources:
+  - Tigerman
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

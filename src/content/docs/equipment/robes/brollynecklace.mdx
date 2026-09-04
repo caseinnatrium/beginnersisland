@@ -1,0 +1,23 @@
+---
+title: Brolly Necklace
+type: robe
+image: "http://dblots.org.pl/pictures/items/brolly%20necklace.png"
+weight: "56.00 oz"
+armor: 5
+requirement: "—"
+bonus: "Protects from losing items. Can be stacked."
+sources:
+  - Level Up Rewards
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

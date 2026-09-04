@@ -1,0 +1,755 @@
+---
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('docs');
+
+const monsters = entries
+	.filter((entry) => entry.id.startsWith('monsters/'))
+	.filter((entry) => entry.id !== 'monsters/index')
+	.map((entry) => {
+		const rawType = String(entry.data.type ?? '').trim();
+
+		const type = rawType
+			? rawType.charAt(0).toUpperCase() +
+			  rawType.slice(1).toLowerCase()
+			: '';
+
+		return {
+			name:
+				entry.data.title ||
+				entry.id
+					.split('/')
+					.pop()
+					?.replace(/\.(md|mdx)$/, '') ||
+				'',
+
+			slug: entry.id
+				.replace(/^monsters\//, '')
+				.replace(/\.(md|mdx)$/, ''),
+
+			type,
+			typeValue: rawType.toLowerCase(),
+
+			health: entry.data.health ?? '',
+			experience: entry.data.experience ?? '',
+
+			loot: Array.isArray(entry.data.loot)
+				? entry.data.loot
+				: [],
+		};
+	})
+	.sort((a, b) =>
+		a.name.localeCompare(b.name)
+	);
+---
+
+<div class="monsters-table">
+
+	<div class="controls">
+
+		<input
+			id="monster-search"
+			type="search"
+			placeholder="Search monsters..."
+			aria-label="Search monsters"
+		/>
+
+		<select
+			id="monster-type"
+			aria-label="Filter monsters by type"
+		>
+
+			<option value="all">
+				All types
+			</option>
+
+			{
+				[
+					...new Set(
+						monsters
+							.map((monster) => ({
+								value: monster.typeValue,
+								label: monster.type,
+							}))
+							.filter((type) => type.value)
+							.map((type) =>
+								JSON.stringify(type)
+							)
+					),
+				]
+					.map((type) => JSON.parse(type))
+					.sort((a, b) =>
+						a.label.localeCompare(b.label)
+					)
+					.map((type) => (
+						<option value={type.value}>
+							{type.label}
+						</option>
+					))
+			}
+
+		</select>
+
+	</div>
+
+
+	<div class="table-wrapper">
+
+		<table class="monster-table">
+
+			<thead>
+
+				<tr>
+
+					<th class="name-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="name"
+						>
+							Name
+							<span class="sort-arrow">↑</span>
+						</button>
+					</th>
+
+					<th class="type-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="type"
+						>
+							Type
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="stat-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="health"
+						>
+							Health
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="stat-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="experience"
+						>
+							Experience
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="loot-column">
+						Loot
+					</th>
+
+				</tr>
+
+			</thead>
+
+
+			<tbody id="monsters-body">
+
+				{
+					monsters.map((monster) => (
+						<tr
+							data-name={monster.name.toLowerCase()}
+							data-type={monster.typeValue}
+							data-health={monster.health}
+							data-experience={monster.experience}
+						>
+
+							<td class="monster-name">
+
+								<a
+									href={`/monsters/${monster.slug}/`}
+								>
+									{monster.name}
+								</a>
+
+							</td>
+
+
+							<td class="monster-type">
+
+								{
+									monster.type === 'Task' ? (
+										<a href="/systems/tasks/">
+											Task
+										</a>
+									) : (
+										monster.type || '—'
+									)
+								}
+
+							</td>
+
+
+							<td class="monster-stat">
+								{monster.health || '—'}
+							</td>
+
+
+							<td class="monster-stat">
+								{monster.experience || '—'}
+							</td>
+
+
+							<td class="monster-loot">
+
+								<div class="monster-loot-list">
+
+									{
+										monster.loot.map(
+											(item) => (
+												<a
+													class="monster-loot-item"
+													href={item.link || '#'}
+													title={item.name || ''}
+												>
+
+													{item.image && (
+														<img
+															src={item.image}
+															alt={item.name || ''}
+															width="32"
+															height="32"
+															class="monster-loot-image"
+														/>
+													)}
+
+													{item.drop && (
+														<strong>
+															{item.drop}
+														</strong>
+													)}
+
+												</a>
+											)
+										)
+									}
+
+								</div>
+
+							</td>
+
+						</tr>
+					))
+				}
+
+			</tbody>
+
+		</table>
+
+	</div>
+
+
+	<p
+		id="monster-no-results"
+		class="no-results"
+		hidden
+	>
+		No monsters found.
+	</p>
+
+</div>
+
+
+<script>
+
+	const table =
+		document.querySelector(".monsters-table");
+
+	if (table) {
+
+		const searchInput =
+			table.querySelector("#monster-search");
+
+		const typeSelect =
+			table.querySelector("#monster-type");
+
+		const tbody =
+			table.querySelector("#monsters-body");
+
+		const noResults =
+			table.querySelector("#monster-no-results");
+
+		const sortButtons =
+			table.querySelectorAll(".sort-button");
+
+
+		let sortKey = "name";
+		let sortDirection = "asc";
+
+
+		const getSortValue = (row, key) => {
+
+			switch (key) {
+
+				case "name":
+					return row.dataset.name || "";
+
+				case "type":
+					return row.dataset.type || "";
+
+				case "health":
+					return parseFloat(
+						row.dataset.health || "0"
+					);
+
+				case "experience":
+					return parseFloat(
+						row.dataset.experience || "0"
+					);
+
+				default:
+					return "";
+
+			}
+
+		};
+
+
+		const updateTable = () => {
+
+			const search =
+				searchInput?.value
+					.toLowerCase()
+					.trim() || "";
+
+			const type =
+				typeSelect?.value || "all";
+
+
+			const rows = Array.from(
+				tbody.querySelectorAll("tr")
+			);
+
+
+			rows.forEach((row) => {
+
+				const name =
+					row.dataset.name || "";
+
+				const rowType =
+					row.dataset.type || "";
+
+
+				const matchesSearch =
+					name.includes(search);
+
+				const matchesType =
+					type === "all" ||
+					rowType === type;
+
+
+				row.hidden =
+					!(matchesSearch && matchesType);
+
+			});
+
+
+			const visibleRows =
+				rows.filter(
+					(row) => !row.hidden
+				);
+
+
+			visibleRows.sort((a, b) => {
+
+				const aValue =
+					getSortValue(a, sortKey);
+
+				const bValue =
+					getSortValue(b, sortKey);
+
+
+				if (
+					typeof aValue === "string" &&
+					typeof bValue === "string"
+				) {
+
+					const result =
+						aValue.localeCompare(
+							bValue,
+							undefined,
+							{
+								sensitivity: "base",
+							}
+						);
+
+					return sortDirection === "asc"
+						? result
+						: -result;
+				}
+
+
+				return sortDirection === "asc"
+					? aValue - bValue
+					: bValue - aValue;
+
+			});
+
+
+			visibleRows.forEach((row) => {
+				tbody.appendChild(row);
+			});
+
+
+			noResults.hidden =
+				visibleRows.length !== 0;
+
+		};
+
+
+		sortButtons.forEach((button) => {
+
+			button.addEventListener(
+				"click",
+				() => {
+
+					const newKey =
+						button.dataset.sort;
+
+					if (!newKey) {
+						return;
+					}
+
+
+					if (sortKey === newKey) {
+
+						sortDirection =
+							sortDirection === "asc"
+								? "desc"
+								: "asc";
+
+					} else {
+
+						sortKey = newKey;
+						sortDirection = "asc";
+
+					}
+
+
+					sortButtons.forEach(
+						(otherButton) => {
+
+							const arrow =
+								otherButton.querySelector(
+									".sort-arrow"
+								);
+
+
+							if (
+								otherButton === button
+							) {
+
+								arrow.textContent =
+									sortDirection === "asc"
+										? "↑"
+										: "↓";
+
+							} else {
+
+								arrow.textContent =
+									"↕";
+
+							}
+
+						}
+					);
+
+
+					updateTable();
+
+				}
+			);
+
+		});
+
+
+		searchInput?.addEventListener(
+			"input",
+			updateTable
+		);
+
+
+		typeSelect?.addEventListener(
+			"change",
+			updateTable
+		);
+
+
+		updateTable();
+
+	}
+
+</script>
+
+
+<style>
+
+	.monsters-table {
+		width: 100%;
+	}
+
+
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin-bottom: 0.8rem;
+	}
+
+
+	.controls input,
+	.controls select {
+		height: 2.25rem;
+		box-sizing: border-box;
+
+		border:
+			1px solid var(--sl-color-gray-5);
+
+		border-radius:
+			0.35rem;
+
+		background:
+			var(--sl-color-black);
+
+		color:
+			var(--sl-color-white);
+
+		padding:
+			0 0.6rem;
+
+		font: inherit;
+		font-size: 0.8rem;
+	}
+
+
+	.controls input {
+		flex: 1;
+		min-width: 0;
+	}
+
+
+	.controls select {
+		width: 10rem;
+	}
+
+
+	.table-wrapper {
+		width: 100%;
+		overflow-x: auto;
+	}
+
+
+	.monster-table {
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+		font-size: 0.72rem;
+	}
+
+
+	.monster-table .name-column {
+		width: 18%;
+	}
+
+
+	.monster-table .type-column {
+		width: 9%;
+	}
+
+
+	.monster-table .stat-column {
+		width: 9%;
+	}
+
+
+	.monster-table .loot-column {
+		width: 55%;
+	}
+
+
+	.monster-table th,
+	.monster-table td {
+		padding: 0.42rem 0.3rem;
+
+		border-bottom:
+			1px solid var(--sl-color-gray-5);
+
+		text-align: left;
+		vertical-align: middle;
+
+		box-sizing: border-box;
+	}
+
+
+	.monster-table th {
+		padding: 0;
+		font-weight: 700;
+	}
+
+
+	.sort-button {
+		display: flex;
+		align-items: center;
+		gap: 0.2rem;
+
+		width: 100%;
+		padding: 0.5rem 0.3rem;
+
+		border: 0;
+		background: transparent;
+		color: inherit;
+
+		font: inherit;
+		font-size: 0.68rem;
+		font-weight: 700;
+
+		text-align: left;
+		cursor: pointer;
+	}
+
+
+	.sort-button:hover {
+		color:
+			var(--sl-color-text-accent);
+	}
+
+
+	.sort-arrow {
+		opacity: 0.65;
+		font-size: 0.7em;
+	}
+
+
+	.monster-name {
+		overflow: hidden;
+	}
+
+
+	.monster-name a {
+		color: inherit;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+
+	.monster-name a:hover {
+		text-decoration: underline;
+	}
+
+
+	.monster-type {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+
+	.monster-stat {
+		font-family:
+			var(--bi-mono);
+
+		text-align: center !important;
+	}
+
+
+	.monster-loot {
+		overflow: hidden;
+	}
+
+
+	.monster-loot-list {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+
+		overflow-x: auto;
+		overflow-y: hidden;
+
+		white-space: nowrap;
+
+		scrollbar-width: thin;
+	}
+
+
+	.monster-loot-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.2rem;
+
+		flex: 0 0 auto;
+
+		color: inherit;
+		text-decoration: none;
+	}
+
+
+	.monster-loot-item:hover {
+		text-decoration: underline;
+	}
+
+
+	.monster-loot-image {
+		display: block;
+
+		width: 32px !important;
+		height: 32px !important;
+
+		max-width: 32px !important;
+		max-height: 32px !important;
+
+		margin: 0 !important;
+		padding: 0 !important;
+
+		object-fit: contain;
+
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
+	}
+
+
+	.monster-loot-item strong {
+		font-family:
+			var(--bi-mono);
+
+		font-size: 0.65rem;
+	}
+
+
+	.no-results {
+		margin-top: 1rem;
+		color:
+			var(--sl-color-gray-3);
+	}
+
+
+	@media (max-width: 700px) {
+
+		.controls {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+
+		.controls select {
+			width: 100%;
+		}
+
+
+		.monster-table {
+			min-width: 760px;
+		}
+
+	}
+
+</style>

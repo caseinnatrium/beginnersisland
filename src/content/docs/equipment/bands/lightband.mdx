@@ -1,0 +1,29 @@
+---
+title: Light Band
+type: Band
+image: "http://dblots.org.pl/pictures/items/light%20band.png"
+weight: "35.00 oz"
+attack: 5
+defense: 5
+speed: 6
+range: 0
+bonus: "Train to 70 train points."
+sources:
+  - Platform Quest
+  - Bandit
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	attack={frontmatter.attack}
+	defense={frontmatter.defense}
+	speed={frontmatter.speed}
+	range={frontmatter.range}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

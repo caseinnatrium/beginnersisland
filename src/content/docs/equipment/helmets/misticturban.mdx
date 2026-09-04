@@ -1,0 +1,19 @@
+---
+title: Mistic Turban
+type: helmet
+weight: "12.00 oz"
+armor: 32
+image: "http://dblots.org.pl/pictures/items/mistic%20turban.png"
+sources:
+  - Random Mistic Item Box
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

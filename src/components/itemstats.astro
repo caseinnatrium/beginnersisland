@@ -1,0 +1,1179 @@
+---
+const {
+	type,
+	weight,
+	armor,
+	attack,
+	defense,
+	speed,
+	range,
+	requirement,
+	bonus,
+	image,
+	sources = [],
+} = Astro.props;
+
+
+/* =========================================================
+   NORMALIZE ITEM TYPE
+   ========================================================= */
+
+const normalizedType =
+	String(type ?? "").trim().toLowerCase();
+
+
+/* =========================================================
+   EQUIPMENT CATEGORIES
+   ========================================================= */
+
+/*
+ * Defensive equipment:
+ *
+ * Helmets
+ * Robes
+ * Armors
+ * Belts
+ * Legs
+ * Boots
+ */
+
+const defensiveTypes = [
+	"helmet",
+	"robe",
+	"armor",
+	"belt",
+	"legs",
+	"boots",
+];
+
+
+/*
+ * Offensive equipment:
+ *
+ * Gloves
+ * Swords
+ * Blasts
+ * Bands
+ */
+
+const offensiveTypes = [
+	"gloves",
+	"sword",
+	"blast",
+	"band",
+];
+
+
+const isDefensive =
+	defensiveTypes.includes(normalizedType);
+
+const isOffensive =
+	offensiveTypes.includes(normalizedType);
+
+
+/* =========================================================
+   REQUIREMENTS
+   ========================================================= */
+
+const requirements =
+	requirement &&
+	String(requirement).trim() !== ""
+		? requirement
+		: "No additional requirements.";
+
+
+/* =========================================================
+   BONUS
+   ========================================================= */
+
+const hasBonus =
+	bonus &&
+	String(bonus).trim() !== "";
+---
+
+<div class="item-page">
+
+	<!-- =====================================================
+	     BACKGROUND IMAGE
+	     ===================================================== -->
+
+	<div class="item-background">
+
+		{image && (
+			<img
+				src={image}
+				alt=""
+				width="340"
+				height="340"
+			/>
+		)}
+
+	</div>
+
+
+	<!-- =====================================================
+	     ITEM GRID
+	     ===================================================== -->
+
+	<div class="item-grid">
+
+
+		<!-- =================================================
+		     EQUIPMENT STATS
+		     ================================================= -->
+
+		<section class="item-card item-card-stats">
+
+			{isDefensive ? (
+				<>
+					<h2>Armor Value</h2>
+
+					<div class="item-stats item-stats-single">
+
+						<div class="item-stat">
+
+							<strong class="defensive-armor-value">
+								{armor ?? "—"}
+							</strong>
+
+						</div>
+
+					</div>
+				</>
+			) : isOffensive ? (
+				<>
+					<h2>Offensive Statistics</h2>
+
+					<div class="item-stats">
+
+						<div class="item-stat">
+
+							<span>
+								Attack
+							</span>
+
+							<strong>
+								{attack ?? "—"}
+							</strong>
+
+						</div>
+
+
+						<div class="item-stat">
+
+							<span>
+								Defense
+							</span>
+
+							<strong>
+								{defense ?? "—"}
+							</strong>
+
+						</div>
+
+
+						<div class="item-stat">
+
+							<span>
+								Speed
+							</span>
+
+							<strong>
+								{speed ?? "—"}
+							</strong>
+
+						</div>
+
+
+						<div class="item-stat">
+
+							<span>
+								Range
+							</span>
+
+							<strong>
+								{range ?? "—"}
+							</strong>
+
+						</div>
+
+					</div>
+				</>
+			) : (
+				<>
+					<h2>Equipment Stats</h2>
+
+					<div class="item-stats">
+
+						<div class="item-stat">
+
+							<span>
+								Attack
+							</span>
+
+							<strong>
+								{attack ?? "—"}
+							</strong>
+
+						</div>
+
+
+						<div class="item-stat">
+
+							<span>
+								Defense
+							</span>
+
+							<strong>
+								{defense ?? "—"}
+							</strong>
+
+						</div>
+
+
+						<div class="item-stat">
+
+							<span>
+								Speed
+							</span>
+
+							<strong>
+								{speed ?? "—"}
+							</strong>
+
+						</div>
+
+
+						<div class="item-stat">
+
+							<span>
+								Range
+							</span>
+
+							<strong>
+								{range ?? "—"}
+							</strong>
+
+						</div>
+
+					</div>
+				</>
+			)}
+
+
+			<!-- =============================================
+			     BONUS
+			     ============================================= -->
+
+			{hasBonus && (
+
+				<div class="item-bonus">
+
+					<strong>
+						{bonus}
+					</strong>
+
+				</div>
+
+			)}
+
+		</section>
+
+
+		<!-- =================================================
+		     BASIC INFORMATION
+		     ================================================= -->
+
+		<section class="item-card item-card-basic">
+
+			<h2>Basic Information</h2>
+
+			<div class="item-info">
+
+				<div>
+
+					<span>
+						Type
+					</span>
+
+					<strong>
+						{normalizedType || "—"}
+					</strong>
+
+				</div>
+
+
+				<div>
+
+					<span>
+						Weight
+					</span>
+
+					<strong>
+						{weight || "—"}
+					</strong>
+
+				</div>
+
+			</div>
+
+		</section>
+
+
+		<!-- =================================================
+		     REQUIREMENTS
+		     ================================================= -->
+
+		<section class="item-card item-card-requirements">
+
+			<h2>Requirements</h2>
+
+			<div class="item-requirements">
+
+				<span>
+					{requirements}
+				</span>
+
+			</div>
+
+		</section>
+
+
+		<!-- =================================================
+		     SOURCES
+		     ================================================= -->
+
+		<section class="item-card item-card-sources">
+
+			<h2>Sources</h2>
+
+			<div class="item-sources">
+
+				{sources.length > 0 ? (
+
+					sources.map((source) => (
+
+						<div class="item-source">
+
+							{typeof source === "string" ? (
+
+								<strong>
+									{source}
+								</strong>
+
+							) : (
+
+								<a
+									href={source.link}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+
+									<strong>
+										{source.name}
+									</strong>
+
+								</a>
+
+							)}
+
+						</div>
+
+					))
+
+				) : (
+
+					<div class="item-source">
+
+						<strong>
+							—
+						</strong>
+
+					</div>
+
+				)}
+
+			</div>
+
+		</section>
+
+	</div>
+
+</div>
+
+
+<style>
+
+	/* =========================================================
+	   ITEM PAGE
+	   ========================================================= */
+
+	.item-page {
+		position: relative;
+
+		width: 100%;
+
+		margin: 0 auto;
+
+		padding: 0 0 40px;
+	}
+
+
+	/* =========================================================
+	   BACKGROUND IMAGE
+	   ========================================================= */
+
+	.item-background {
+		position: absolute;
+
+		top: -60px;
+		left: -140px;
+
+		width: 280px;
+		height: 280px;
+
+		z-index: 0;
+
+		pointer-events: none;
+
+		opacity: 0.62;
+	}
+
+
+	.item-background img {
+		display: block;
+
+		width: 260px !important;
+		height: 260px !important;
+
+		margin: 0 !important;
+		padding: 0 !important;
+
+		object-fit: contain;
+
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
+
+		filter:
+			drop-shadow(
+				0 10px 16px rgba(0, 0, 0, 0.42)
+			);
+	}
+
+
+	/* =========================================================
+	   ITEM GRID
+	   ========================================================= */
+
+	.item-page .item-grid {
+		position: relative;
+
+		z-index: 2;
+
+		display: grid !important;
+
+		grid-template-columns:
+			minmax(0, 1fr)
+			minmax(0, 1fr);
+
+		grid-template-rows:
+			auto
+			auto;
+
+		gap: 14px;
+
+		width: 100%;
+	}
+
+
+	/* =========================================================
+	   CARD POSITIONS
+	   ========================================================= */
+
+	.item-page .item-card-stats {
+		grid-column: 1 !important;
+		grid-row: 1 !important;
+	}
+
+
+	.item-page .item-card-basic {
+		grid-column: 2 !important;
+		grid-row: 1 !important;
+	}
+
+
+	.item-page .item-card-requirements {
+		grid-column: 1 !important;
+		grid-row: 2 !important;
+	}
+
+
+	.item-page .item-card-sources {
+		grid-column: 2 !important;
+		grid-row: 2 !important;
+	}
+
+
+	/* =========================================================
+	   CARDS
+	   ========================================================= */
+
+	.item-page .item-card {
+		min-width: 0;
+
+		box-sizing: border-box;
+
+		margin: 0 !important;
+
+		padding: 17px 18px;
+
+		border:
+			1px solid var(--bi-border);
+
+		border-radius: 8px;
+
+		background:
+			rgba(25, 28, 35, 0.72);
+
+		box-shadow:
+			0 5px 18px rgba(0, 0, 0, 0.18);
+
+		backdrop-filter:
+			blur(5px);
+	}
+
+
+	.item-page .item-card h2 {
+		margin:
+			0 0 13px;
+
+		color:
+			var(--bi-text);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.76rem;
+
+		font-weight:
+			650;
+
+		text-transform:
+			uppercase;
+
+		letter-spacing:
+			0.09em;
+	}
+
+
+	/* =========================================================
+	   ITEM STATS
+	   ========================================================= */
+
+	.item-page .item-stats {
+		display: grid !important;
+
+		grid-template-columns:
+			repeat(4, minmax(0, 1fr)) !important;
+
+		grid-template-rows:
+			1fr !important;
+
+		align-items: stretch !important;
+
+		width: 100% !important;
+		max-width: 100% !important;
+
+		margin: 0 !important;
+		padding: 0 !important;
+
+		box-sizing: border-box !important;
+	}
+
+
+	/* =========================================================
+	   INDIVIDUAL STAT
+	   ========================================================= */
+
+	.item-page .item-stat {
+		display: flex !important;
+
+		flex-direction: column !important;
+
+		align-items: center !important;
+
+		justify-content: center !important;
+
+		width: 100% !important;
+		min-width: 0 !important;
+
+		min-height: 48px !important;
+
+		margin: 0 !important;
+
+		padding:
+			0 12px !important;
+
+		box-sizing: border-box !important;
+
+		border-right:
+			1px solid var(--bi-border-soft);
+	}
+
+
+	.item-page .item-stat:first-child {
+		padding-left:
+			0 !important;
+	}
+
+
+	.item-page .item-stat:last-child {
+		padding-right:
+			0 !important;
+
+		border-right:
+			0 !important;
+	}
+
+
+	/* =========================================================
+	   STAT LABEL
+	   ========================================================= */
+
+	.item-page .item-stat span {
+		display: block !important;
+
+		margin:
+			0 0 6px !important;
+
+		padding: 0 !important;
+
+		color:
+			var(--bi-text-muted) !important;
+
+		font-family:
+			var(--bi-font) !important;
+
+		font-size:
+			0.70rem !important;
+
+		font-weight:
+			400 !important;
+
+		line-height:
+			1 !important;
+
+		text-align:
+			center !important;
+
+		white-space:
+			nowrap !important;
+	}
+
+
+	/* =========================================================
+	   NORMAL STAT VALUE
+	   ========================================================= */
+
+	.item-page .item-stat strong {
+		display: block !important;
+
+		margin: 0 !important;
+
+		padding: 0 !important;
+
+		color:
+			var(--bi-text) !important;
+
+		font-family:
+			var(--bi-mono) !important;
+
+		font-size:
+			0.82rem !important;
+
+		font-weight:
+			500 !important;
+
+		line-height:
+			1 !important;
+
+		text-align:
+			center !important;
+
+		white-space:
+			nowrap !important;
+	}
+
+
+	/* =========================================================
+	   ARMOR VALUE
+	   ========================================================= */
+
+	.item-page .item-stats-single {
+		grid-template-columns:
+			1fr !important;
+
+		min-height:
+			76px;
+	}
+
+
+	.item-page .item-stats-single .item-stat {
+		padding-left:
+			0 !important;
+
+		padding-right:
+			0 !important;
+
+		border-right:
+			0 !important;
+	}
+
+
+	.item-page .item-stats-single .defensive-armor-value {
+		display: block !important;
+
+		margin: 0 !important;
+
+		padding: 0 !important;
+
+		color:
+			var(--bi-text) !important;
+
+		font-family:
+			var(--bi-mono) !important;
+
+		font-size:
+			2.4rem !important;
+
+		font-weight:
+			700 !important;
+
+		line-height:
+			1 !important;
+
+		text-align:
+			center !important;
+
+		white-space:
+			nowrap !important;
+
+		text-shadow:
+			0 2px 8px rgba(0, 0, 0, 0.35);
+	}
+
+
+	/* =========================================================
+	   BONUS
+	   ========================================================= */
+
+	.item-page .item-bonus {
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		justify-content:
+			center;
+
+		margin-top:
+			8px;
+
+		padding-top:
+			8px;
+
+		border-top:
+			1px solid var(--bi-border-soft);
+
+		text-align:
+			center;
+	}
+
+
+	.item-page .item-bonus strong {
+		color:
+			var(--bi-text-muted);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.74rem;
+
+		font-weight:
+			400;
+
+		line-height:
+			1.4;
+
+		text-align:
+			center;
+	}
+
+
+	/* =========================================================
+	   BASIC INFORMATION
+	   ========================================================= */
+
+	.item-page .item-info {
+		display:
+			flex;
+
+		flex-direction:
+			column;
+
+		gap:
+			0;
+	}
+
+
+	.item-page .item-info > div {
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		justify-content:
+			space-between;
+
+		min-height:
+			34px;
+
+		border-bottom:
+			1px solid var(--bi-border-soft);
+	}
+
+
+	.item-page .item-info > div:last-child {
+		border-bottom:
+			0;
+	}
+
+
+	.item-page .item-info span {
+		color:
+			var(--bi-text-muted);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.76rem;
+	}
+
+
+	.item-page .item-info strong {
+		color:
+			var(--bi-text);
+
+		font-family:
+			var(--bi-mono);
+
+		font-size:
+			0.78rem;
+
+		font-weight:
+			500;
+
+		text-align:
+			right;
+	}
+
+
+	/* =========================================================
+	   REQUIREMENTS
+	   ========================================================= */
+
+	.item-page .item-requirements {
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		min-height:
+			34px;
+	}
+
+
+	.item-page .item-requirements span {
+		color:
+			var(--bi-text-muted);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.78rem;
+
+		font-weight:
+			400;
+
+		line-height:
+			1.5;
+	}
+
+
+	/* =========================================================
+	   SOURCES
+	   ========================================================= */
+
+	.item-page .item-sources {
+		display:
+			flex;
+
+		flex-direction:
+			column;
+
+		gap:
+			0;
+
+		width:
+			100%;
+	}
+
+
+	.item-page .item-source {
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		justify-content:
+			flex-start;
+
+		min-height:
+			34px;
+
+		border-bottom:
+			1px solid var(--bi-border-soft);
+
+		color:
+			var(--bi-text-muted);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.78rem;
+	}
+
+
+	.item-page .item-source:last-child {
+		border-bottom:
+			0;
+	}
+
+
+	.item-page .item-source strong {
+		color:
+			var(--bi-text);
+
+		font-family:
+			var(--bi-mono);
+
+		font-size:
+			0.78rem;
+
+		font-weight:
+			500;
+	}
+
+
+	.item-page .item-source a {
+		color:
+			var(--bi-accent);
+
+		text-decoration:
+			none;
+	}
+
+
+	.item-page .item-source a:hover {
+		text-decoration:
+			underline;
+	}
+
+
+	/* =========================================================
+	   MOBILE
+	   ========================================================= */
+
+	@media (max-width: 800px) {
+
+		.item-page .item-grid {
+			grid-template-columns:
+				1fr !important;
+
+			grid-template-rows:
+				auto;
+		}
+
+
+		.item-page .item-card-stats,
+		.item-page .item-card-basic,
+		.item-page .item-card-requirements,
+		.item-page .item-card-sources {
+			grid-column:
+				1 !important;
+
+			grid-row:
+				auto !important;
+		}
+
+
+		/* Keep offensive equipment stats aligned horizontally */
+
+		.item-page .item-stats {
+			grid-template-columns:
+				repeat(4, minmax(0, 1fr)) !important;
+		}
+
+
+		.item-page .item-stat {
+			padding:
+				0 6px !important;
+		}
+
+
+		.item-page .item-stat:first-child {
+			padding-left:
+				0 !important;
+		}
+
+
+		.item-page .item-stat:last-child {
+			padding-right:
+				0 !important;
+		}
+
+
+		.item-page .item-stat span {
+			font-size:
+				0.64rem !important;
+		}
+
+
+		.item-page .item-stat strong {
+			font-size:
+				0.78rem !important;
+		}
+
+
+		/* Keep armor value large */
+
+		.item-page .item-stats-single .defensive-armor-value {
+			font-size:
+				2.2rem !important;
+		}
+
+
+		/* Bonus */
+
+		.item-page .item-bonus {
+			margin-top:
+				7px;
+
+			padding-top:
+				7px;
+		}
+
+
+		.item-page .item-bonus strong {
+			font-size:
+				0.72rem;
+		}
+
+
+		/* Background */
+
+		.item-background {
+			left:
+				-100px;
+
+			top:
+				-45px;
+
+			opacity:
+				0.48;
+		}
+
+
+		.item-background img {
+			width:
+				220px !important;
+
+			height:
+				220px !important;
+		}
+
+	}
+
+
+	/* =========================================================
+	   VERY SMALL SCREENS
+	   ========================================================= */
+
+	@media (max-width: 420px) {
+
+		.item-page .item-card {
+			padding-left:
+				14px;
+
+			padding-right:
+				14px;
+		}
+
+
+		.item-page .item-stat {
+			padding:
+				0 3px !important;
+		}
+
+
+		.item-page .item-stat span {
+			font-size:
+				0.58rem !important;
+
+			letter-spacing:
+				-0.01em;
+		}
+
+
+		.item-page .item-stat strong {
+			font-size:
+				0.72rem !important;
+		}
+
+
+		/* Armor value remains prominent */
+
+		.item-page .item-stats-single .defensive-armor-value {
+			font-size:
+				2rem !important;
+		}
+
+
+		/* Bonus */
+
+		.item-page .item-bonus {
+			margin-top:
+				6px;
+
+			padding-top:
+				6px;
+		}
+
+
+		.item-page .item-bonus strong {
+			font-size:
+				0.70rem;
+		}
+
+	}
+
+</style>

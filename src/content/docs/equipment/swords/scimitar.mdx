@@ -1,0 +1,29 @@
+---
+title: Scimitar
+type: Sword
+image: http://dblots.org.pl/pictures/items/scimitar.png
+weight: 32.00 oz
+attack: 23
+defense: 10
+speed: 6
+range: 0
+requirement: Level 25
+sources:
+  - Bandit
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+  image="http://dblots.org.pl/pictures/items/scimitar.png"
+  type="Sword"
+  weight="32.00 oz"
+  attack="23"
+  defense="10"
+  speed="6"
+  range="0"
+  requirement={frontmatter.requirement}
+  sources={[
+    "Bandit"
+  ]}
+/>

@@ -1,0 +1,22 @@
+---
+title: Robotic Armor
+type: armor
+weight: "120.00 oz"
+armor: 20
+requirement: "—"
+image: "http://dblots.org.pl/pictures/items/robotic%20armor.png"
+sources:
+  - Death Machine
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

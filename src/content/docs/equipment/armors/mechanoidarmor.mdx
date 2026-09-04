@@ -1,0 +1,22 @@
+---
+title: Mechanoid Armor
+type: armor
+weight: "125.00 oz"
+armor: 15
+requirement: "Level 25"
+image: "http://dblots.org.pl/pictures/items/mechanoid%20armor.png"
+sources:
+  - old Violet Easter Pack
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

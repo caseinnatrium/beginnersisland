@@ -1,0 +1,794 @@
+---
+const {
+	description,
+	type,
+	health,
+	experience,
+	meleeDamage,
+	kiDamage,
+	meleeDefense,
+	kiDefense,
+	distance,
+	transform,
+	image,
+	loot = [],
+} = Astro.props;
+
+const normalizedType =
+	String(type ?? "").trim();
+
+const requirements =
+	normalizedType !== ""
+		? normalizedType
+		: "—";
+---
+
+<div class="monster-page">
+
+	<!-- =====================================================
+	     DESCRIPTION
+	     ===================================================== -->
+
+	{description && (
+		<p class="monster-description">
+			{description}
+		</p>
+	)}
+
+
+	<!-- =====================================================
+	     BACKGROUND IMAGE
+	     ===================================================== -->
+
+	<div class="monster-background">
+
+		{image && (
+			<img
+				src={image}
+				alt=""
+				width="340"
+				height="340"
+			/>
+		)}
+
+	</div>
+
+
+	<!-- =====================================================
+	     MONSTER GRID
+	     ===================================================== -->
+
+	<div class="monster-grid">
+
+
+		<!-- =================================================
+		     BASIC INFORMATION
+		     ================================================= -->
+
+		<section class="monster-card monster-card-basic">
+
+			<h2>Basic Information</h2>
+
+			<div class="monster-info">
+
+				<div>
+					<span>Type</span>
+
+					<strong>
+						{normalizedType === "Task" ? (
+							<a href="/systems/tasks/">
+								Task
+							</a>
+						) : (
+							normalizedType || "—"
+						)}
+					</strong>
+				</div>
+
+
+				<div>
+					<span>Health</span>
+					<strong>{health ?? "—"}</strong>
+				</div>
+
+
+				<div>
+					<span>Experience</span>
+					<strong>{experience ?? "—"}</strong>
+				</div>
+
+			</div>
+
+		</section>
+
+
+		<!-- =================================================
+		     DAMAGE
+		     ================================================= -->
+
+		<section class="monster-card monster-card-damage">
+
+			<h2>Damage</h2>
+
+			<div class="monster-info">
+
+				<div>
+					<span>Melee</span>
+					<strong>{meleeDamage ?? "—"}</strong>
+				</div>
+
+
+				<div>
+					<span>Ki</span>
+					<strong>{kiDamage ?? "—"}</strong>
+				</div>
+
+			</div>
+
+		</section>
+
+
+		<!-- =================================================
+		     DEFENSE
+		     ================================================= -->
+
+		<section class="monster-card monster-card-defense">
+
+			<h2>Defense</h2>
+
+			<div class="monster-info">
+
+				<div>
+					<span>Melee</span>
+					<strong>{meleeDefense ?? "—"}</strong>
+				</div>
+
+
+				<div>
+					<span>Ki</span>
+					<strong>{kiDefense ?? "—"}</strong>
+				</div>
+
+			</div>
+
+		</section>
+
+
+		<!-- =================================================
+		     OTHER
+		     ================================================= -->
+
+		<section class="monster-card monster-card-other">
+
+			<h2>Other</h2>
+
+			<div class="monster-info monster-info-horizontal">
+
+				<div>
+					<span>Distance</span>
+					<strong>{distance ?? "—"}</strong>
+				</div>
+
+
+				<div>
+					<span>Transform</span>
+					<strong>{transform ?? "—"}</strong>
+				</div>
+
+			</div>
+
+		</section>
+
+
+		<!-- =================================================
+		     LOOT
+		     ================================================= -->
+
+		<section class="monster-card monster-card-loot">
+
+			<h2>Loot</h2>
+
+			<div class="monster-loot">
+
+				{loot.length > 0 ? (
+
+					loot.map((item) => (
+
+						<a
+							class="monster-loot-row"
+							href={item.link || "#"}
+							title={item.name}
+						>
+
+							{item.image && (
+								<img
+									src={item.image}
+									alt=""
+									width="32"
+									height="32"
+									class="monster-loot-icon"
+								/>
+							)}
+
+							<strong>
+								{item.drop || "—"}
+							</strong>
+
+						</a>
+
+					))
+
+				) : (
+
+					<div class="monster-loot-empty">
+						—
+					</div>
+
+				)}
+
+			</div>
+
+		</section>
+
+	</div>
+
+</div>
+
+
+<style>
+
+	/* =========================================================
+	   MONSTER PAGE
+	   ========================================================= */
+
+	.monster-page {
+		position: relative;
+
+		width: 100%;
+
+		margin: 0 auto;
+
+		padding:
+			0 0 40px;
+	}
+
+
+	/* =========================================================
+	   DESCRIPTION
+	   ========================================================= */
+
+	.monster-description {
+		position: relative;
+
+		z-index: 2;
+
+		width: 100%;
+
+		margin:
+			0 0 22px;
+
+		padding: 0;
+
+		color:
+			var(--bi-text-muted);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.84rem;
+
+		font-weight:
+			400;
+
+		line-height:
+			1.7;
+	}
+
+
+	/* =========================================================
+	   BACKGROUND IMAGE
+	   ========================================================= */
+
+	.monster-background {
+		position: absolute;
+
+		top: 45px;
+		left: -140px;
+
+		width: 280px;
+		height: 280px;
+
+		z-index: 0;
+
+		pointer-events: none;
+
+		opacity: 0.48;
+	}
+
+
+	.monster-background img {
+		display: block;
+
+		width: 260px !important;
+		height: 260px !important;
+
+		margin: 0 !important;
+		padding: 0 !important;
+
+		object-fit: contain;
+
+		image-rendering: pixelated;
+		image-rendering: crisp-edges;
+
+		filter:
+			drop-shadow(
+				0 10px 16px rgba(0, 0, 0, 0.42)
+			);
+	}
+
+
+	/* =========================================================
+	   MONSTER GRID
+	   ========================================================= */
+
+	.monster-page .monster-grid {
+		position: relative;
+
+		z-index: 2;
+
+		display: grid !important;
+
+		grid-template-columns:
+			minmax(0, 1fr)
+			minmax(190px, 28%);
+
+		grid-template-rows:
+			auto
+			auto
+			auto
+			auto;
+
+		grid-template-areas:
+			"basic loot"
+			"damage loot"
+			"defense loot"
+			"other loot";
+
+		gap: 14px;
+
+		width: 100%;
+	}
+
+
+	/* =========================================================
+	   CARD POSITIONS
+	   ========================================================= */
+
+	.monster-card-basic {
+		grid-area: basic;
+	}
+
+
+	.monster-card-damage {
+		grid-area: damage;
+	}
+
+
+	.monster-card-defense {
+		grid-area: defense;
+	}
+
+
+	.monster-card-other {
+		grid-area: other;
+	}
+
+
+	.monster-card-loot {
+		grid-area: loot;
+	}
+
+
+	/* =========================================================
+	   CARDS
+	   ========================================================= */
+
+	.monster-page .monster-card {
+		min-width: 0;
+
+		box-sizing: border-box;
+
+		margin: 0 !important;
+
+		padding:
+			17px 18px;
+
+		border:
+			1px solid var(--bi-border);
+
+		border-radius: 8px;
+
+		background:
+			rgba(25, 28, 35, 0.72);
+
+		box-shadow:
+			0 5px 18px rgba(0, 0, 0, 0.18);
+
+		backdrop-filter:
+			blur(5px);
+	}
+
+
+	.monster-page .monster-card h2 {
+		margin:
+			0 0 13px;
+
+		color:
+			var(--bi-text);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.76rem;
+
+		font-weight:
+			650;
+
+		text-transform:
+			uppercase;
+
+		letter-spacing:
+			0.09em;
+	}
+
+
+	/* =========================================================
+	   INFORMATION
+	   ========================================================= */
+
+	.monster-page .monster-info {
+		display:
+			flex;
+
+		flex-direction:
+			column;
+
+		gap: 0;
+	}
+
+
+	.monster-page .monster-info > div {
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		justify-content:
+			space-between;
+
+		min-height:
+			34px;
+
+		border-bottom:
+			1px solid var(--bi-border-soft);
+	}
+
+
+	.monster-page .monster-info > div:last-child {
+		border-bottom:
+			0;
+	}
+
+
+	.monster-page .monster-info span {
+		color:
+			var(--bi-text-muted);
+
+		font-family:
+			var(--bi-font);
+
+		font-size:
+			0.76rem;
+	}
+
+
+	.monster-page .monster-info strong {
+		color:
+			var(--bi-text);
+
+		font-family:
+			var(--bi-mono);
+
+		font-size:
+			0.78rem;
+
+		font-weight:
+			500;
+
+		text-align:
+			right;
+	}
+
+
+	.monster-page .monster-info a {
+		color:
+			var(--bi-accent);
+
+		text-decoration:
+			none;
+	}
+
+
+	.monster-page .monster-info a:hover {
+		text-decoration:
+			underline;
+	}
+
+
+	/* =========================================================
+	   HORIZONTAL OTHER INFORMATION
+	   ========================================================= */
+
+	.monster-page .monster-info-horizontal {
+		display:
+			grid;
+
+		grid-template-columns:
+			1fr 1fr;
+
+		flex-direction:
+			row;
+	}
+
+
+	.monster-page .monster-info-horizontal > div {
+		padding:
+			0 14px;
+
+		border-right:
+			1px solid var(--bi-border-soft);
+
+		border-bottom:
+			0;
+	}
+
+
+	.monster-page .monster-info-horizontal > div:first-child {
+		padding-left:
+			0;
+	}
+
+
+	.monster-page .monster-info-horizontal > div:last-child {
+		padding-right:
+			0;
+
+		border-right:
+			0;
+	}
+
+
+	/* =========================================================
+	   LOOT
+	   ========================================================= */
+
+	.monster-page .monster-card-loot {
+		display:
+			flex;
+
+		flex-direction:
+			column;
+
+		min-height:
+			100%;
+	}
+
+
+	.monster-page .monster-loot {
+		display:
+			flex;
+
+		flex-direction:
+			column;
+
+		width:
+			100%;
+
+		flex: 1;
+	}
+
+
+	.monster-page .monster-loot-row {
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		justify-content:
+			space-between;
+
+		gap:
+			10px;
+
+		min-height:
+			48px;
+
+		padding:
+			4px 0;
+
+		border-bottom:
+			1px solid var(--bi-border-soft);
+
+		color:
+			var(--bi-text);
+
+		text-decoration:
+			none;
+
+		box-sizing:
+			border-box;
+	}
+
+
+	.monster-page .monster-loot-row:last-child {
+		border-bottom:
+			0;
+	}
+
+
+	.monster-page .monster-loot-row:hover {
+		color:
+			var(--bi-accent);
+	}
+
+
+	.monster-page .monster-loot-icon {
+		display:
+			block;
+
+		width:
+			32px !important;
+
+		height:
+			32px !important;
+
+		max-width:
+			32px !important;
+
+		max-height:
+			32px !important;
+
+		margin:
+			0 !important;
+
+		padding:
+			0 !important;
+
+		object-fit:
+			contain;
+
+		image-rendering:
+			pixelated;
+
+		image-rendering:
+			crisp-edges;
+	}
+
+
+	.monster-page .monster-loot-row strong {
+		margin-left:
+			auto;
+
+		color:
+			var(--bi-text);
+
+		font-family:
+			var(--bi-mono);
+
+		font-size:
+			0.74rem;
+
+		font-weight:
+			500;
+
+		white-space:
+			nowrap;
+	}
+
+
+	.monster-page .monster-loot-empty {
+		color:
+			var(--bi-text-muted);
+
+		font-family:
+			var(--bi-mono);
+
+		font-size:
+			0.78rem;
+	}
+
+
+	/* =========================================================
+	   MOBILE
+	   ========================================================= */
+
+	@media (max-width: 800px) {
+
+		.monster-page .monster-grid {
+			grid-template-columns:
+				1fr;
+
+			grid-template-rows:
+				auto;
+
+			grid-template-areas:
+				"basic"
+				"damage"
+				"defense"
+				"other"
+				"loot";
+		}
+
+
+		.monster-page .monster-card-loot {
+			min-height:
+				auto;
+		}
+
+
+		.monster-background {
+			left:
+				-100px;
+
+			top:
+				45px;
+
+			opacity:
+				0.38;
+		}
+
+
+		.monster-background img {
+			width:
+				220px !important;
+
+			height:
+				220px !important;
+		}
+
+	}
+
+
+	/* =========================================================
+	   VERY SMALL SCREENS
+	   ========================================================= */
+
+	@media (max-width: 420px) {
+
+		.monster-page .monster-card {
+			padding-left:
+				14px;
+
+			padding-right:
+				14px;
+		}
+
+
+		.monster-page .monster-info-horizontal > div {
+			padding:
+				0 8px;
+		}
+
+
+		.monster-page .monster-loot-row {
+			min-height:
+				44px;
+		}
+
+	}
+
+</style>

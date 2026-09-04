@@ -1,0 +1,22 @@
+---
+title: Pandorian Legs
+type: legs
+weight: "65.00 oz"
+armor: 7
+requirement: "—"
+image: "http://dblots.org.pl/pictures/items/pandorian%20legs.png"
+sources:
+  - Pandorian
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

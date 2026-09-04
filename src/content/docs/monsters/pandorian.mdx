@@ -1,0 +1,94 @@
+---
+title: Pandorian
+
+type: Normal
+
+health: 360
+
+experience: 420
+
+image: "http://dblots.org.pl/pictures/monsters/pandorian.png"
+
+description: "Pandorians are disciplined warriors known for their distinctive armor and fierce fighting spirit. They patrol their territory with confidence, relying on powerful close-range attacks to overwhelm opponents. For a young martial artist, a Pandorian is the kind of enemy that demands more than speed alone—the fighter must learn when to strike and when to defend."
+
+meleeDamage: "40–90"
+
+kiDamage: 0
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Meat
+    image: "http://dblots.org.pl/pictures/items/meat.png"
+    link: "/items/meat/"
+    drop: "+7"
+
+  - name: Blueberry
+    image: "http://dblots.org.pl/pictures/items/blueberry.png"
+    link: "/items/blueberry/"
+    drop: "+3"
+
+  - name: Animal Fur
+    image: "http://dblots.org.pl/pictures/items/animal%20fur.png"
+    link: "/items/animal-fur/"
+    drop: "+2"
+
+  - name: Pandorian Armor
+    image: "http://dblots.org.pl/pictures/items/pandorian%20armor.png"
+    link: "/equipment/armor/pandorianarmor/"
+    drop: "+1"
+
+  - name: Pandorian Boots
+    image: "http://dblots.org.pl/pictures/items/pandorian%20boots.png"
+    link: "/equipment/boots/pandorianboots/"
+    drop: "+1"
+
+  - name: Pandorian Legs
+    image: "http://dblots.org.pl/pictures/items/pandorian%20legs.png"
+    link: "/equipment/legs/pandorianlegs/"
+    drop: "+1"
+
+  - name: Sabre
+    image: "http://dblots.org.pl/pictures/items/sabre.png"
+    link: "/equipment/swords/sabre/"
+    drop: "+1"
+
+  - name: Worm
+    image: "http://dblots.org.pl/pictures/items/worm.png"
+    link: "/items/worm/"
+    drop: "+1"
+
+  - name: Pandorian Bandana
+    image: "http://dblots.org.pl/pictures/items/pandorian%20bandana.png"
+    link: "/equipment/helmets/pandorianbandana/"
+    drop: "0"
+
+  - name: Pandorian Belt
+    image: "http://dblots.org.pl/pictures/items/pandorian%20belt.png"
+    link: "/equipment/belts/pandorianbelt/"
+    drop: "0"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

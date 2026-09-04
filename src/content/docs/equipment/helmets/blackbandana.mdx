@@ -1,0 +1,19 @@
+---
+title: Black Bandana
+type: helmet
+weight: "10.00 oz"
+armor: 4
+image: "http://dblots.org.pl/pictures/items/black%20bandana.png"
+sources:
+  - Tigerman
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

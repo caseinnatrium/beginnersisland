@@ -1,0 +1,22 @@
+---
+title: Red Belt
+type: belt
+weight: "8.00 oz"
+armor: 2
+requirement: "—"
+image: "http://dblots.org.pl/pictures/items/red%20belt.png"
+sources:
+  - Starting Equipment
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

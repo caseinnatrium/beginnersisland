@@ -1,0 +1,24 @@
+---
+title: Tone Robe
+type: robe
+image: "http://dblots.org.pl/pictures/items/tone%20robe.png"
+weight: "290.00 oz"
+armor: 12
+requirement: "—"
+bonus: "Train to 130 train points."
+sources:
+  - Former Seasonal Box
+  - Death Machine
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

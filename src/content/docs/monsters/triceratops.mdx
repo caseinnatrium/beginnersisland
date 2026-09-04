@@ -1,0 +1,69 @@
+---
+title: Triceratops
+
+type: Normal
+
+health: 300
+
+experience: 240
+
+image: "http://dblots.org.pl/pictures/monsters/triceratops.png"
+
+description: "Triceratops are powerful prehistoric creatures that roam the wilder regions of Earth. Their great size, thick hide, and formidable horns make them a dangerous opponent for inexperienced fighters. Though they possess no knowledge of martial arts or ki, their raw physical strength can make an encounter with one a serious test of a young adventurer."
+
+meleeDamage: "0–20"
+
+kiDamage: 0
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Ham
+    image: "http://dblots.org.pl/pictures/items/ham.png"
+    link: "/items/ham/"
+    drop: "+7"
+
+  - name: Meat
+    image: "http://dblots.org.pl/pictures/items/meat.png"
+    link: "/items/meat/"
+    drop: "+7"
+
+  - name: Tusk
+    image: "http://dblots.org.pl/pictures/items/tusk.png"
+    link: "/items/tusk/"
+    drop: "+4"
+
+  - name: Triceratops Skin
+    image: "http://dblots.org.pl/pictures/items/triceratops%20skin.png"
+    link: "/items/triceratops-skin/"
+    drop: "+2"
+
+  - name: Worm
+    image: "http://dblots.org.pl/pictures/items/worm.png"
+    link: "/items/worm/"
+    drop: "+1"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

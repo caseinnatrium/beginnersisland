@@ -1,0 +1,19 @@
+---
+title: Robotic Helmet
+type: helmet
+weight: "70.00 oz"
+armor: 14
+image: "http://dblots.org.pl/pictures/items/robotic%20helmet.png"
+sources:
+  - Death Machine
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

@@ -1,0 +1,94 @@
+---
+title: Ninja
+
+type: Normal
+
+health: 3600
+
+experience: 3200
+
+image: "http://dblots.org.pl/pictures/monsters/ninja.png"
+
+description: "Ninjas are elusive warriors who rely on speed, precision, and deadly techniques rather than brute strength. Their ability to attack from a distance makes them especially dangerous to fighters who have not yet learned how to close the gap. A battle against a Ninja can quickly become a test of concentration as much as physical power."
+
+meleeDamage: "50–150"
+
+kiDamage: "335–500"
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "Yes"
+
+transform: "No"
+
+loot:
+
+  - name: Apple
+    image: "http://dblots.org.pl/pictures/items/apple.png"
+    link: "/items/apple/"
+    drop: "+5"
+
+  - name: Shuriken
+    image: "http://dblots.org.pl/pictures/items/shuriken.png"
+    link: "/items/shuriken/"
+    drop: "+2"
+
+  - name: Black Glover
+    image: "http://dblots.org.pl/pictures/items/black%20glover.png"
+    link: "/equipment/gloves/blackglover/"
+    drop: "0"
+
+  - name: Kastet
+    image: "http://dblots.org.pl/pictures/items/kastet.png"
+    link: "/equipment/gloves/kastet/"
+    drop: "0"
+
+  - name: Ninja Belt
+    image: "http://dblots.org.pl/pictures/items/ninja%20belt.png"
+    link: "/equipment/belts/ninjabelt/"
+    drop: "0"
+
+  - name: Ninja Boots
+    image: "http://dblots.org.pl/pictures/items/ninja%20boots.png"
+    link: "/equipment/boots/ninjaboots/"
+    drop: "0"
+
+  - name: Ninja Legs
+    image: "http://dblots.org.pl/pictures/items/ninja%20legs.png"
+    link: "/equipment/legs/ninjalegs/"
+    drop: "0"
+
+  - name: Ninja Shirt
+    image: "http://dblots.org.pl/pictures/items/ninja%20shirt.png"
+    link: "/equipment/armor/ninjashirt/"
+    drop: "0"
+
+  - name: Ninja Turban
+    image: "http://dblots.org.pl/pictures/items/ninja%20turban.png"
+    link: "/equipment/helmets/ninjaturban/"
+    drop: "0"
+
+  - name: Wooden Boots
+    image: "http://dblots.org.pl/pictures/items/wooden%20boots.png"
+    link: "/equipment/boots/woodenboots/"
+    drop: "-3"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

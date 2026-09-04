@@ -1,0 +1,22 @@
+---
+title: Ninja Shirt
+type: armor
+weight: "30.00 oz"
+armor: 15
+requirement: "Level 50"
+image: "http://dblots.org.pl/pictures/items/ninja%20shirt.png"
+sources:
+  - Ninja
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

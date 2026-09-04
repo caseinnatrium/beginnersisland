@@ -1,0 +1,24 @@
+---
+title: Tone Belt
+type: belt
+weight: "290.00 oz"
+armor: 12
+requirement: "-"
+bonus: "Train to 130 train points."
+image: "http://dblots.org.pl/pictures/items/tone%20belt.png"
+sources:
+  - Former Seasonal Box
+  - Death Machine
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

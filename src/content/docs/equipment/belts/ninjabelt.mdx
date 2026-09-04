@@ -1,0 +1,22 @@
+---
+title: Ninja Belt
+type: belt
+weight: "7.00 oz"
+armor: 9
+requirement: "—"
+image: "http://dblots.org.pl/pictures/items/ninja%20belt.png"
+sources:
+  - Ninja
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

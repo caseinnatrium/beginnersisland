@@ -1,0 +1,23 @@
+---
+title: Soldier Vest
+type: armor
+weight: "120.00 oz"
+armor: 18
+requirement: "Level 50"
+bonus: "Regenerates 10 health/s."
+image: "http://dblots.org.pl/pictures/items/soldier%20vest.png"
+sources:
+  - Commando
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

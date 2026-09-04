@@ -1,0 +1,19 @@
+---
+title: Army Mask
+type: helmet
+weight: "24.00 oz"
+armor: 7
+image: "http://dblots.org.pl/pictures/items/army%20mask.png"
+sources:
+  - Bandit
+---
+
+import ItemStats from '../../../../components/itemstats.astro';
+
+<ItemStats
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	image={frontmatter.image}
+	sources={frontmatter.sources}
+/>

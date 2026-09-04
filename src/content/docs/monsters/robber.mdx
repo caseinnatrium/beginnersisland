@@ -1,0 +1,74 @@
+---
+title: Robber
+
+type: Task
+
+health: 9000
+
+experience: 17000
+
+image: "http://dblots.org.pl/pictures/monsters/robber.png"
+
+description: "Robbers are hardened criminals who have survived countless fights on the rough roads of Earth. Unlike common bandits, they possess greater strength and experience, making them dangerous targets even for trained martial artists. Their greed has brought them into conflict with many travelers, and defeating one can prove that a fighter is ready to face greater challenges."
+
+meleeDamage: "150–520"
+
+kiDamage: "115–150"
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Silver Key
+    image: "http://dblots.org.pl/pictures/items/silver%20key.png"
+    link: "/items/silver-key/"
+    drop: "+7"
+
+  - name: Army Piece of Cloth
+    image: "http://dblots.org.pl/pictures/items/army%20piece%20of%20cloth.png"
+    link: "/items/army-piece-of-cloth/"
+    drop: "+4"
+
+  - name: Red Piece of Cloth
+    image: "http://dblots.org.pl/pictures/items/red%20piece%20of%20cloth.png"
+    link: "/items/red-piece-of-cloth/"
+    drop: "+4"
+
+  - name: Soldier Boots
+    image: "http://dblots.org.pl/pictures/items/soldier%20boots.png"
+    link: "/equipment/boots/soldierboots/"
+    drop: "+4"
+
+  - name: Fighting Glover
+    image: "http://dblots.org.pl/pictures/items/fighting%20glover.png"
+    link: "/equipment/gloves/fightingglover/"
+    drop: "+3"
+
+  - name: Pliers
+    image: "http://dblots.org.pl/pictures/items/pliers.png"
+    link: "/items/pliers/"
+    drop: "+2"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

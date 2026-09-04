@@ -1,0 +1,230 @@
+---
+interface TimelineEvent {
+  date: string;
+  description: string;
+  link?: string;
+}
+
+interface Props {
+  events: TimelineEvent[];
+}
+
+const { events } = Astro.props;
+---
+
+<div class="timeline">
+  <div class="timeline-line" aria-hidden="true"></div>
+
+  {events.map((event) => (
+    <article class="timeline-event">
+      <div class="timeline-marker" aria-hidden="true">
+        <span></span>
+      </div>
+
+      <div class="timeline-content">
+        <time class="timeline-date">{event.date}</time>
+
+        {event.link && (
+          <a
+            class="timeline-source"
+            href={event.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            [Source ↗]
+          </a>
+        )}
+
+        <p class="timeline-description">
+          {event.description}
+        </p>
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .timeline {
+    --timeline-accent: #8b5cf6;
+    --timeline-accent-bright: #a78bfa;
+    --timeline-line: #30303b;
+
+    position: relative;
+    width: 100%;
+    margin: 3rem 0;
+  }
+
+  /* Vertical line */
+
+  .timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 11px;
+
+    width: 2px;
+
+    background: var(--timeline-line);
+  }
+
+  /* Timeline event */
+
+  .timeline-event {
+    position: relative;
+
+    min-height: 1px;
+
+    padding-left: 46px;
+    padding-bottom: 3rem;
+  }
+
+  .timeline-event:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Timeline marker */
+
+  .timeline-marker {
+    position: absolute;
+
+    /*
+     * Centers the marker against the large date.
+     * The date has a ~35px line box while the marker is 24px.
+     */
+    top: 5px;
+    left: 0;
+
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: #111116;
+  }
+
+  .timeline-marker span {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: var(--timeline-accent);
+
+    box-shadow:
+      0 0 0 3px #111116,
+      0 0 0 5px var(--timeline-accent),
+      0 0 14px rgba(139, 92, 246, 0.45);
+  }
+
+  /* Content */
+
+  .timeline-content {
+    min-width: 0;
+  }
+
+  /* Large date */
+
+  .timeline-date {
+    display: block;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  /* Source */
+
+  .timeline-source {
+    display: inline-block;
+
+    margin-top: 0.45rem;
+
+    color: var(--timeline-accent-bright);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+      color 150ms ease,
+      opacity 150ms ease;
+  }
+
+  .timeline-source:hover {
+    color: #c4b5fd;
+    text-decoration: underline;
+  }
+
+  /* Description */
+
+  .timeline-description {
+    max-width: 700px;
+
+    margin: 0.9rem 0 0;
+
+    color: #a1a1aa;
+
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* Mobile */
+
+  @media (max-width: 640px) {
+    .timeline {
+      margin: 2rem 0;
+    }
+
+    .timeline-line {
+      left: 9px;
+    }
+
+    .timeline-event {
+      padding-left: 36px;
+      padding-bottom: 2.5rem;
+    }
+
+    .timeline-marker {
+      top: 4px;
+
+      width: 20px;
+      height: 20px;
+    }
+
+    .timeline-marker span {
+      width: 9px;
+      height: 9px;
+
+      box-shadow:
+        0 0 0 2px #111116,
+        0 0 0 4px var(--timeline-accent),
+        0 0 10px rgba(139, 92, 246, 0.4);
+    }
+
+    .timeline-date {
+      font-size: 1.6rem;
+      line-height: 1.1;
+    }
+
+    .timeline-source {
+      margin-top: 0.4rem;
+
+      font-size: 0.85rem;
+    }
+
+    .timeline-description {
+      margin-top: 0.75rem;
+
+      font-size: 0.95rem;
+    }
+  }
+</style>

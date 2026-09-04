@@ -1,0 +1,64 @@
+---
+title: Wolf
+
+type: Normal
+
+health: 120
+
+experience: 100
+
+image: "http://dblots.org.pl/pictures/monsters/wolf.png"
+
+description: "Wolves are common predators of Earth, roaming forests and wild areas far from settled towns. Fast and aggressive, they attack without hesitation when they sense weakness. For beginning martial artists, defeating a wolf is often one of the first opportunities to test their reflexes and courage against a real opponent."
+
+meleeDamage: "0–10"
+
+kiDamage: 0
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Meat
+    image: "http://dblots.org.pl/pictures/items/meat.png"
+    link: "/items/meat/"
+    drop: "+7"
+
+  - name: Ham
+    image: "http://dblots.org.pl/pictures/items/ham.png"
+    link: "/items/ham/"
+    drop: "+5"
+
+  - name: Worm
+    image: "http://dblots.org.pl/pictures/items/worm.png"
+    link: "/items/worm/"
+    drop: "+1"
+
+  - name: Animal Fur
+    image: "http://dblots.org.pl/pictures/items/animal%20fur.png"
+    link: "/items/animal-fur/"
+    drop: "0"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

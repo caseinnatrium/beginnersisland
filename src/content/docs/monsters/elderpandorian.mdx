@@ -1,0 +1,69 @@
+---
+title: Elder Pandorian
+
+type: Task
+
+health: 7500
+
+experience: 15000
+
+image: "http://dblots.org.pl/pictures/monsters/elder%20pandorian.png"
+
+description: "The Elder Pandorian is an experienced warrior who has spent years honing his strength and combat techniques. Age has not diminished his fighting ability; instead, experience has made every movement deliberate and dangerous. Facing an Elder Pandorian is a true test of a martial artist's progress, requiring patience, power, and the ability to withstand devastating counterattacks."
+
+meleeDamage: "120–400"
+
+kiDamage: "180–255"
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "No"
+
+transform: "No"
+
+loot:
+
+  - name: Silver Key
+    image: "http://dblots.org.pl/pictures/items/silver%20key.png"
+    link: "/items/silver-key/"
+    drop: "+7"
+
+  - name: Black Piece of Cloth
+    image: "http://dblots.org.pl/pictures/items/black%20piece%20of%20cloth.png"
+    link: "/items/black-piece-of-cloth/"
+    drop: "+4"
+
+  - name: Pandorian Armor
+    image: "http://dblots.org.pl/pictures/items/pandorian%20armor.png"
+    link: "/equipment/armor/pandorianarmor/"
+    drop: "+4"
+
+  - name: Pandorian Boots
+    image: "http://dblots.org.pl/pictures/items/pandorian%20boots.png"
+    link: "/equipment/boots/pandorianboots/"
+    drop: "+4"
+
+  - name: Yellow Piece of Cloth
+    image: "http://dblots.org.pl/pictures/items/yellow%20piece%20of%20cloth.png"
+    link: "/items/yellow-piece-of-cloth/"
+    drop: "d"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

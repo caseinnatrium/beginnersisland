@@ -1,0 +1,104 @@
+---
+title: Death Machine
+
+type: Normal
+
+health: 12600
+
+experience: 7000
+
+image: "http://dblots.org.pl/pictures/monsters/death%20machine.png"
+
+description: "Death Machines are powerful robotic enemies built for combat. Their heavy attacks and advanced weaponry make them a dangerous opponent."
+
+meleeDamage: "400–700"
+
+kiDamage: "565–1700"
+
+meleeDefense: "0%"
+
+kiDefense: "0%"
+
+distance: "Yes"
+
+transform: "No"
+
+loot:
+
+  - name: Nail
+    image: "http://dblots.org.pl/pictures/items/nail.png"
+    link: "/items/nail/"
+    drop: "+1"
+
+  - name: Screw
+    image: "http://dblots.org.pl/pictures/items/screw.png"
+    link: "/items/screw/"
+    drop: "+1"
+
+  - name: Black Skull
+    image: "http://dblots.org.pl/pictures/items/black%20skull.png"
+    link: "/items/blackskull/"
+    drop: "0"
+
+  - name: Robotic Armor
+    image: "http://dblots.org.pl/pictures/items/robotic%20armor.png"
+    link: "/equipment/armors/roboticarmor/"
+    drop: "0"
+
+  - name: Robotic Belt
+    image: "http://dblots.org.pl/pictures/items/robotic%20belt.png"
+    link: "/equipment/belts/roboticbelt/"
+    drop: "-1"
+
+  - name: Robotic Boots
+    image: "http://dblots.org.pl/pictures/items/robotic%20boots.png"
+    link: "/equipment/boots/roboticboots/"
+    drop: "-1"
+
+  - name: Robotic Helmet
+    image: "http://dblots.org.pl/pictures/items/robotic%20helmet.png"
+    link: "/equipment/helmets/robotichelmet/"
+    drop: "-1"
+
+  - name: Red Blast
+    image: "http://dblots.org.pl/pictures/items/red%20blast.png"
+    link: "/equipment/blasts/redblast/"
+    drop: "-3"
+
+  - name: Red Glover
+    image: "http://dblots.org.pl/pictures/items/red%20glover.png"
+    link: "/equipment/gloves/redglover/"
+    drop: "-3"
+
+  - name: Tone Belt
+    image: "http://dblots.org.pl/pictures/items/tone%20belt.png"
+    link: "/equipment/belts/tonebelt/"
+    drop: "-3"
+
+  - name: Tone Robe
+    image: "http://dblots.org.pl/pictures/items/tone%20robe.png"
+    link: "/equipment/robes/tonerobe/"
+    drop: "-4"
+
+  - name: Yajirobei Sword
+    image: "http://dblots.org.pl/pictures/items/yajirobei%20sword.png"
+    link: "/equipment/swords/yajirobeisword/"
+    drop: "-4"
+---
+
+import MonsterStats from '@components/monsterstats.astro';
+
+<MonsterStats
+	image={frontmatter.image}
+	description={frontmatter.description}
+	type={frontmatter.type}
+	health={frontmatter.health}
+	experience={frontmatter.experience}
+	meleeDamage={frontmatter.meleeDamage}
+	kiDamage={frontmatter.kiDamage}
+	meleeDefense={frontmatter.meleeDefense}
+	kiDefense={frontmatter.kiDefense}
+	distance={frontmatter.distance}
+	transform={frontmatter.transform}
+	loot={frontmatter.loot}
+/>

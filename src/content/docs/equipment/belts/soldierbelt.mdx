@@ -1,0 +1,24 @@
+---
+title: Soldier Belt
+type: belt
+weight: "16.00 oz"
+armor: 10
+requirement: "—"
+bonus: "Regenerates 10 health/s."
+image: "http://dblots.org.pl/pictures/items/soldier%20belt.png"
+sources:
+  - Huge
+  - Commando
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

@@ -1,0 +1,22 @@
+---
+title: Black Trousers
+type: legs
+weight: "32.00 oz"
+armor: 4
+requirement: "—"
+image: "http://dblots.org.pl/pictures/items/black%20trousers.png"
+sources:
+  - Tigerman
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

@@ -1,0 +1,1107 @@
+---
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('docs');
+
+const items = entries
+	.filter((entry) => entry.id.startsWith('equipment/'))
+	.filter((entry) => entry.id !== 'equipment/index')
+	.map((entry) => {
+		const rawType = String(entry.data.type ?? '').trim();
+
+		// Display equipment types consistently with a capital first letter.
+		const type = rawType
+			? rawType.charAt(0).toUpperCase() + rawType.slice(1).toLowerCase()
+			: '';
+
+		return {
+			name: entry.data.title,
+			slug: entry.id.replace(/^equipment\//, ''),
+
+			type,
+			typeValue: rawType.toLowerCase(),
+
+			weight: entry.data.weight ?? '',
+
+			// Keep armor and attack as separate fields.
+			armor: entry.data.armor,
+			attack: entry.data.attack,
+			defense: entry.data.defense,
+			speed: entry.data.speed,
+			range: entry.data.range,
+
+			requirement: entry.data.requirement ?? '',
+			image: entry.data.image ?? '',
+		};
+	})
+	.sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<div class="items-table">
+
+	<!-- =====================================================
+	     CONTROLS
+	     ===================================================== -->
+
+	<div class="controls">
+
+		<input
+			id="item-search"
+			type="search"
+			placeholder="Search equipment..."
+			aria-label="Search equipment"
+		/>
+
+		<select
+			id="item-type"
+			aria-label="Filter equipment by type"
+		>
+
+			<option value="all">
+				All types
+			</option>
+
+			{
+				[
+					...new Set(
+						items
+							.map((item) => ({
+								value: item.typeValue,
+								label: item.type,
+							}))
+							.filter((item) => item.value)
+							.map((item) => JSON.stringify(item))
+					),
+				]
+					.map((item) => JSON.parse(item))
+					.sort((a, b) =>
+						a.label.localeCompare(b.label)
+					)
+					.map((type) => (
+						<option value={type.value}>
+							{type.label}
+						</option>
+					))
+			}
+
+		</select>
+
+	</div>
+
+
+	<!-- =====================================================
+	     TABLE
+	     ===================================================== -->
+
+	<div class="table-wrapper">
+
+		<table class="item-table">
+
+			<thead>
+
+				<tr>
+
+					<th class="name-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="name"
+						>
+							Name
+							<span class="sort-arrow">↑</span>
+						</button>
+					</th>
+
+					<th class="type-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="type"
+						>
+							Type
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="weight-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="weight"
+						>
+							Weight
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="stat-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="armor"
+						>
+							Armor
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="stat-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="attack"
+						>
+							Attack
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="stat-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="defense"
+						>
+							Defense
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="stat-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="speed"
+						>
+							Speed
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="stat-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="range"
+						>
+							Range
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+					<th class="requirement-column">
+						<button
+							type="button"
+							class="sort-button"
+							data-sort="requirement"
+						>
+							Requirement
+							<span class="sort-arrow">↕</span>
+						</button>
+					</th>
+
+				</tr>
+
+			</thead>
+
+
+			<tbody id="items-body">
+
+				{
+					items.map((item) => (
+						<tr
+							data-name={item.name.toLowerCase()}
+							data-type={item.typeValue}
+							data-weight={item.weight}
+							data-armor={item.armor ?? ""}
+							data-attack={item.attack ?? ""}
+							data-defense={item.defense ?? ""}
+							data-speed={item.speed ?? ""}
+							data-range={item.range ?? ""}
+							data-requirement={item.requirement.toLowerCase()}
+						>
+
+							<!-- NAME -->
+
+							<td class="item-name">
+
+								<a
+									href={`/equipment/${item.slug}/`}
+								>
+
+									{item.image ? (
+										<img
+											src={item.image}
+											alt=""
+											class="item-table-image"
+											width="28"
+											height="28"
+										/>
+									) : null}
+
+									<span>
+										{item.name}
+									</span>
+
+								</a>
+
+							</td>
+
+
+							<!-- TYPE -->
+
+							<td class="item-type">
+								{item.type || "—"}
+							</td>
+
+
+							<!-- WEIGHT -->
+
+							<td class="item-weight">
+								{item.weight || "—"}
+							</td>
+
+
+							<!-- ARMOR -->
+
+							<td class="item-stat">
+								{item.armor ?? "—"}
+							</td>
+
+
+							<!-- ATTACK -->
+
+							<td class="item-stat">
+								{item.attack ?? "—"}
+							</td>
+
+
+							<!-- DEFENSE -->
+
+							<td class="item-stat">
+								{item.defense ?? "—"}
+							</td>
+
+
+							<!-- SPEED -->
+
+							<td class="item-stat">
+								{item.speed ?? "—"}
+							</td>
+
+
+							<!-- RANGE -->
+
+							<td class="item-stat">
+								{item.range ?? "—"}
+							</td>
+
+
+							<!-- REQUIREMENT -->
+
+							<td class="item-requirement">
+								{item.requirement || "—"}
+							</td>
+
+						</tr>
+					))
+				}
+
+			</tbody>
+
+		</table>
+
+	</div>
+
+
+	<p
+		id="no-results"
+		class="no-results"
+		hidden
+	>
+		No equipment found.
+	</p>
+
+</div>
+
+
+<script>
+	const table =
+		document.querySelector(".items-table");
+
+	if (table) {
+
+		const searchInput =
+			table.querySelector("#item-search");
+
+		const typeSelect =
+			table.querySelector("#item-type");
+
+		const tbody =
+			table.querySelector("#items-body");
+
+		const noResults =
+			table.querySelector("#no-results");
+
+		const sortButtons =
+			table.querySelectorAll(".sort-button");
+
+
+		let sortKey = "name";
+		let sortDirection = "asc";
+
+
+		/* =====================================================
+		   SORT VALUE
+		   ===================================================== */
+
+		const getSortValue = (row, key) => {
+
+			switch (key) {
+
+				case "name":
+					return row.dataset.name || "";
+
+				case "type":
+					return row.dataset.type || "";
+
+				case "weight":
+					return parseFloat(
+						row.dataset.weight || "0"
+					);
+
+				case "armor":
+					return parseFloat(
+						row.dataset.armor || "0"
+					);
+
+				case "attack":
+					return parseFloat(
+						row.dataset.attack || "0"
+					);
+
+				case "defense":
+					return parseFloat(
+						row.dataset.defense || "0"
+					);
+
+				case "speed":
+					return parseFloat(
+						row.dataset.speed || "0"
+					);
+
+				case "range":
+					return parseFloat(
+						row.dataset.range || "0"
+					);
+
+				case "requirement":
+					return (
+						row.dataset.requirement || ""
+					);
+
+				default:
+					return "";
+			}
+
+		};
+
+
+		/* =====================================================
+		   UPDATE TABLE
+		   ===================================================== */
+
+		const updateTable = () => {
+
+			const search =
+				searchInput?.value
+					.toLowerCase()
+					.trim() || "";
+
+			const type =
+				typeSelect?.value || "all";
+
+
+			const rows = Array.from(
+				tbody.querySelectorAll("tr")
+			);
+
+
+			/* =================================================
+			   FILTER
+			   ================================================= */
+
+			rows.forEach((row) => {
+
+				const name =
+					row.dataset.name || "";
+
+				const rowType =
+					row.dataset.type || "";
+
+
+				const matchesSearch =
+					name.includes(search);
+
+
+				const matchesType =
+					type === "all" ||
+					rowType === type;
+
+
+				row.hidden =
+					!(matchesSearch && matchesType);
+
+			});
+
+
+			const visibleRows =
+				rows.filter(
+					(row) => !row.hidden
+				);
+
+
+			/* =================================================
+			   SORT
+			   ================================================= */
+
+			visibleRows.sort((a, b) => {
+
+				const aValue =
+					getSortValue(
+						a,
+						sortKey
+					);
+
+				const bValue =
+					getSortValue(
+						b,
+						sortKey
+					);
+
+
+				if (
+					typeof aValue === "string" &&
+					typeof bValue === "string"
+				) {
+
+					const result =
+						aValue.localeCompare(
+							bValue,
+							undefined,
+							{
+								sensitivity: "base",
+							}
+						);
+
+
+					return sortDirection === "asc"
+						? result
+						: -result;
+				}
+
+
+				return sortDirection === "asc"
+					? aValue - bValue
+					: bValue - aValue;
+
+			});
+
+
+			/* =================================================
+			   REORDER ROWS
+			   ================================================= */
+
+			visibleRows.forEach((row) => {
+
+				tbody.appendChild(row);
+
+			});
+
+
+			/* =================================================
+			   NO RESULTS
+			   ================================================= */
+
+			noResults.hidden =
+				visibleRows.length !== 0;
+
+		};
+
+
+		/* =====================================================
+		   SORT BUTTONS
+		   ===================================================== */
+
+		sortButtons.forEach((button) => {
+
+			button.addEventListener(
+				"click",
+				() => {
+
+					const newKey =
+						button.dataset.sort;
+
+
+					if (!newKey) {
+						return;
+					}
+
+
+					if (sortKey === newKey) {
+
+						sortDirection =
+							sortDirection === "asc"
+								? "desc"
+								: "asc";
+
+					} else {
+
+						sortKey = newKey;
+						sortDirection = "asc";
+
+					}
+
+
+					/* =============================================
+					   UPDATE ARROWS
+					   ============================================= */
+
+					sortButtons.forEach(
+						(otherButton) => {
+
+							const arrow =
+								otherButton.querySelector(
+									".sort-arrow"
+								);
+
+
+							if (
+								otherButton === button
+							) {
+
+								arrow.textContent =
+									sortDirection === "asc"
+										? "↑"
+										: "↓";
+
+							} else {
+
+								arrow.textContent =
+									"↕";
+
+							}
+
+						}
+					);
+
+
+					updateTable();
+
+				}
+			);
+
+		});
+
+
+		/* =====================================================
+		   SEARCH
+		   ===================================================== */
+
+		searchInput?.addEventListener(
+			"input",
+			updateTable
+		);
+
+
+		/* =====================================================
+		   TYPE FILTER
+		   ===================================================== */
+
+		typeSelect?.addEventListener(
+			"change",
+			updateTable
+		);
+
+
+		/* =====================================================
+		   INITIAL TABLE
+		   ===================================================== */
+
+		updateTable();
+
+	}
+</script>
+
+
+<style>
+
+	/* =========================================================
+	   TABLE CONTAINER
+	   ========================================================= */
+
+	.items-table {
+		width: 100%;
+	}
+
+
+	/* =========================================================
+	   CONTROLS
+	   ========================================================= */
+
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin-bottom: 0.8rem;
+	}
+
+
+	.controls input,
+	.controls select {
+		height: 2.25rem;
+
+		box-sizing: border-box;
+
+		border:
+			1px solid var(--sl-color-gray-5);
+
+		border-radius:
+			0.35rem;
+
+		background:
+			var(--sl-color-black);
+
+		color:
+			var(--sl-color-white);
+
+		padding:
+			0 0.6rem;
+
+		font:
+			inherit;
+
+		font-size:
+			0.8rem;
+	}
+
+
+	.controls input {
+		flex: 1;
+		min-width: 0;
+	}
+
+
+	.controls select {
+		width: 10rem;
+	}
+
+
+	/* =========================================================
+	   TABLE WRAPPER
+	   ========================================================= */
+
+	.table-wrapper {
+		width: 100%;
+		overflow-x: auto;
+	}
+
+
+	/* =========================================================
+	   TABLE
+	   ========================================================= */
+
+	.item-table {
+		width: 100%;
+
+		table-layout: fixed;
+
+		border-collapse: collapse;
+
+		font-size:
+			0.72rem;
+	}
+
+
+	/* =========================================================
+	   COLUMN WIDTHS
+	   ========================================================= */
+
+	.item-table .name-column {
+		width: 22%;
+	}
+
+	.item-table .type-column {
+		width: 9%;
+	}
+
+	.item-table .weight-column {
+		width: 9%;
+	}
+
+	.item-table .stat-column {
+		width: 7%;
+	}
+
+	.item-table .requirement-column {
+		width: 16%;
+	}
+
+
+	/* =========================================================
+	   CELLS
+	   ========================================================= */
+
+	.item-table th,
+	.item-table td {
+
+		padding:
+			0.42rem 0.3rem;
+
+		border-bottom:
+			1px solid var(--sl-color-gray-5);
+
+		text-align:
+			left;
+
+		vertical-align:
+			middle;
+
+		white-space:
+			nowrap;
+
+		box-sizing:
+			border-box;
+	}
+
+
+	/* =========================================================
+	   HEADER
+	   ========================================================= */
+
+	.item-table th {
+		padding:
+			0;
+
+		font-weight:
+			700;
+	}
+
+
+	.sort-button {
+
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		gap:
+			0.2rem;
+
+		width:
+			100%;
+
+		padding:
+			0.5rem 0.3rem;
+
+		border:
+			0;
+
+		background:
+			transparent;
+
+		color:
+			inherit;
+
+		font:
+			inherit;
+
+		font-size:
+			0.68rem;
+
+		font-weight:
+			700;
+
+		text-align:
+			left;
+
+		cursor:
+			pointer;
+
+	}
+
+
+	.sort-button:hover {
+		color:
+			var(--sl-color-text-accent);
+	}
+
+
+	.sort-arrow {
+
+		opacity:
+			0.65;
+
+		font-size:
+			0.7em;
+
+	}
+
+
+	/* =========================================================
+	   NAME
+	   ========================================================= */
+
+	.item-name {
+
+		overflow:
+			hidden;
+
+	}
+
+
+	.item-name a {
+
+		display:
+			flex;
+
+		align-items:
+			center;
+
+		gap:
+			0.4rem;
+
+		min-width:
+			0;
+
+		color:
+			inherit;
+
+		font-weight:
+			700;
+
+		text-decoration:
+			none;
+
+	}
+
+
+	.item-name a:hover {
+		text-decoration:
+			underline;
+	}
+
+
+	.item-name a span {
+
+		overflow:
+			hidden;
+
+		text-overflow:
+			ellipsis;
+
+		white-space:
+			nowrap;
+
+	}
+
+
+	/* =========================================================
+	   ITEM IMAGE
+	   ========================================================= */
+
+	.item-table-image {
+
+		display:
+			block;
+
+		flex:
+			0 0 26px;
+
+		width:
+			26px !important;
+
+		height:
+			26px !important;
+
+		max-width:
+			26px !important;
+
+		max-height:
+			26px !important;
+
+		margin:
+			0 !important;
+
+		padding:
+			0 !important;
+
+		object-fit:
+			contain;
+
+		image-rendering:
+			pixelated;
+
+		image-rendering:
+			crisp-edges;
+
+	}
+
+
+	/* =========================================================
+	   TYPE
+	   ========================================================= */
+
+	.item-type {
+
+		overflow:
+			hidden;
+
+		text-overflow:
+			ellipsis;
+
+	}
+
+
+	/* =========================================================
+	   WEIGHT
+	   ========================================================= */
+
+	.item-weight {
+
+		font-family:
+			var(--bi-mono);
+
+		font-size:
+			0.68rem;
+
+	}
+
+
+	/* =========================================================
+	   STATS
+	   ========================================================= */
+
+	.item-stat {
+
+		font-family:
+			var(--bi-mono);
+
+		text-align:
+			center !important;
+
+	}
+
+
+	/* =========================================================
+	   REQUIREMENT
+	   ========================================================= */
+
+	.item-requirement {
+
+		overflow:
+			hidden;
+
+		text-overflow:
+			ellipsis;
+
+	}
+
+
+	/* =========================================================
+	   NO RESULTS
+	   ========================================================= */
+
+	.no-results {
+
+		margin-top:
+			1rem;
+
+		color:
+			var(--sl-color-gray-3);
+
+	}
+
+
+	/* =========================================================
+	   MEDIUM SCREENS
+	   ========================================================= */
+
+	@media (max-width: 1000px) {
+
+		.item-table {
+			font-size:
+				0.68rem;
+		}
+
+		.item-table th,
+		.item-table td {
+			padding:
+				0.38rem 0.25rem;
+		}
+
+		.item-table-image {
+			width:
+				23px !important;
+
+			height:
+				23px !important;
+		}
+
+		.item-table .name-column {
+			width:
+				21%;
+		}
+
+		.item-table .requirement-column {
+			width:
+				14%;
+		}
+
+	}
+
+
+	/* =========================================================
+	   MOBILE
+	   ========================================================= */
+
+	@media (max-width: 700px) {
+
+		.controls {
+
+			flex-direction:
+				column;
+
+			align-items:
+				stretch;
+
+		}
+
+
+		.controls select {
+
+			width:
+				100%;
+
+		}
+
+
+		.table-wrapper {
+
+			overflow-x:
+				auto;
+
+		}
+
+
+		.item-table {
+
+			min-width:
+				720px;
+
+		}
+
+	}
+
+</style>

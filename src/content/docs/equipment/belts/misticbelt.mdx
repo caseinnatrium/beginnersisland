@@ -1,0 +1,23 @@
+---
+title: Mistic Belt
+type: belt
+weight: "12.00 oz"
+armor: 30
+requirement: "-"
+image: "http://dblots.org.pl/pictures/items/mistic%20belt.png"
+sources:
+  - Random Mistic Item Box
+  - Shenron Wish
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+	image={frontmatter.image}
+	type={frontmatter.type}
+	weight={frontmatter.weight}
+	armor={frontmatter.armor}
+	requirement={frontmatter.requirement}
+	bonus={frontmatter.bonus}
+	sources={frontmatter.sources}
+/>

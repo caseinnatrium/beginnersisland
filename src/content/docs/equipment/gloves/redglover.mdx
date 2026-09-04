@@ -1,0 +1,29 @@
+---
+title: Red Glover
+type: Glove
+image: http://dblots.org.pl/pictures/items/red%20glover.png
+weight: 15.00 oz
+attack: 38
+defense: 25
+speed: 30
+range: 0
+requirement: Level 100
+sources:
+  - Platform Quest
+---
+
+import ItemStats from '@components/itemstats.astro';
+
+<ItemStats
+  image="http://dblots.org.pl/pictures/items/red%20glover.png"
+  type="Glove"
+  weight="15.00 oz"
+  attack="38"
+  defense="25"
+  speed="30"
+  range="0"
+  requirement={frontmatter.requirement}
+  sources={[
+    "Platform Quest"
+  ]}
+/>
